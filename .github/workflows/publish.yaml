@@ -1,0 +1,53 @@
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  test-publish-docker:
+    runs-on: ubuntu-latest
+    name: Publish datains-frontend to aliyun oss.
+    steps:
+      - name: Configure environment
+        id: config
+        run: |
+          VERSION=$(echo $GITHUB_REF | sed -e "s/^refs\/tags\/v//")
+          echo ::set-output name=version::$VERSION
+
+      - name: Fetch repository
+        uses: actions/checkout@master
+
+      - name: Install dependences
+        uses: borales/actions-yarn@v2.1.0
+        with:
+          cmd: install
+
+      - name: Build project
+        uses: borales/actions-yarn@v2.1.0
+        with:
+          cmd: build
+
+      - name: Publish datains-frontend to aliyun oss
+        id: ossutil
+        uses: go-choppy/ossutil-github-action@master
+        with:
+          ossArgs: 'cp -r -u ./dist/ oss://datains-frontend/'
+          accessKey: ${{ secrets.ALIYUN_ACCESS_KEY }}
+          accessSecret: ${{ secrets.ALIYUN_ACCESS_SECRET }}
+          endpoint: oss-cn-shanghai.aliyuncs.com
+
+      - name: Output command
+        run: |
+          echo "${{ steps.ossutil.outputs.command }}"
+          echo "Publish Datains Frontend ${{ steps.config.outputs.version }} Successfully."
+
+      - name: Dingtalk Robot Message
+        uses: fifsky/dingtalk-action@master
+        with:
+          url: ${{ secrets.DINGTALK_WEBHOOK }}
+          type: markdown
+          content: |
+            # Datains Frontend ${{ steps.config.outputs.version }} 构建 & 发布
+            @Choppy Team 主人，我已将您刚更新在Github上的Datains Frontend代码发布到公网了，您可随时访问
+            > Choppy Team：可通过 http://datains.3steps.cn 链接访问
+          at: Choppy Team
