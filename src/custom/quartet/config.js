@@ -31,13 +31,13 @@ export const projectSettings = {
     name: 'ls', // name variable Vue.[ls] or this.[$ls],
     storage: 'local' // storage name session, local, memory
   },
-  domTitle: 'Quartet Data Portal', // The ClinicoOmics Platform
+  domTitle: 'Quartet Data Portal',
   // eslint-disable-next-line no-undef
   websiteLogo: require('@/assets/logo.png'),
-  websiteName: 'QUARTET', // ClinicoOmics
-  websiteId: 'quartet', // clinicoomics
+  websiteName: 'QUARTET',
+  websiteId: 'quartet',
   noPermission: true, // false
-  websiteDesc: 'The Quartet Project for the Quality Control of Omics Data', // The ClinicoOmics Platform for Clinico OMICS & BioMedGPS
+  websiteDesc: 'The Quartet Project for the Quality Control of Omics Data',
   defaultCollection: 'quartet_genomics',
   collections: [
     {

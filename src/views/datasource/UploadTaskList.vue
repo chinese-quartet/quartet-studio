@@ -4,23 +4,11 @@
       <a-badge slot="extra" showZero :count="pagination.total" :numberStyle="{ backgroundColor: '#52c41a' }" />
       <div slot="title">
         <a-radio-group @change="onClickRadioBtn" defaultValue="total" :value="radioGroupValue">
-          <a-radio-button value="total">{{ $t('workflow.itemList.projectList.total') }}</a-radio-button>
-          <a-radio-button value="Running">{{ $t('workflow.itemList.projectList.running') }}</a-radio-button>
-          <a-radio-button value="Failed">{{ $t('workflow.itemList.projectList.failed') }}</a-radio-button>
-          <a-radio-button value="Succeeded">{{ $t('workflow.itemList.projectList.finished') }}</a-radio-button>
-          <a-radio-button value="Aborted">{{ $t('workflow.itemList.projectList.aborted') }}</a-radio-button>
+          <a-radio-button value="total">{{ $t('datasource.uploadTaskList.total') }}</a-radio-button>
+          <a-radio-button value="Submitted">{{ $t('datasource.uploadTaskList.submitted') }}</a-radio-button>
+          <a-radio-button value="Running">{{ $t('datasource.uploadTaskList.running') }}</a-radio-button>
+          <a-radio-button value="Succeeded">{{ $t('datasource.uploadTaskList.finished') }}</a-radio-button>
         </a-radio-group>
-
-        <a-select
-          style="margin-left: 10px; width: 272px"
-          :placeholder="$t('workflow.itemList.projectList.searchPlaceholder')"
-          @change="onSelectApp"
-          allowClear
-        >
-          <a-select-option :value="item.id" :key="item.name" v-for="item in installedApps">
-            {{ item.name }}
-          </a-select-option>
-        </a-select>
 
         <a-input-search
           disabled

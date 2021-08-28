@@ -367,12 +367,19 @@ export default {
     }, 60000)
   },
   beforeRouteLeave(to, from, next) {
-    next()
     if (this.timer) {
       console.log('Clear the refresh timer.')
       clearInterval(this.timer)
       this.timer = null
     }
+    next()
+  },
+  beforeDestroy() {
+    if (this.timer) {
+      console.log('Clear the refresh timer.')
+      clearInterval(this.timer)
+      this.timer = null
+    }    
   }
 }
 </script>

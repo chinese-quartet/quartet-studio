@@ -16,24 +16,70 @@ export const asyncRouterMap = [
         name: 'dashboard',
         hidden: false,
         component: () => import('@/custom/quartet/components/QuartetDashboard'),
-        meta: { title: 'Dashboard', icon: 'dashboard', permission: ['dashboard'], keepAlive: false }
+        meta: { title: 'Overview', icon: 'dashboard', permission: ['dashboard'], keepAlive: false }
       },
 
       // Materials
       {
         path: '/materials',
         name: 'materials',
-        component: () => import('@/custom/quartet/components/Analysis'),
-        meta: { title: 'Materials', icon: 'experiment', keepAlive: false }
+        component: () => import('@/views/materials/Analysis'),
+        meta: { title: 'Reference Materials', icon: 'experiment', keepAlive: false }
       },
 
       // Data (Level 0 - 4)
       {
         path: '/data',
         name: 'data',
+        component: RouteView,
+        redirect: '/data/download',
         hidden: false,
-        component: () => import('@/views/datasource/FilterPanel'),
-        meta: { title: 'Data', icon: 'deployment-unit', keepAlive: false }
+        meta: { title: 'Multiomics Data', icon: 'deployment-unit', keepAlive: false },
+        children: [
+          {
+            path: '/data/upload',
+            name: 'upload-data',
+            hidden: false,
+            component: () => import('@/views/datasource/UploadData'),
+            meta: { title: 'Upload Your Omics Data', icon: 'upload', permission: ['table'], keepAlive: false }
+          },
+          {
+            path: '/data/download',
+            name: 'download-data',
+            hidden: false,
+            component: () => import('@/views/datasource/FilterPanel'),
+            meta: { title: 'Browser & Download Omics Data', icon: 'download', permission: ['table'], keepAlive: false }
+          },
+          {
+            path: '/data/quality-assessment-management',
+            name: 'project-management',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/workflow/ProjectManagement'),
+            meta: { title: 'Omics Data Quality Assessment', icon: 'solution', permission: ['table'], keepAlive: false }
+          },
+          {
+            path: '/data/qc-job-submit/:pageNo([1-9]\\d*)?',
+            name: 'create-project',
+            hidden: true,
+            props: route => ({ appId: route.query.appId }),
+            component: () => import('@/views/workflow/stepForm/StepForm'),
+            meta: { title: 'Create Project', icon: 'file-add', permission: ['table'], keepAlive: false }
+          },
+          {
+            path: '/data/qc-job-management/:projectId',
+            name: 'job-management',
+            hidden: true,
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/workflow/WorkflowManagement'),
+            meta: {
+              title: 'Job Management',
+              icon: 'file-sync',
+              drawerMode: false,
+              keepAlive: false,
+              permission: ['table']
+            }
+          }
+        ]
       },
 
       // SeqFlow
@@ -41,6 +87,7 @@ export const asyncRouterMap = [
         path: '/seq-flow',
         name: 'seq-flow',
         component: RouteView,
+        hidden: true,
         redirect: '/seq-flow/submit',
         meta: { title: 'Analyses', icon: 'project', permission: ['table'], keepAlive: false },
         children: [
@@ -63,35 +110,6 @@ export const asyncRouterMap = [
             meta: { title: 'File Management', icon: 'codepen-circle', keepAlive: false }
           },
           {
-            path: '/seq-flow/submit/:pageNo([1-9]\\d*)?',
-            name: 'create-project',
-            hidden: true,
-            props: route => ({ appId: route.query.appId }),
-            component: () => import('@/views/workflow/stepForm/StepForm'),
-            meta: { title: 'Create Project', icon: 'file-add', permission: ['table'], keepAlive: false }
-          },
-          {
-            path: '/seq-flow/job-management/:projectId',
-            name: 'job-management',
-            hidden: true,
-            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
-            component: () => import('@/views/workflow/WorkflowManagement'),
-            meta: {
-              title: 'Job Management',
-              icon: 'file-sync',
-              drawerMode: false,
-              keepAlive: false,
-              permission: ['table']
-            }
-          },
-          {
-            path: '/seq-flow/project-management',
-            name: 'project-management',
-            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
-            component: () => import('@/views/workflow/ProjectManagement'),
-            meta: { title: 'Project Management', icon: 'solution', permission: ['table'], keepAlive: false }
-          },
-          {
             path: '/seq-flow/report-management',
             name: 'report-management',
             hidden: false,
@@ -108,7 +126,7 @@ export const asyncRouterMap = [
         name: 'visualization',
         component: RouteView,
         redirect: '/visualization/quartet-rna-vis',
-        meta: { title: 'Visualization', icon: 'dot-chart', keepAlive: false },
+        meta: { title: 'Reference Datasets', icon: 'dot-chart', keepAlive: false },
         children: [
           {
             path: '/visualization/quartet-dna-vis',

@@ -115,7 +115,7 @@ export default {
           ready: false
         },
         {
-          title: 'Request Form',
+          title: 'Request Details',
           content: 'Second-content',
           ready: false
         },

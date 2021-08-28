@@ -68,8 +68,13 @@
           </a-select-option>
         </a-select>
       </a-form-model-item>
-      <a-form-model-item :wrapperCol="{span: 19, offset: 5}">
-        <a-button type="primary" @click="nextStep('projectForm')">{{ $t('workflow.stepForm.step1.next') }}</a-button>
+      <a-form-model-item style="float: right;">
+        <a-button type="primary" style="margin-right: 10px;" @click="clearCache('projectForm')">
+          {{ $t('workflow.stepForm.step1.clearCache') }}
+        </a-button>
+        <a-button type="primary" @click="nextStep('projectForm')">
+          {{ $t('workflow.stepForm.step1.next') }}
+        </a-button>
       </a-form-model-item>
     </a-form-model>
     <a-divider />
@@ -104,19 +109,19 @@ export default {
   },
   data () {
     return {
-      labelCol: { lg: { span: 6 }, sm: { span: 5 } },
-      wrapperCol: { lg: { span: 18 }, sm: { span: 19 } },
+      labelCol: { lg: { span: 8 }, sm: { span: 10 } },
+      wrapperCol: { lg: { span: 16 }, sm: { span: 14 } },
       installedApps: [],
       projectData: {},
       rules: {
         projectName: [
-          { required: true, message: 'Please input project name.', trigger: 'blur' },
+          { required: true, message: 'Please input a name for the assessment.', trigger: 'blur' },
           { min: 5, max: 32, message: 'Length should be 5 to 32', trigger: 'blur' },
-          { pattern: /^[a-zA-Z_]+[0-9a-zA-Z]+$/, message: 'Project name is not valid, only support [a-z0-9A-Z_]', trigger: 'blur' },
+          { pattern: /^[a-zA-Z_]+[0-9a-zA-Z]+$/, message: 'Name is not valid, only support [a-z0-9A-Z_]', trigger: 'blur' },
           { validator: this.existProject, trigger: 'blur' }
         ],
         description: [
-          { required: true, message: 'Please input project description.', trigger: 'blur', whitespace: true }
+          { required: true, message: 'Please input description.', trigger: 'blur', whitespace: true }
         ],
         createdTime: [
           { required: true, message: 'Please select started time.', trigger: 'blur' }
@@ -125,7 +130,7 @@ export default {
           { required: true, message: 'Please input group name.', trigger: 'blur', whitespace: true }
         ],
         appId: [
-          { required: true, message: 'Please select choppy app.', trigger: 'blur' }
+          { required: true, message: 'Please select a qc assessment app.', trigger: 'blur' }
         ]
       }
     }
@@ -168,6 +173,10 @@ export default {
           group: 'Choppy Team'
         }
       }
+    },
+    clearCache(formName) {
+      localStorage.removeItem('datains_PROJECT_DATA')
+      this.$refs[formName].resetFields();
     },
     nextStep (formName) {
       this.$refs[formName].validate(valid => {

@@ -1,9 +1,10 @@
 <template>
   <a-row class="pdf-container">
     <a-row class="indicator">
-      <a-button type="primary" size="small">{{pageNum}}/{{pageTotalNum}}</a-button>
+      <a-button shape="circle" size="large">{{pageNum}}/{{pageTotalNum}}</a-button>
     </a-row>
     <a-row class="tools">
+      <a-button type="primary" shape="circle">{{pageNum}}/{{pageTotalNum}}</a-button>
       <a-button type="primary" shape="circle" icon="up" @click="prevPage"></a-button>
       <a-button type="primary" shape="circle" icon="down" @click="nextPage"></a-button>
       <a-button type="primary" @click="pdfPrintAll" shape="circle" icon="printer"></a-button>

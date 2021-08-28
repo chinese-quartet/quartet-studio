@@ -17,30 +17,39 @@ export default {
       activity: 'Activity'
     }
   },
+  datasource: {
+    uploadTaskList: {
+      total: 'Total',
+      submitted: 'Submitted',
+      running: 'Running',
+      finished: 'Finished',
+    }
+  },
   workflow: {
     stepForm: {
       argumentJson: {
         download: 'Download',
-        jobParameters: 'Job Parameters'
+        jobParameters: 'Assessment Parameters'
       },
       argumentTable: {
         download: 'Download',
         save: 'Save',
         reset: 'Reset',
-        jobParameters: 'Job Parameters',
+        jobParameters: 'Assessment Parameters',
         refreshSuccessfully: 'Refresh Successfully',
         saveSuccessfully: 'Save Successfully'
       },
       step1: {
-        projectName: 'Project Name',
-        enterProjectName: 'Please Enter Your Project Name',
+        projectName: 'Assessment Name',
+        enterProjectName: 'Please Enter a Name for the Assessment',
         description: 'Description',
         enterProjectDescription: 'Please Enter a Description of the Project',
         startedTime: 'Started Time',
         group: 'Group',
-        choppyApp: 'Choppy App',
+        choppyApp: 'Assessment App',
+        clearCache: 'Reset',
         next: 'Next',
-        chooseAppPlaceholder: 'Please Choose a Choppy App'
+        chooseAppPlaceholder: 'Please Choose a Assessment App'
       },
       step2: {
         helpTitle: 'Help Documentation'
@@ -48,17 +57,18 @@ export default {
       step3: {
         previousStep: 'Previous Step',
         showJobs: 'Show Jobs',
-        showProjects: 'Show Projects',
-        submitProject: 'Submit Project'
+        showProjects: 'Show Assessments',
+        submitProject: 'Run Assessment'
       },
       stepForm: {
-        projectInformation: 'Project Information',
-        jobParameters: 'Job Parameters',
+        projectInformation: 'General Information',
+        jobParameters: 'Assessment Parameters',
         submit: 'Submit'
       }
     },
     projectManagement: {
-      createProject: 'Create Project'
+      showHelp: 'Help',
+      createProject: 'Start Assessment'
     },
     itemList: {
       projectList: {

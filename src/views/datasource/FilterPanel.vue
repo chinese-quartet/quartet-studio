@@ -1,24 +1,24 @@
 <template>
   <!--eslint-disable-->
-  <a-row class="filter-panel" :gutter="16" style="margin-right: 0px;">
+  <a-row class="filter-panel" :gutter="16" style="margin-right: 0px">
     <a-col class="left" :xl="6" :lg="6" :md="6" :sm="24" :xs="24">
       <a-tabs defaultActiveKey="files" @change="onChangeTab">
         <a-tab-pane :tab="tab.title" v-for="tab in tabs" :key="tab.key">
           <a-row class="content">
-            <a-row style="display: flex; justify-content: center; margin: 10px 10px;">
+            <a-row style="display: flex; justify-content: center; margin: 10px 10px">
               <a-tooltip>
                 <template slot="title">Show Projects</template>
-                <a-button icon="pic-left" style="width: 50px;" @click="switchProjectPanel"></a-button>
+                <a-button icon="pic-left" style="width: 50px" @click="switchProjectPanel"></a-button>
               </a-tooltip>
               <a-input-search
                 allowClear
                 placeholder="Enter Search Text"
                 @change="filterFieldsList"
-                style="margin: 0px 5px;"
+                style="margin: 0px 5px"
               />
               <a-tooltip>
                 <template slot="title">Add a File Filter</template>
-                <a-button icon="setting" style="width: 50px;" @click="showFilterPanel"></a-button>
+                <a-button icon="setting" style="width: 50px" @click="showFilterPanel"></a-button>
               </a-tooltip>
             </a-row>
             <a-collapse :activeKey="activeFilterList" ref="collapse">
@@ -56,13 +56,13 @@
           <a-list-item
             slot="renderItem"
             slot-scope="item, index"
-            :class="{active: item.key == defaultCollection}"
+            :class="{ active: item.key == defaultCollection }"
             @click="loadProject(item.key)"
           >
             <a-list-item-meta :description="item.description">
               <a slot="title">{{ item.name }}</a>
-              <a-avatar slot="avatar" :class="{active: item.key == defaultCollection}">
-                <a-icon slot="icon" type="project" style="backgroundColor: #1890ff;" />
+              <a-avatar slot="avatar" :class="{ active: item.key == defaultCollection }">
+                <a-icon slot="icon" type="project" style="backgroundcolor: #1890ff" />
               </a-avatar>
             </a-list-item-meta>
           </a-list-item>
@@ -84,7 +84,12 @@
           </a-row>
         </a-tab-pane>
         <a-tab-pane tab="Search Advanced" key="2" disabled></a-tab-pane>
-        <a-select :defaultValue="defaultCollection" style="width: 260px" @change="loadProject" slot="tabBarExtraContent">
+        <a-select
+          :defaultValue="defaultCollection"
+          style="width: 260px"
+          @change="loadProject"
+          slot="tabBarExtraContent"
+        >
           <a-select-option :value="collection.key" v-for="collection in collections" :key="collection.key">
             {{ collection.name }}
           </a-select-option>
@@ -109,24 +114,17 @@
           <a-tag color="#87d068">{{ allFields.length }} file fields</a-tag>
         </a-col>
         <a-col :span="12">
-          <a-button style="float: right;" @click="sortFields">
+          <a-button style="float: right" @click="sortFields">
             <a-icon type="sort-descending" v-if="reverseOrder" />
             <a-icon type="sort-ascending" v-else />
           </a-button>
         </a-col>
       </a-row>
-      <a-input-search
-        allowClear
-        placeholder="Enter Search Text"
-        size="large"
-        @change="filterFields"
-      />
-      <a-row style="width: 100%;">
-        <a-checkbox
-          style="float: right;"
-          :checked="hideActive"
-          @change="hideSelectedFields"
-        >Hide selected fields?</a-checkbox>
+      <a-input-search allowClear placeholder="Enter Search Text" size="large" @change="filterFields" />
+      <a-row style="width: 100%">
+        <a-checkbox style="float: right" :checked="hideActive" @change="hideSelectedFields"
+          >Hide selected fields?</a-checkbox
+        >
       </a-row>
       <a-card class="field-list" v-if="existsFilteredFields">
         <a-row
@@ -151,10 +149,19 @@
       </a-card>
       <a-empty class="field-list" v-else />
     </a-modal>
+    <a-modal title="Help" width="60%" class="help-markdown" :visible="helpVisible" :footer="null" @cancel="closeHelp">
+      <a-row style="display: flex; justify-content: flex-end; margin-top: -20px; margin-right: -20px">
+        <a-checkbox :checked="helpChecked" @change="changeHelpCheckbox"> Don't show again </a-checkbox>
+      </a-row>
+      <a-row class="markdown">
+        <vue-markdown :source="helpMsg" @rendered="update"></vue-markdown>
+      </a-row>
+    </a-modal>
   </a-row>
 </template>
 
 <script>
+import axios from 'axios'
 import { mapActions, mapGetters } from 'vuex'
 import { FilterList, Pie } from '@/components'
 import DataTable from './DataTable'
@@ -162,13 +169,16 @@ import filter from 'lodash.filter'
 import map from 'lodash.map'
 import sortBy from 'lodash.sortby'
 import orderBy from 'lodash.orderby'
+import VueMarkdown from 'vue-markdown'
+import Prism from 'prismjs'
 
 export default {
   name: 'FilterPanel',
   components: {
     FilterList,
     DataTable,
-    Pie
+    Pie,
+    VueMarkdown
   },
   data() {
     return {
@@ -178,7 +188,10 @@ export default {
       visible: false,
       searchValue: '',
       filterValue: '',
-      reverseOrder: false
+      reverseOrder: false,
+      helpMsg: '',
+      helpChecked: false,
+      helpVisible: true
     }
   },
   props: {},
@@ -250,6 +263,34 @@ export default {
     ...mapActions({
       countCollections: 'CountCollections'
     }),
+    fetchHelp() {
+      axios
+        .get('/docs/multiomics-data.md')
+        .then(response => {
+          console.log('Fetch Help: ', response)
+          this.helpMsg = response.data
+          this.helpVisible = true
+        })
+        .catch(error => {
+          console.log('Fetch Help Error: ', error)
+        })
+    },
+    update() {
+      this.$nextTick(() => {
+        Prism.highlightAll()
+      })
+    },
+    changeHelpCheckbox(e) {
+      console.log('Change Help Checkbox: ', e)
+      this.helpChecked = e.target.checked
+    },
+    closeHelp() {
+      if (this.helpChecked) {
+        localStorage.setItem('datains__data__notShownHelp', true)
+      }
+
+      this.helpVisible = false
+    },
     loadProject(name) {
       this.$store.commit('SET_COLLECTION', name)
       // Reset
@@ -376,6 +417,13 @@ export default {
   },
   created() {
     this.getFieldsList(this.fetchCounts)
+
+    const notShownHelp = localStorage.getItem('datains__data__notShownHelp')
+    if (notShownHelp) {
+      this.helpVisible = !notShownHelp
+    } else {
+      this.fetchHelp()
+    }
   }
 }
 </script>
@@ -484,6 +532,21 @@ export default {
           }
         }
       }
+    }
+  }
+}
+
+.help-markdown {
+  .ant-modal-body {
+    height: 450px;
+
+    .markdown {
+      height: 100%;
+      overflow: scroll;
+    }
+
+    .markdown::-webkit-scrollbar {
+      width: 0 !important;
     }
   }
 }

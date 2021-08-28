@@ -1,15 +1,11 @@
 <template>
   <page-view :title="getTitle()" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
     <template slot="action">
-      <a-button icon="question-circle" style="margin-right: 10px;" @click="showHelp">
-        {{ $t('workflow.projectManagement.showHelp') }}
-      </a-button>
-      <a-button type="primary" @click="onCreateProject">
-        {{ $t('workflow.projectManagement.createProject') }}
-      </a-button>
+      <a-button icon="question-circle" style="margin-right: 10px;" @click="showHelp">Help</a-button>
+      <a-button type="primary" disabled @click="onCreateProject">Upload Data</a-button>
     </template>
 
-    <project-list :id="refreshToken"></project-list>
+    <upload-task-list :id="refreshToken"></upload-task-list>
     <a-modal title="Help" width="60%" class="help-markdown" :visible="helpVisible" :footer="null" @cancel="closeHelp">
       <a-row style="display: flex; justify-content: flex-end; margin-top: -20px; margin-right: -20px">
         <a-checkbox :checked="helpChecked" @change="changeHelpCheckbox"> Don't show again </a-checkbox>
@@ -24,7 +20,7 @@
 <script>
 import axios from 'axios'
 import { PageView } from '@/layouts'
-import ProjectList from '@/views/workflow/itemList/ProjectList'
+import UploadTaskList from '@/views/datasource/UploadTaskList'
 import { formatTitle } from '@/views/utils'
 import VueMarkdown from 'vue-markdown'
 import Prism from 'prismjs'
@@ -33,8 +29,8 @@ export default {
   name: 'ProjectManagement',
   components: {
     PageView,
-    ProjectList,
-    VueMarkdown,
+    UploadTaskList,
+    VueMarkdown
   },
   props: {
     refresh: {
@@ -94,14 +90,14 @@ export default {
     },
     closeHelp() {
       if (this.helpChecked) {
-        localStorage.setItem('datains__data__notShownAssessmentHelp', true)
+        localStorage.setItem('datains__data__notShownUploadHelp', true)
       }
 
       this.helpVisible = false
     },
   },
   created() {
-    const notShownHelp = localStorage.getItem('datains__data__notShownAssessmentHelp')
+    const notShownHelp = localStorage.getItem('datains__data__notShownUploadHelp')
     if (notShownHelp) {
       this.helpVisible = !notShownHelp
     } else {

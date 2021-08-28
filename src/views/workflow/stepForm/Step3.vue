@@ -178,7 +178,7 @@ export default {
 
       this.submitProject(data).then(result => {
         console.log('postProject: ', result)
-        this.$message.success('Create Project Successfully.')
+        this.$message.success('Create an QC Assessment Successfully.')
         this.$emit('finished', result)
       }).catch(error => {
         console.log('postProject: ', error)

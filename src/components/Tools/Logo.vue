@@ -13,7 +13,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: 'ClinicoOmics',
+      default: 'Quartet Data Portal',
       required: true
     },
     logo: {
