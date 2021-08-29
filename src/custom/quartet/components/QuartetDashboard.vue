@@ -3,7 +3,7 @@
     <a-row class="header-container">
       <a-col class="left" :span="8">
         <!-- <img width="100%" height="100%" src="https://xenabrowser.net/bdbd099a8d2ef9593481ec8369f88ab4.png" /> -->
-        <img width="100%" height="100%" src="/design-qc.png" />
+        <img width="100%" height="100%" src="http://nordata-cdn.oss-cn-shanghai.aliyuncs.com/design-qc.png" />
       </a-col>
       <a-col class="right" :span="16">
         <span class="title">{{ title }}</span>
@@ -152,7 +152,9 @@ export default {
     height: @height;
     border-radius: @border-radius;
     // background-color: #1a535c;
-    background-color: #dae1ed;
+    // background-color: #dae1ed;
+    background-color: #e7e7e7;
+    // border: 1px solid #fff;
     color: rgb(78, 78, 78);
     text-align: center;
     margin-bottom: 20px;

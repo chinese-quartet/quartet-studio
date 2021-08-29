@@ -1,12 +1,9 @@
 {
   "name": "datains-frontend",
-  "version": "0.2.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "publish-code": "vue-cli-service build && ossutilmac64 cp -r -u ./dist/ oss://datains-frontend/ -c ~/.ossutilconfig-tgmc",
-    "publish-code-hongkong": "vue-cli-service build && ossutilmac64 cp -r -u ./dist/ oss://clinico-omics-frontend/ -c ~/.ossutilconfig-tgmc-hongkong",
-    "publish-fuscc": "vue-cli-service build && ossutilmac64 cp -r -u ./dist/ oss://fuscc-pathology-ai-model/ -c ~/.ossutilconfig-tgmc",
-    "publish-data": "ossutilmac64 cp -r -u ./data oss://nordata-cdn/choppy -c ~/.ossutilconfig-tgmc",
+    "publish-code": "vue-cli-service build && ossutilmac64 cp -r -u ./dist/ oss://chinese-quartet-frontend/data-portal/ -c ~/.ossutilconfig-tgmc -e oss-ap-southeast-1.aliyuncs.com",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build:preview": "vue-cli-service build --mode preview",

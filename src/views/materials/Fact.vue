@@ -1,9 +1,9 @@
 <template>
-  <a-row>
+  <a-row :gutter="24">
     <a-col v-for="item in factData" :xs="24" :md="12" :lg="6" :key="item.name">
       <div @click="selectItem(item.key)" class="fact-item">
         <img
-          width="300"
+          width="100%"
           height="200"
           src="http://www.rainsurebio.com/qfy-content/uploads/2020/03/dca143037912404bfc097f509af837c4-e1584692168980-1024x429.jpg"
         />
@@ -67,6 +67,12 @@ export default {
   align-items: center;
   width: 100%;
   cursor: pointer;
+  border-radius: 5px;
+  border: 1px solid #d6d6d6;
+
+  img {
+    border-radius: 5px;
+  }
 
   .fact-link:hover,
   .fact-link:active,
@@ -88,7 +94,7 @@ export default {
     align-items: center;
     padding: 5px 15px;
     border-radius: 6px;
-    width: 90%;
+    width: 100%;
     cursor: pointer;
     margin-bottom: 10px;
 

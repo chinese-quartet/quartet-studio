@@ -4,11 +4,11 @@
       <a-card :loading="loading" title="Request Materials">
         <p style="margin-bottom: 10px; text-align: justify" v-html="description"></p>
         <fact :factData="factData" @select-item="selectPDF"></fact>
-        <a-button icon="question-circle" slot="extra" @click="redirectHelp">Need Help</a-button>
+        <a-button icon="question-circle" slot="extra" @click="redirectHelp">Help</a-button>
       </a-card>
     </a-row>
 
-    <a-row :gutter="24" style="margin: 0px 0px 10px">
+    <a-row :gutter="24" style="margin: 0px 0px 10px" id="specification-container">
       <a-card :loading="loading" title="Materials Specification">
         <a-tabs class="specification" v-model="currentTab" animated @change="selectPDF">
           <a-tab-pane
@@ -20,7 +20,7 @@
             <pdf-viewer height="600px" :url="item.pdfUrl"></pdf-viewer>
           </a-tab-pane>
         </a-tabs>
-        <a-button icon="question-circle" slot="extra" @click="redirectHelp">Need Help</a-button>
+        <a-button icon="question-circle" slot="extra" @click="redirectHelp">Help</a-button>
       </a-card>
     </a-row>
   </div>
@@ -114,6 +114,7 @@ export default {
     },
     selectPDF(pdfKey) {
       this.currentTab = pdfKey
+      document.getElementById('specification-container').scrollIntoView({ behavior: 'smooth' })
     },
     redirectHelp() {
       window.open('https://www.yuque.com/quartet/help?language=en-us', '__blank')
