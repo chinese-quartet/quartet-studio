@@ -13,7 +13,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: 'Quartet Data Portal',
+      default: 'QUARTET',
       required: true
     },
     logo: {

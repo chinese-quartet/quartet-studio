@@ -13,7 +13,7 @@
     </a-row>
     <a-row class="content-container">
       <a-col class="left" :xl="8" :lg="8" :md="24" :sm="24">
-        <a-row style="height: 135px;">
+        <a-row style="height: 135px">
           <span style="font-size: 1rem; font-weight: bold">News</span>
           <a-col>
             <a href="">Quartet Data Portal is now open to the public</a>
@@ -57,19 +57,6 @@
               </a-tooltip>
             </a-col>
             <a-col>
-              <a-tooltip placement="top" title="Discover the Reference Datasets" :arrowPointAtCenter="true">
-                <router-link
-                  class="span-btn"
-                  aria-current="false"
-                  :to="{ name: 'visualization' }"
-                  style="background-color: #4cc3d9"
-                >
-                  <span class="span-icon"> <a-icon type="dot-chart" /> </span>&nbsp;
-                  <span style="vertical-align: middle">Reference Datasets</span>
-                </router-link>
-              </a-tooltip>
-            </a-col>
-            <a-col>
               <a-tooltip placement="top" title="Launch QC Assessment using Custom DataSets" :arrowPointAtCenter="true">
                 <router-link
                   class="span-btn"
@@ -79,6 +66,19 @@
                 >
                   <span class="span-icon"> <a-icon type="hdd" /> </span>&nbsp;
                   <span style="vertical-align: middle">Quality Assessment</span>
+                </router-link>
+              </a-tooltip>
+            </a-col>
+            <a-col>
+              <a-tooltip placement="top" title="Discover the Reference Datasets" :arrowPointAtCenter="true">
+                <router-link
+                  class="span-btn"
+                  aria-current="false"
+                  :to="{ name: 'visualization' }"
+                  style="background-color: #4cc3d9"
+                >
+                  <span class="span-icon"> <a-icon type="dot-chart" /> </span>&nbsp;
+                  <span style="vertical-align: middle">Reference Datasets</span>
                 </router-link>
               </a-tooltip>
             </a-col>
@@ -158,6 +158,7 @@ export default {
     color: rgb(78, 78, 78);
     text-align: center;
     margin-bottom: 20px;
+    overflow: scroll;
 
     .date {
       font-size: 1rem;
@@ -244,17 +245,20 @@ export default {
     }
 
     .right {
-      padding: 0rem 0px 0px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      margin-right: 20px;
       min-width: 500px;
 
       .fact-container {
         margin-top: 2rem;
         margin-bottom: 1rem;
         width: 100%;
+      }
+
+      img {
+        width: 100%;
+        padding: 0px 20px 0px 0px;
       }
     }
   }

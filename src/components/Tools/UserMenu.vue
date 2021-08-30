@@ -5,7 +5,7 @@
         <template slot="title">
           <span>{{ $t('components.tools.userMenu.tour') }}</span>
         </template>
-        <a @click="startTour">
+        <a @click="startTour" style="display: none;">
           <span class="action">
             <a-icon type="compass"></a-icon>
           </span>
@@ -35,13 +35,13 @@
         <template slot="title">
           <span>{{ $t('components.tools.userMenu.documentation') }}</span>
         </template>
-        <a :href="helpEntrypoint" target="_blank">
+        <a :href="helpEntrypoint" target="_blank" style="display:none;">
           <span class="action">
             <a-icon type="question-circle-o"></a-icon>
           </span>
         </a>
       </a-tooltip>
-      <notice-icon class="action" />
+      <notice-icon class="action" style="display: none;" />
       <lang-select />
       <a-dropdown>
         <span class="action ant-dropdown-link user-dropdown-menu">

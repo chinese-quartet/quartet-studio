@@ -41,7 +41,7 @@
         </div>
 
         <div :style="{ marginBottom: '24px' }">
-          <h3 class="setting-drawer-index-title">Theme Color [Only Development]</h3>
+          <h3 class="setting-drawer-index-title">Theme Color</h3>
 
           <div style="height: 20px">
             <a-tooltip class="setting-drawer-theme-color-colorBlock" v-for="(item, index) in colorList" :key="index">

@@ -5,7 +5,7 @@
     :collapsible="collapsible"
     v-model="collapsed"
     :trigger="null">
-    <logo />
+    <logo :title="websiteName" />
     <s-menu
       :collapsed="collapsed"
       :menu="menus"
@@ -20,12 +20,18 @@
 <script>
 import Logo from '@/components/Tools/Logo'
 import SMenu from './index'
+import { websiteName } from '@/config/defaultSettings'
 import { mixin, mixinDevice } from '@/utils/mixin'
 
 export default {
   name: 'SideMenu',
   components: { Logo, SMenu },
   mixins: [mixin, mixinDevice],
+  data() {
+    return {
+      websiteName,
+    }
+  },
   props: {
     mode: {
       type: String,

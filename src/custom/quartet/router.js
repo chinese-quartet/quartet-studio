@@ -51,13 +51,6 @@ export const asyncRouterMap = [
             meta: { title: 'Browser & Download Omics Data', icon: 'download', permission: ['table'], keepAlive: false }
           },
           {
-            path: '/data/quality-assessment-management',
-            name: 'project-management',
-            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
-            component: () => import('@/views/workflow/ProjectManagement'),
-            meta: { title: 'Omics Data Quality Assessment', icon: 'solution', permission: ['table'], keepAlive: false }
-          },
-          {
             path: '/data/qc-job-submit/:pageNo([1-9]\\d*)?',
             name: 'create-project',
             hidden: true,
@@ -80,6 +73,13 @@ export const asyncRouterMap = [
             }
           }
         ]
+      },
+
+      {
+        path: '/data/quality-assessment-management',
+        name: 'project-management',
+        component: () => import('@/views/workflow/ProjectManagement'),
+        meta: { title: 'Assessment', icon: 'solution', permission: ['table'], keepAlive: false }
       },
 
       // SeqFlow
