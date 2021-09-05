@@ -61,7 +61,7 @@
                 <router-link
                   class="span-btn"
                   aria-current="false"
-                  :to="{ name: 'appstore' }"
+                  :to="{ name: 'project-management' }"
                   style="background-color: #7bc8a4"
                 >
                   <span class="span-icon"> <a-icon type="hdd" /> </span>&nbsp;
@@ -74,7 +74,7 @@
                 <router-link
                   class="span-btn"
                   aria-current="false"
-                  :to="{ name: 'visualization' }"
+                  :to="{ name: 'download-reference-datasets' }"
                   style="background-color: #4cc3d9"
                 >
                   <span class="span-icon"> <a-icon type="dot-chart" /> </span>&nbsp;

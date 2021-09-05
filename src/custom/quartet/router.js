@@ -122,43 +122,59 @@ export const asyncRouterMap = [
 
       // Visualization
       {
-        path: '/visualization',
-        name: 'visualization',
+        path: '/reference-datasets',
+        name: 'reference-datasets',
         component: RouteView,
-        redirect: '/visualization/quartet-rna-vis',
-        meta: { title: 'Reference Datasets', icon: 'dot-chart', keepAlive: false },
+        redirect: '/reference-datasets/quartet-rna-vis',
+        meta: { title: 'Reference Datasets', icon: 'safety-certificate', keepAlive: false },
         children: [
           {
-            path: '/visualization/quartet-dna-vis',
-            name: 'Genomics',
+            path: '/reference-datasets/download',
+            name: 'download-reference-datasets',
             hidden: false,
-            component: () => import('@/components/FullFrame'),
-            props: route => ({ src: getDnaHost() }),
-            meta: { title: 'Genomics', icon: 'double-right', keepAlive: false }
+            component: () => import('@/views/datasource/ReferenceDatasets'),
+            meta: { title: 'Browser & Download Reference Datasets', icon: 'download', keepAlive: false },
           },
           {
-            path: '/visualization/quartet-rna-vis',
-            name: 'Transcriptomics',
-            hidden: false,
-            component: () => import('@/components/FullFrame'),
-            props: route => ({ src: getRnaHost() }),
-            meta: { title: 'Transcriptomics', icon: 'double-right', keepAlive: false }
-          },
-          {
-            path: '/visualization/quartet-protein-vis',
-            name: 'Proteomics',
-            hidden: false,
-            component: () => import('@/components/FullFrame'),
-            props: route => ({ src: getProteinHost() }),
-            meta: { title: 'Proteomics', icon: 'double-right', disabled: true, keepAlive: false }
-          },
-          {
-            path: '/visualization/quartet-metabolism-vis',
-            name: 'Metabolomics',
-            hidden: false,
-            component: () => import('@/components/FullFrame'),
-            props: route => ({ src: getMetabolismHost() }),
-            meta: { title: 'Metabolomics', icon: 'double-right', disabled: true, keepAlive: false }
+            path: '/reference-datasets/visualization',
+            name: 'visualization',
+            component: RouteView,
+            redirect: '/visualization/quartet-rna-vis',
+            meta: { title: 'Discovery Reference Datasets', icon: 'dot-chart', keepAlive: false },
+            children: [
+              {
+                path: '/reference-datasets/visualization/quartet-dna-vis',
+                name: 'Genomics',
+                hidden: false,
+                component: () => import('@/components/FullFrame'),
+                props: route => ({ src: getDnaHost() }),
+                meta: { title: 'Genomics', icon: 'double-right', keepAlive: false }
+              },
+              {
+                path: '/reference-datasets/visualization/quartet-rna-vis',
+                name: 'Transcriptomics',
+                hidden: false,
+                component: () => import('@/components/FullFrame'),
+                props: route => ({ src: getRnaHost() }),
+                meta: { title: 'Transcriptomics', icon: 'double-right', keepAlive: false }
+              },
+              {
+                path: '/reference-datasets/visualization/quartet-protein-vis',
+                name: 'Proteomics',
+                hidden: false,
+                component: () => import('@/components/FullFrame'),
+                props: route => ({ src: getProteinHost() }),
+                meta: { title: 'Proteomics', icon: 'double-right', disabled: true, keepAlive: false }
+              },
+              {
+                path: '/reference-datasets/visualization/quartet-metabolism-vis',
+                name: 'Metabolomics',
+                hidden: false,
+                component: () => import('@/components/FullFrame'),
+                props: route => ({ src: getMetabolismHost() }),
+                meta: { title: 'Metabolomics', icon: 'double-right', disabled: true, keepAlive: false }
+              }
+            ]
           }
         ]
       },
@@ -320,7 +336,9 @@ export const constantRouterMap = [
   {
     path: '/welcome',
     name: 'welcome',
-    beforeEnter() {location.href = 'http://chinese-quartet.org'},
+    beforeEnter () {
+      location.href = 'http://chinese-quartet.org'
+    },
     meta: { title: 'Welcome', isPublic: true, keepAlive: false, target: '_blank' }
   },
 
