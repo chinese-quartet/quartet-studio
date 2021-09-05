@@ -132,7 +132,7 @@ export const asyncRouterMap = [
             path: '/reference-datasets/download',
             name: 'download-reference-datasets',
             hidden: false,
-            component: () => import('@/views/datasource/ReferenceDatasets'),
+            component: () => import('@/views/datasource/ReferenceDataset'),
             meta: { title: 'Browser & Download Reference Datasets', icon: 'download', keepAlive: false },
           },
           {
