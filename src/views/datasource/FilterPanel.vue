@@ -84,16 +84,15 @@
           </a-row>
         </a-tab-pane>
         <a-tab-pane tab="Search Advanced" key="2" disabled></a-tab-pane>
-        <a-select
-          :defaultValue="defaultCollection"
-          style="width: 260px"
-          @change="loadProject"
-          slot="tabBarExtraContent"
-        >
-          <a-select-option :value="collection.key" v-for="collection in collections" :key="collection.key">
-            {{ collection.name }}
-          </a-select-option>
-        </a-select>
+        <a-row slot="tabBarExtraContent">
+          <img class="btn-twinkle" :src="require('@/assets/images/arrow-right.png')" />
+          <a-select :defaultValue="defaultCollection" style="width: 190px; margin-right: 5px" @change="loadProject">
+            <a-select-option :value="collection.key" v-for="collection in collections" :key="collection.key">
+              {{ collection.name }}
+            </a-select-option>
+          </a-select>
+          <a-button type="primary" @click="fetchHelp" icon="question-circle"> Help </a-button>
+        </a-row>
       </a-tabs>
       <a-tabs defaultActiveKey="1">
         <a-tab-pane tab="Table" key="1">
@@ -122,9 +121,9 @@
       </a-row>
       <a-input-search allowClear placeholder="Enter Search Text" size="large" @change="filterFields" />
       <a-row style="width: 100%">
-        <a-checkbox style="float: right" :checked="hideActive" @change="hideSelectedFields"
-          >Hide selected fields?</a-checkbox
-        >
+        <a-checkbox style="float: right" :checked="hideActive" @change="hideSelectedFields">
+          Hide selected fields?
+        </a-checkbox>
       </a-row>
       <a-card class="field-list" v-if="existsFilteredFields">
         <a-row
@@ -265,14 +264,17 @@ export default {
     }),
     fetchHelp() {
       axios
-        .get('/docs/multiomics-data.md')
+        .get('/markdown/multiomics-data.md')
         .then(response => {
           console.log('Fetch Help: ', response)
           this.helpMsg = response.data
-          this.helpVisible = true
         })
         .catch(error => {
           console.log('Fetch Help Error: ', error)
+          this.helpMsg = 'No Content.'
+        })
+        .finally(() => {
+          this.helpVisible = true
         })
     },
     update() {
@@ -647,5 +649,133 @@ export default {
   .ant-avatar.active {
     background-color: #fff;
   }
+}
+
+@keyframes heartAnimate {
+  0%,
+  100% {
+    transform: scale(1) rotate(0);
+  }
+
+  10%,
+  30% {
+    transform: scale(0.9) rotate(2deg);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: scale(1.1) rotate(-2deg);
+  }
+
+  50%,
+  70% {
+    transform: scale(1.1) rotate(2deg);
+  }
+}
+
+@-webkit-keyframes heartAnimate {
+  0%,
+  100% {
+    -webkit-transform: scale(1) rotate(0);
+  }
+
+  10%,
+  30% {
+    -webkit-transform: scale(0.9) rotate(2deg);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    -webkit-transform: scale(1.1) rotate(-2deg);
+  }
+
+  50%,
+  70% {
+    -webkit-transform: scale(1.1) rotate(2deg);
+  }
+}
+@-moz-keyframes heartAnimate {
+  0%,
+  100% {
+    -moz-transform: scale(1) rotate(0);
+  }
+
+  10%,
+  30% {
+    -moz-transform: scale(0.9) rotate(2deg);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    -moz-transform: scale(1.1) rotate(-2deg);
+  }
+
+  50%,
+  70% {
+    -moz-transform: scale(1.1) rotate(2deg);
+  }
+}
+@-o-keyframes heartAnimate {
+  0%,
+  100% {
+    -o-transform: scale(1) rotate(0);
+  }
+
+  10%,
+  30% {
+    -o-transform: scale(0.9) rotate(2deg);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    -o-transform: scale(1.1) rotate(-2deg);
+  }
+
+  50%,
+  70% {
+    -o-transform: scale(1.1) rotate(2deg);
+  }
+}
+
+@-ms-keyframes heartAnimate {
+  0%,
+  100% {
+    -ms-transform: scale(1) rotate(0);
+  }
+
+  10%,
+  30% {
+    -ms-transform: scale(0.9) rotate(2deg);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    -ms-transform: scale(1.1) rotate(-2deg);
+  }
+
+  50%,
+  70% {
+    -ms-transform: scale(1.1) rotate(2deg);
+  }
+}
+
+.btn-twinkle {
+  height: 25px;
+  margin-right: 5px;
+  -webkit-animation: heartAnimate 3s ease infinite;
+  -moz-animation: heartAnimate 3s ease infinite;
+  -o-animation: heartAnimate 3s ease infinite;
+  -ms-animation: heartAnimate 3s ease infinite;
+  animation: heartAnimate 3s ease infinite;
 }
 </style>

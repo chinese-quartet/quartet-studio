@@ -37,16 +37,6 @@
         <a-tab-pane tab="Apps" key="app">
           <app-list :appList="filteredApps" :key="localAppMode"></app-list>
         </a-tab-pane>
-        <!-- TService -->
-        <a-tab-pane tab="Tools" key="tool" v-if="filteredTools.length > 0">
-          <tool-list :toolList="filteredTools" :key="localToolMode"></tool-list>
-        </a-tab-pane>
-        <a-tab-pane tab="Reports" key="report" v-if="filteredReports.length > 0">
-          <report-list :reportList="filteredReports" :key="localReportMode"></report-list>
-        </a-tab-pane>
-        <a-tab-pane tab="Charts" key="chart" disabled v-if="filteredCharts.length > 0">
-          <chart-list :chartList="filteredCharts" :key="localChartMode"></chart-list>
-        </a-tab-pane>
         <a-button slot="tabBarExtraContent" @click="expandPanel" type="primary" v-if="!expanded">
           Hide Filter Panel<a-icon type="fullscreen" />
         </a-button>
@@ -63,9 +53,6 @@
 import { mapActions } from 'vuex'
 import { FilterList } from '@/components'
 import AppList from '@/views/appstore/AppList'
-import ToolList from '@/views/appstore/ToolList'
-import ReportList from '@/views/appstore/ReportList'
-import ChartList from '@/views/appstore/ChartList'
 import orderBy from 'lodash.orderby'
 import map from 'lodash.map'
 import groupBy from 'lodash.groupby'
@@ -75,16 +62,12 @@ export default {
   name: 'FilterPanel',
   components: {
     FilterList,
-    AppList,
-    ToolList,
-    ReportList,
-    ChartList
+    AppList
   },
   data() {
     return {
       loading: true,
       appList: [],
-      tools: [],
       fieldsList: [
         {
           name: 'Category',
@@ -109,13 +92,6 @@ export default {
       currentTab: 'app',
       localAppMode: false,
       localApps: [],
-      // Tservice
-      localToolMode: false,
-      localTools: [],
-      localReportMode: false,
-      localReports: [],
-      localChartMode: false,
-      localCharts: [],
       expanded: true
     }
   },
@@ -152,46 +128,6 @@ export default {
       } else {
         return orderBy(this.appList, 'title', 'aes')
       }
-    },
-    filteredTools() {
-      if (this.localToolMode) {
-        return filter(orderBy(this.localTools, 'title', 'aes'), item => {
-          return !item.hidden
-        })
-      } else {
-        return filter(orderBy(this.toolList, 'title', 'aes'), item => {
-          return !item.hidden
-        })
-      }
-    },
-    filteredReports() {
-      if (this.localReportMode) {
-        return orderBy(this.localReports, 'title', 'aes')
-      } else {
-        return orderBy(this.reportList, 'title', 'aes')
-      }
-    },
-    filteredCharts() {
-      if (this.localChartMode) {
-        return orderBy(this.localCharts, 'title', 'aes')
-      } else {
-        return orderBy(this.chartList, 'title', 'aes')
-      }
-    },
-    toolList() {
-      return filter(this.tools, o => {
-        return o.category.toUpperCase() == 'TOOL'
-      })
-    },
-    reportList() {
-      return filter(this.tools, o => {
-        return o.category.toUpperCase() == 'REPORT'
-      })
-    },
-    chartList() {
-      return filter(this.tools, o => {
-        return o.category.toUpperCase() == 'CHART'
-      })
     }
   },
   mounted() {
@@ -201,7 +137,6 @@ export default {
     ...mapActions({
       getAppList: 'GetAppList',
       getAppManifest: 'GetAppManifest',
-      getToolManifest: 'GetToolManifest'
     }),
     expandPanel() {
       this.expanded = !this.expanded
@@ -212,12 +147,6 @@ export default {
       if (activeKey === 'app') {
         // this.getList()
         this.generateFieldsList(this.appList)
-      } else if (activeKey === 'tool') {
-        this.generateFieldsList(this.toolList)
-      } else if (activeKey === 'report') {
-        this.generateFieldsList(this.reportList)
-      } else if (activeKey === 'chart') {
-        this.generateFieldsList(this.chartList)
       }
     },
     generateFieldsList(appList) {
@@ -275,36 +204,15 @@ export default {
         this.localApps = filter(this.appList, (record) => {
           return record[key] === e.key
         })
-      } else if (this.currentTab === 'tool') {
-        this.localToolMode = true
-        this.localTools = filter(this.toolList, (record) => {
-          return record[key] === e.key
-        })
-      } else if (this.currentTab === 'report') {
-        this.localReportMode = true
-        this.localReports = filter(this.reportList, (record) => {
-          return record[key] === e.key
-        })
-      } else if (this.currentTab === 'chart') {
-        this.localChartMode = true
-        this.localCharts = filter(this.chartList, (record) => {
-          return record[key] === e.key
-        })
       }
 
-      console.log(key, e, this.localApps, this.localTools, this.localReports, this.localCharts)
+      console.log(key, e, this.localApps)
     },
     getList() {
       this.getAppManifest().then(res => {
         console.log('res', res)
         this.appList = res.data
         this.generateFieldsList(this.appList)
-        this.loading = false
-      })
-
-      this.getToolManifest().then(res => {
-        console.log('res', res)
-        this.tools = res.data
         this.loading = false
       })
     }

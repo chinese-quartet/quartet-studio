@@ -227,22 +227,6 @@ export function getAppManifest() {
   })
 }
 
-export function getToolManifest() {
-  return axios({
-    url: api.tservice.manifest,
-    method: 'get',
-    params: {}
-  })
-}
-
-export function getReportSchema(tool) {
-  return axios({
-    url: api.tservice.root + '/api/report/' + tool,
-    method: 'get',
-    params: {}
-  })
-}
-
 export function getInstalledAppList() {
   return axios({
     url: api.seqFlow.appStore.installedApps,

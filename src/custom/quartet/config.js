@@ -36,7 +36,6 @@ export const projectSettings = {
   websiteLogo: require('@/assets/logo.png'),
   websiteName: 'QUARTET',
   websiteId: 'quartet',
-  noPermission: true, // false
   websiteDesc: 'The Quartet Project for the Quality Control of Omics Data',
   defaultCollection: 'quartet_genomics',
   collections: [
@@ -194,7 +193,10 @@ export const projectSettings = {
         name: 'Choppy Platform'
       }
     ]
-  }
+  },
+  localTools: [
+    
+  ]
 }
 
 export function initBaseURL() {

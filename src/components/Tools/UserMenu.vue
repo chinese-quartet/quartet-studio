@@ -5,7 +5,7 @@
         <template slot="title">
           <span>{{ $t('components.tools.userMenu.tour') }}</span>
         </template>
-        <a @click="startTour" style="display: none;">
+        <a @click="startTour" style="display: none">
           <span class="action">
             <a-icon type="compass"></a-icon>
           </span>
@@ -25,7 +25,7 @@
         <template slot="title">
           <span>{{ $t('components.tools.userMenu.policies') }}</span>
         </template>
-        <a :href="policyEntrypoint" target="_blank">
+        <a :href="policyEntrypoint" target="_blank" style="display: none">
           <span class="action">
             <a-icon type="safety-certificate" />
           </span>
@@ -35,18 +35,18 @@
         <template slot="title">
           <span>{{ $t('components.tools.userMenu.documentation') }}</span>
         </template>
-        <a :href="helpEntrypoint" target="_blank" style="display:none;">
+        <a :href="helpEntrypoint" target="_blank" style="display: none">
           <span class="action">
             <a-icon type="question-circle-o"></a-icon>
           </span>
         </a>
       </a-tooltip>
-      <notice-icon class="action" style="display: none;" />
+      <notice-icon class="action" style="display: none" />
       <lang-select />
-      <a-dropdown>
+      <a-dropdown v-if="isAuthenticated">
         <span class="action ant-dropdown-link user-dropdown-menu">
           <a-avatar class="avatar" size="small" :src="avatar" />
-          <span style="vertical-align: middle">{{ nickname }}</span>
+          <span style="vertical-align: middle">{{ lastname }}</span>
         </span>
         <a-menu slot="overlay" class="user-dropdown-menu-wrapper">
           <a-menu-item key="0">
@@ -70,6 +70,10 @@
           </a-menu-item>
         </a-menu>
       </a-dropdown>
+      <a href="javascript:;" class="action" @click="handleLogin" v-else>
+        <a-icon type="login" style="margin-right: 5px;" />
+        <span>{{ $t('components.tools.userMenu.login') }}</span>
+      </a>
       <app-store-icon class="action" />
     </div>
   </div>
@@ -89,7 +93,7 @@ export default {
     AppStoreIcon
   },
   computed: {
-    ...mapGetters(['nickname', 'avatar', 'feedbackEntrypoint', 'policyEntrypoint', 'helpEntrypoint'])
+    ...mapGetters(['isAuthenticated', 'lastname', 'avatar', 'feedbackEntrypoint', 'policyEntrypoint', 'helpEntrypoint'])
   },
   methods: {
     ...mapActions(['Logout']),
@@ -100,6 +104,11 @@ export default {
           .toString(36)
           .slice(-8)
       )
+    },
+    handleLogin() {
+      this.$router.push({
+        name: 'login'
+      })
     },
     handleLogout() {
       this.$confirm({

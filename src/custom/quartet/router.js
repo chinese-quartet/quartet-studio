@@ -41,14 +41,14 @@ export const asyncRouterMap = [
             name: 'upload-data',
             hidden: false,
             component: () => import('@/views/datasource/UploadData'),
-            meta: { title: 'Upload Your Omics Data', icon: 'upload', permission: ['table'], keepAlive: false }
+            meta: { title: 'Upload Your Data', icon: 'upload', permission: ['table'], keepAlive: false }
           },
           {
             path: '/data/download',
             name: 'download-data',
             hidden: false,
             component: () => import('@/views/datasource/FilterPanel'),
-            meta: { title: 'Browser & Download Omics Data', icon: 'download', permission: ['table'], keepAlive: false }
+            meta: { title: 'Browse & Download', icon: 'download', permission: ['table'], keepAlive: false }
           },
           {
             path: '/data/qc-job-submit/:pageNo([1-9]\\d*)?',
@@ -75,47 +75,39 @@ export const asyncRouterMap = [
         ]
       },
 
-      {
-        path: '/data/quality-assessment-management',
-        name: 'project-management',
-        component: () => import('@/views/workflow/ProjectManagement'),
-        meta: { title: 'Assessment', icon: 'solution', permission: ['table'], keepAlive: false }
-      },
-
       // SeqFlow
       {
         path: '/seq-flow',
         name: 'seq-flow',
         component: RouteView,
-        hidden: true,
+        hidden: false,
         redirect: '/seq-flow/submit',
-        meta: { title: 'Analyses', icon: 'project', permission: ['table'], keepAlive: false },
+        meta: { title: 'Quality Assessment', icon: 'project', permission: ['table'], keepAlive: false },
         children: [
           {
             path: '/seq-flow/app-store',
             name: 'appstore',
             hidden: false,
             component: () => import('@/views/appstore/FilterPanel'),
-            meta: { title: 'Apps & Tools', icon: 'appstore', permission: ['table'], keepAlive: false }
+            meta: { title: 'All Apps', icon: 'appstore', permission: ['table'], keepAlive: false }
+          },
+          {
+            path: '/seq-flow/quality-assessment-management',
+            name: 'project-management',
+            hidden: false,
+            component: () => import('@/views/workflow/ProjectManagement'),
+            meta: { title: 'Assessment History', icon: 'solution', permission: ['table'], keepAlive: false }
           },
           {
             path: '/seq-flow/file-manager',
             name: 'file-manager',
-            hidden: false,
+            hidden: true,
             component: () => import('@/views/filemanager/FileBrowser'),
             props: route => ({
               path: route.query.path,
               enabledContextMenu: false
             }),
             meta: { title: 'File Management', icon: 'codepen-circle', keepAlive: false }
-          },
-          {
-            path: '/seq-flow/report-management',
-            name: 'report-management',
-            hidden: false,
-            props: route => ({ creationMode: route.query.creationMode, reportTool: route.query.reportTool }),
-            component: () => import('@/views/report/ReportManagement'),
-            meta: { title: 'Report Management', icon: 'file-done', permission: ['table'], keepAlive: false }
           }
         ]
       },
@@ -133,14 +125,14 @@ export const asyncRouterMap = [
             name: 'download-reference-datasets',
             hidden: false,
             component: () => import('@/views/datasource/ReferenceDataset'),
-            meta: { title: 'Browser & Download Reference Datasets', icon: 'download', keepAlive: false },
+            meta: { title: 'Browse & Download', icon: 'download', keepAlive: false },
           },
           {
             path: '/reference-datasets/visualization',
             name: 'visualization',
             component: RouteView,
             redirect: '/visualization/quartet-rna-vis',
-            meta: { title: 'Discovery Reference Datasets', icon: 'dot-chart', keepAlive: false },
+            meta: { title: 'Discovery & Visualize', icon: 'dot-chart', keepAlive: false },
             children: [
               {
                 path: '/reference-datasets/visualization/quartet-dna-vis',

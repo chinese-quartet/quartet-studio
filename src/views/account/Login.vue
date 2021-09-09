@@ -1,12 +1,6 @@
 <template>
   <div class="main">
-    <a-form
-      id="formLogin"
-      class="user-layout-login"
-      ref="formLogin"
-      :form="form"
-      @submit="handleSubmit"
-    >
+    <a-form id="formLogin" class="user-layout-login" ref="formLogin" :form="form" @submit="handleSubmit">
       <a-tabs
         :activeKey="customActiveKey"
         :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
@@ -17,7 +11,7 @@
             v-if="isLoginError"
             type="error"
             showIcon
-            style="margin-bottom: 24px;"
+            style="margin-bottom: 24px"
             :message="$t('account.login.usernamePasswordInValid')"
           />
           <a-form-item>
@@ -28,7 +22,13 @@
               :placeholder="$t('account.login.inputUsername')"
               v-decorator="[
                 'username',
-                {rules: [{ required: true, message: $t('account.login.inputUsername') }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
+                {
+                  rules: [
+                    { required: true, message: $t('account.login.inputUsername') },
+                    { validator: handleUsernameOrEmail },
+                  ],
+                  validateTrigger: 'change',
+                },
               ]"
             >
               <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }" />
@@ -42,7 +42,7 @@
               :placeholder="$t('account.login.inputPassword')"
               v-decorator="[
                 'password',
-                {rules: [{ required: true, message: $t('account.login.inputPassword') }], validateTrigger: 'blur'}
+                { rules: [{ required: true, message: $t('account.login.inputPassword') }], validateTrigger: 'blur' },
               ]"
             >
               <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }" />
@@ -52,11 +52,15 @@
       </a-tabs>
 
       <a-form-item>
-        <router-link class="register" :to="{ name: 'register' }" disabled>{{ $t('account.login.register') }}</router-link>
-        <a @click="redirectFindBack" class="forge-password" style="float: right;">{{ $t('account.login.forgetPassword') }}?</a>
+        <router-link class="register" :to="{ name: 'register' }" disabled>{{
+          $t('account.login.register')
+        }}</router-link>
+        <a @click="redirectFindBack" class="forge-password" style="float: right"
+          >{{ $t('account.login.forgetPassword') }}?</a
+        >
       </a-form-item>
 
-      <a-form-item style="margin-top:24px">
+      <a-form-item style="margin-top: 24px">
         <a-button
           size="large"
           type="primary"
@@ -64,7 +68,8 @@
           class="login-button"
           :loading="state.loginBtn"
           :disabled="state.loginBtn"
-        >{{ $t('account.login.loginBtn') }}</a-button>
+          >{{ $t('account.login.loginBtn') }}</a-button
+        >
       </a-form-item>
     </a-form>
   </div>
@@ -95,7 +100,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['nickname', 'clientId', 'clientSecret']),
+    ...mapGetters(['nickname', 'clientId', 'clientSecret'])
   },
   created() {},
   methods: {
@@ -136,8 +141,16 @@ export default {
           }
 
           Login(qs.stringify(loginParams))
-            .then(res => this.loginSuccess(res))
-            .catch(err => this.requestFailed(err))
+            .then(res => {
+              this.$store.dispatch('GetInfo', false).then(userInfo => {
+                this.loginSuccess(res)
+              })
+            })
+            .catch(err => {
+              this.$store.dispatch('GetInfo', true).then(userInfo => {
+                this.requestFailed(err)
+              })
+            })
             .finally(() => {
               state.loginBtn = false
             })

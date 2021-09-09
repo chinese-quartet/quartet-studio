@@ -71,14 +71,17 @@ export default {
     },
     fetchHelp() {
       axios
-        .get('/docs/multiomics-data.md')
+        .get('/markdown/upload-data.md')
         .then(response => {
           console.log('Fetch Help: ', response)
           this.helpMsg = response.data
-          this.helpVisible = true
         })
         .catch(error => {
           console.log('Fetch Help Error: ', error)
+          this.helpMsg = 'No Content.'
+        })
+        .finally(() => {
+          this.helpVisible = true
         })
     },
     changeHelpCheckbox(e) {
@@ -107,6 +110,19 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less">
+.help-markdown {
+  .ant-modal-body {
+    height: 450px;
 
+    .markdown {
+      height: 100%;
+      overflow: scroll;
+    }
+
+    .markdown::-webkit-scrollbar {
+      width: 0 !important;
+    }
+  }
+}
 </style>

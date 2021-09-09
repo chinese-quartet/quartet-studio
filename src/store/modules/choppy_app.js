@@ -4,8 +4,6 @@ import {
   getInstalledAppList,
   getAppSchema,
   getHelpMsg,
-  getToolManifest,
-  getReportSchema
 } from '@/api/manage'
 import orderBy from 'lodash.orderby'
 import { config } from '@/config/defaultSettings'
@@ -108,48 +106,17 @@ const app = {
           .then(response => {
             console.log('GetAppManifest: ', parameter, response)
 
+            let apps = formatManifest(response.data)
+            if (config.localTools) {
+              apps = apps.concat(config.localTools)
+            }
+
             const data = {
               total: response['total'],
-              data: formatManifest(response.data)
+              data: apps
             }
 
             resolve(data)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      })
-    },
-    GetToolManifest({ commit }, parameter) {
-      return new Promise((resolve, reject) => {
-        getToolManifest(parameter)
-          .then(response => {
-            console.log('GetToolManifest: ', parameter, response)
-
-            let tools = formatManifest(response)
-            if (config.localTools) {
-              tools = tools.concat(config.localTools)
-            }
-
-            const data = {
-              total: response.length,
-              data: tools
-            }
-
-            resolve(data)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      })
-    },
-    GetReportSchema({ commit }, parameter) {
-      return new Promise((resolve, reject) => {
-        getReportSchema(parameter)
-          .then(response => {
-            console.log('GetReportSchema: ', parameter, response)
-
-            resolve(response)
           })
           .catch(error => {
             reject(error)

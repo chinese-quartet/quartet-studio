@@ -208,7 +208,8 @@ export default {
         documentation: '文档',
         userCenter: '用户中心',
         settings: '配置',
-        logout: '登出'
+        logout: '登出',
+        login: '登录'
       }
     },
     globalFooter: {

@@ -79,7 +79,6 @@
         :columns="columns"
         rowKey="path"
         :class="{ 'standalone-browser': height === 0 }"
-        :customRow="customRow"
         :scroll="{y: height - 100}"
         :data-source="data"
         :row-selection="{ ...rowSelection, selectedRowKeys: selectedRowKeys }"
@@ -163,23 +162,6 @@
         </template>
       </a-table>
     </a-card>
-    <!-- Popup Windows -->
-    <a-modal
-      class="chart-modal"
-      :title="'Chart Studio for ' + chartName"
-      style="top: 20px;"
-      :visible="chartStudioVisible"
-      :footer="null"
-      @cancel="() => hideChartStudio()"
-    >
-      <chart-modal
-        @ok="() => hideChartStudio()"
-        @cancel="() => hideChartStudio()"
-        :chart="chartName"
-        :inFileBrowser="true"
-        :filepath="filePath"
-      ></chart-modal>
-    </a-modal>
     <a-drawer
       class="upload-panel"
       title="Upload"
@@ -280,12 +262,6 @@ import uniqBy from 'lodash.uniqby'
 import FileSaver from 'file-saver'
 import path from 'path'
 
-import Vue from 'vue'
-import Contextmenu from 'vue-contextmenujs'
-Vue.use(Contextmenu)
-
-import ChartModal from './ChartModal'
-
 const folderNameRule = [
   { required: true, message: 'Please input your folder name!' },
   { min: 1, max: 63, message: 'Length should be 1 to 63', trigger: 'blur' },
@@ -351,9 +327,6 @@ const columns = [
 
 export default {
   name: 'FileBrowser',
-  components: {
-    ChartModal
-  },
   props: {
     refreshKey: {
       required: false,
@@ -394,11 +367,6 @@ export default {
       required: false,
       default: 'minio',
       type: String
-    },
-    enabledContextMenu: {
-      required: false,
-      default: false,
-      type: Boolean
     }
   },
   data() {
@@ -447,11 +415,6 @@ export default {
           }
         ]
       },
-      // Chart Studio
-      filePath: '',
-      currentRecord: null,
-      chartStudioVisible: false,
-      chartName: '',
       // Folder
       folderDialog: this.$form.createForm(this, { name: 'folder-dialog' }),
       folderNameRule,
@@ -610,20 +573,6 @@ export default {
         return keys.includes(o.path)
       })
     },
-    customRow(record) {
-      if (this.enabledContextMenu) {
-        return {
-          on: {
-            contextmenu: e => {
-              e.preventDefault()
-              this.onContextmenu(record, e)
-            }
-          }
-        }
-      } else {
-        return {}
-      }
-    },
     isColumnarFile(path) {
       if (path.match(/.*\.csv$/g)) {
         return true
@@ -637,105 +586,6 @@ export default {
       } else {
         return false
       }
-    },
-    onContextmenu(record, event) {
-      console.log('onContextMenu: ', record, event)
-      const disableTraceMenu = !this.isColumnarFile(record.path) || !this.isValidSize(record.size)
-      this.$contextmenu({
-        items: [
-          {
-            label: 'File Management',
-            divided: true,
-            icon: 'iconfont icon-wenjianguanli',
-            minWidth: 0,
-            children: [
-              {
-                label: 'Details',
-                icon: 'iconfont icon-Details',
-                onClick: () => {
-                  this.switchDetailsPanel(record)
-                }
-              }
-            ]
-          },
-          {
-            label: 'Trace Your Data',
-            icon: 'iconfont icon-DataUsage-1',
-            disabled: disableTraceMenu,
-            minWidth: 100,
-            children: [
-              {
-                label: 'Box Plot',
-                icon: 'iconfont icon-youjiantou_huaban',
-                onClick: () => {
-                  this.showChartStudio('boxplot-r', record)
-                }
-              },
-              {
-                label: 'Stack Barplot',
-                icon: 'iconfont icon-youjiantou_huaban',
-                onClick: () => {
-                  this.showChartStudio('stack-barplot-r', record)
-                }
-              },
-              {
-                label: 'Density Plot',
-                icon: 'iconfont icon-youjiantou_huaban',
-                onClick: () => {
-                  this.showChartStudio('density-r', record)
-                }
-              },
-              {
-                label: 'Grouped Box Plot',
-                icon: 'iconfont icon-youjiantou_huaban',
-                onClick: () => {
-                  this.showChartStudio('group-boxplot', record)
-                }
-              },
-              {
-                label: 'Heatmap',
-                icon: 'iconfont icon-youjiantou_huaban',
-                onClick: () => {
-                  this.showChartStudio('heatmap-r', record)
-                }
-              },
-              {
-                label: 'Rocket Plot',
-                icon: 'iconfont icon-youjiantou_huaban',
-                onClick: () => {
-                  this.showChartStudio('rocket-plot-r', record)
-                }
-              },
-              {
-                label: 'Scatter Plot',
-                icon: 'iconfont icon-youjiantou_huaban',
-                onClick: () => {
-                  this.showChartStudio('scatter-plot', record)
-                }
-              },
-              {
-                label: 'Upset',
-                icon: 'iconfont icon-youjiantou_huaban',
-                onClick: () => {
-                  this.showChartStudio('upset-r', record)
-                }
-              },
-              {
-                label: 'Violin Plot',
-                icon: 'iconfont icon-youjiantou_huaban',
-                onClick: () => {
-                  this.showChartStudio('violin-plot-r', record)
-                }
-              }
-            ]
-          }
-        ],
-        event,
-        customClass: 'class-a',
-        zIndex: 3,
-        minWidth: 200
-      })
-      return false
     },
     getFilePath(files) {
       return flatMap(files, o => o.path)
@@ -1068,16 +918,6 @@ export default {
       this.switchUploadPanel()
       this.fileList = {}
     },
-    showChartStudio(chartName, record) {
-      console.log('Show Chart Studio: ', chartName, record)
-      this.chartName = chartName
-      this.chartStudioVisible = !this.chartStudioVisible
-      this.currentRecord = record
-    },
-    hideChartStudio() {
-      this.chartStudioVisible = !this.chartStudioVisible
-      this.currentRecord = null
-    },
     switchDetailsPanel(record) {
       this.detailsPanelVisible = !this.detailsPanelVisible
       this.recordDetail = record
@@ -1405,12 +1245,6 @@ details-panel {
     align-items: left;
     margin: 20px;
     overflow: scroll;
-  }
-}
-
-.chart-modal {
-  .ant-modal-body {
-    padding: 10px 24px;
   }
 }
 

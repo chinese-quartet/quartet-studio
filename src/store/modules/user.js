@@ -7,6 +7,7 @@ import v from 'voca'
 const user = {
   state: {
     name: '',
+    lastname: '',
     welcome: '',
     avatar: '',
     roles: [],
@@ -18,6 +19,9 @@ const user = {
     SET_NAME: (state, { name, welcome }) => {
       state.name = name
       state.welcome = welcome
+    },
+    SET_LAST_NAME: (state, lastname) => {
+      state.lastname = lastname
     },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
@@ -47,15 +51,15 @@ const user = {
       })
     },
     // 获取用户信息
-    GetInfo({ commit }) {
+    GetInfo({ commit }, isAnonymous) {
       return new Promise((resolve, reject) => {
-        getInfo()
+        getInfo(isAnonymous)
           .then(response => {
             userInfo.name = response.name ? response.name : response.preferred_username
             userInfo.username = v.titleCase(userInfo.name)
             userInfo.groups = response.groups
 
-            console.log('GetInfo: ', response, userInfo, userInfo.name)
+            console.log('GetInfo: ', isAnonymous, response, userInfo, userInfo.name)
 
             if (userInfo.role && userInfo.role.permissions.length > 0) {
               const role = userInfo.role
@@ -79,6 +83,7 @@ const user = {
             }
 
             commit('SET_NAME', { name: userInfo.name, welcome: welcome() })
+            commit('SET_LAST_NAME', userInfo.name.split(' ').pop())
             commit('SET_AVATAR', userInfo.avatar)
 
             resolve(userInfo)

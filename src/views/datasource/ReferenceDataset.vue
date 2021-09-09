@@ -3,11 +3,11 @@
     <a-list item-layout="vertical" size="large" :data-source="listData">
       <a-list-item slot="renderItem" key="item.title" slot-scope="item, index">
         <template slot="actions">
-          <a-button type="primary" icon="cloud-download" @click="fetchHelp(item.datasetType)">Download</a-button>
+          <a-button type="primary" icon="cloud-download" @click="fetchHelp(item.markdown, item.title)">Download</a-button>
         </template>
         <img slot="extra" width="400" alt="logo" :src="item.image" />
         <a-list-item-meta :description="item.description">
-          <a slot="title" @click="fetchHelp(item.datasetType)">{{ item.title }}</a>
+          <a slot="title" @click="fetchHelp(item.markdown, item.title)">{{ item.title }}</a>
           <a-avatar slot="avatar" :src="item.avatar" />
         </a-list-item-meta>
         {{ item.content }}
@@ -37,27 +37,23 @@ export default {
         {
           image:
             'http://www.rainsurebio.com/qfy-content/uploads/2020/03/dca143037912404bfc097f509af837c4-e1584692168980-1024x429.jpg',
-          datasetType: 'genomics',
-          title: 'Reference Dataset for Genomics',
+          title: 'Reference Datasets for DNA',
           avatar: require('@/assets/images/genomics.png'),
           description: 'Ant Design, a design language for background applications, is refined by Ant UED Team.',
           content:
             'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.'
         },
         {
-          image:
-            'http://www.rainsurebio.com/qfy-content/uploads/2020/03/dca143037912404bfc097f509af837c4-e1584692168980-1024x429.jpg',
-          datasetType: 'transcriptomics',
-          title: 'Reference Dataset for Transcriptomics',
+          image: require('@/assets/images/rna-reference-datasets-overview.png'),
+          title: 'Reference Datasets for RNA',
           avatar: require('@/assets/images/transcriptomics.png'),
-          description: 'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-          content:
-            'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.'
+          description: 'Reference datasets could be used as "ground truth" to evaluate the accuracy of RNA-seq experiments.',
+          content: 'Based on high-quality of multi-lab RNA-seq libraries, we have reached consensuses on the characterization of gene expression at relative level as reference datasets, and established performance metrics for proficiency test. We used expression profiles from 16 hiqh-quality RNA-seq batches to construct reference datasets (Figure 1). Of the 58,395 genes annotated in GRCh38.93, 10,067 (17.2%) for D6/D5, 11,560 (19.8 %) for F7/D5, 8,081 (13.8%) for F7/D6, 12,104 (20.7%) for M8/D5, 9,363 (16.0%) for M8/D6, and 10,401 (17.8%) for M8/F7 were determined as reference datasets. Moreover, the numbers of reference DEGs ranged from 1,617 to 3,044 for the six pairs of sample groups.',
+          markdown: '/markdown/rna-reference-datasets.md'
         },
         {
           image:
             'http://www.rainsurebio.com/qfy-content/uploads/2020/03/dca143037912404bfc097f509af837c4-e1584692168980-1024x429.jpg',
-          datasetType: 'proteomics',
           title: 'Reference Dataset for Proteomics',
           avatar: require('@/assets/images/proteomics.png'),
           description: 'Ant Design, a design language for background applications, is refined by Ant UED Team.',
@@ -67,7 +63,6 @@ export default {
         {
           image:
             'http://www.rainsurebio.com/qfy-content/uploads/2020/03/dca143037912404bfc097f509af837c4-e1584692168980-1024x429.jpg',
-          datasetType: 'metabolomics',
           title: 'Reference Dataset for Metabolomics',
           avatar: require('@/assets/images/metabolomics.png'),
           description: 'Ant Design, a design language for background applications, is refined by Ant UED Team.',
@@ -89,11 +84,11 @@ export default {
         Prism.highlightAll()
       })
     },
-    fetchHelp(datasetType) {
-      this.helpTitle = 'Download ' + v.titleCase(datasetType) + ' Reference Dataset'
+    fetchHelp(markdown, title) {
+      this.helpTitle = title
 
       axios
-        .get(`/docs/${datasetType}.md`)
+        .get(markdown)
         .then(response => {
           console.log('Fetch Help: ', response)
           this.helpMsg = response.data
@@ -120,6 +115,11 @@ export default {
 
   .ant-list-item-extra {
     margin-left: 0px;
+  }
+
+  .ant-list-item-main {
+    text-align: justify;
+    margin-right: 15px;
   }
 
   .ant-avatar {

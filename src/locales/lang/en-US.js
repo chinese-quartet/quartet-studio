@@ -220,7 +220,8 @@ export default {
         documentation: 'Documentation',
         userCenter: 'User Center',
         settings: 'Settings',
-        logout: 'Logout'        
+        logout: 'Logout',
+        login: 'Login'
       }
     },
     globalFooter: {

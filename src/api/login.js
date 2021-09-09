@@ -23,8 +23,8 @@ export function login(payload) {
   })
 }
 
-export function getInfo() {
-  if (config.noPermission) {
+export function getInfo(isAnonymous) {
+  if (isAnonymous) {
     return new Promise((resolve) => {
       resolve(userInfo)
     })
