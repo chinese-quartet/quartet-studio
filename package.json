@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "publish-code": "vue-cli-service build && ossutilmac64 cp -r -u ./dist/ oss://chinese-quartet-frontend/data-portal/ -c ~/.ossutilconfig-tgmc -e oss-ap-southeast-1.aliyuncs.com",
+    "publish-code": "vue-cli-service build && ossutilmac64 cp -r -u ./dist/ oss://chinese-quartet-frontend/ -c ~/.ossutilconfig-tgmc -e oss-ap-southeast-1.aliyuncs.com",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build:preview": "vue-cli-service build --mode preview",

@@ -20,9 +20,17 @@ export default {
   datasource: {
     uploadTaskList: {
       total: 'Total',
-      submitted: 'Submitted',
-      running: 'Running',
+      started: 'Started',
+      failed: 'Failed',
       finished: 'Finished',
+      enterDataSetName: 'Please enter the name of dataset',
+      datasetPath: 'Path',
+      startedTime: 'Started',
+      finishedTime: 'Finished',
+      status: 'Status',
+      refreshToken: 'New Token',
+      check: 'Check',
+      accessKey: 'Access Key'
     }
   },
   workflow: {

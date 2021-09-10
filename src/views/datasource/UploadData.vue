@@ -1,8 +1,8 @@
 <template>
   <page-view :title="getTitle()" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
     <template slot="action">
-      <a-button icon="question-circle" style="margin-right: 10px;" @click="showHelp">Help</a-button>
-      <a-button type="primary" disabled @click="onCreateProject">Upload Data</a-button>
+      <a-button icon="question-circle" style="margin-right: 10px" @click="showHelp">Help</a-button>
+      <a-button type="primary" disabled @click="onCreateDataSet">Upload Data</a-button>
     </template>
 
     <upload-task-list :id="refreshToken"></upload-task-list>
@@ -14,6 +14,135 @@
         <vue-markdown :source="helpMsg" @rendered="update"></vue-markdown>
       </a-row>
     </a-modal>
+
+    <a-drawer
+      title="Create a new account"
+      class="upload-data-drawer"
+      :width="720"
+      :visible="formVisible"
+      :body-style="{ paddingBottom: '80px' }"
+      @close="onClose"
+    >
+      <a-form :form="form" layout="vertical" hide-required-mark>
+        <a-row :gutter="16">
+          <a-col :span="12">
+            <a-form-item label="Name">
+              <a-input
+                v-decorator="[
+                  'name',
+                  {
+                    rules: [{ required: true, message: 'Please enter user name' }],
+                  },
+                ]"
+                placeholder="Please enter user name"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="Url">
+              <a-input
+                v-decorator="[
+                  'url',
+                  {
+                    rules: [{ required: true, message: 'please enter url' }],
+                  },
+                ]"
+                style="width: 100%"
+                addon-before="http://"
+                addon-after=".com"
+                placeholder="please enter url"
+              />
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="16">
+          <a-col :span="12">
+            <a-form-item label="Owner">
+              <a-select
+                v-decorator="[
+                  'owner',
+                  {
+                    rules: [{ required: true, message: 'Please select an owner' }],
+                  },
+                ]"
+                placeholder="Please a-s an owner"
+              >
+                <a-select-option value="xiao"> Xiaoxiao Fu </a-select-option>
+                <a-select-option value="mao"> Maomao Zhou </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="Type">
+              <a-select
+                v-decorator="[
+                  'type',
+                  {
+                    rules: [{ required: true, message: 'Please choose the type' }],
+                  },
+                ]"
+                placeholder="Please choose the type"
+              >
+                <a-select-option value="private"> Private </a-select-option>
+                <a-select-option value="public"> Public </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="16">
+          <a-col :span="12">
+            <a-form-item label="Approver">
+              <a-select
+                v-decorator="[
+                  'approver',
+                  {
+                    rules: [{ required: true, message: 'Please choose the approver' }],
+                  },
+                ]"
+                placeholder="Please choose the approver"
+              >
+                <a-select-option value="jack"> Jack Ma </a-select-option>
+                <a-select-option value="tom"> Tom Liu </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="DateTime">
+              <a-date-picker
+                v-decorator="[
+                  'dateTime',
+                  {
+                    rules: [{ required: true, message: 'Please choose the dateTime' }],
+                  },
+                ]"
+                style="width: 100%"
+                :get-popup-container="(trigger) => trigger.parentNode"
+              />
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="16">
+          <a-col :span="24">
+            <a-form-item label="Description">
+              <a-textarea
+                v-decorator="[
+                  'description',
+                  {
+                    rules: [{ required: true, message: 'Please enter url description' }],
+                  },
+                ]"
+                :rows="4"
+                placeholder="please enter url description"
+              />
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
+      <div class="footer">
+        <a-button :style="{ marginRight: '8px' }" @click="onClose"> Cancel </a-button>
+        <a-button type="primary" @click="onClose"> Submit </a-button>
+      </div>
+    </a-drawer>
   </page-view>
 </template>
 
@@ -39,17 +168,21 @@ export default {
       required: false
     }
   },
-  data () {
+  data() {
     return {
       helpMsg: '',
       helpChecked: false,
-      helpVisible: true
+      helpVisible: true,
+      form: this.$form.createForm(this),
+      formVisible: false
     }
   },
   computed: {
-    refreshToken () {
+    refreshToken() {
       if (this.refresh) {
-        return Math.random().toString(36).slice(-8)
+        return Math.random()
+          .toString(36)
+          .slice(-8)
       } else {
         return 'static'
       }
@@ -61,14 +194,16 @@ export default {
         Prism.highlightAll()
       })
     },
-    getTitle () {
+    getTitle() {
       return formatTitle(this, this.$route.meta.title)
     },
-    onCreateProject () {
-      this.$router.push({
-        name: 'create-project'
-      })
+    showDrawer() {
+      this.formVisible = true
     },
+    onClose() {
+      this.formVisible = false
+    },
+    onCreateDataSet() {},
     fetchHelp() {
       axios
         .get('/markdown/upload-data.md')
@@ -97,7 +232,7 @@ export default {
       }
 
       this.helpVisible = false
-    },
+    }
   },
   created() {
     const notShownHelp = localStorage.getItem('datains__data__notShownUploadHelp')
@@ -109,6 +244,22 @@ export default {
   }
 }
 </script>
+
+<style lang="less" scoped>
+.upload-data-drawer {
+  .footer {
+    position: 'absolute';
+    right: 0;
+    bottom: 0;
+    width: '100%';
+    border-top: '1px solid #e9e9e9';
+    padding: '10px 16px';
+    background: '#fff';
+    text-align: 'right';
+    z-index: 1;
+  }
+}
+</style>
 
 <style lang="less">
 .help-markdown {

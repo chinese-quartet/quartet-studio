@@ -15,6 +15,7 @@ const whiteList = [
   '/',
   '/dashboard',
   '/materials',
+  '/data/upload',
   '/data/download',
   '/seq-flow/app-store',
   '/reference-datasets/download',
