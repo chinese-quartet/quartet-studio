@@ -115,8 +115,7 @@ const uploadingTaskEndpoints = {
   },
   getStatusApi: id => {
     return `${tserviceHost}/api/omics-datasets/${id}`
-  },
-  taskApi: `${tserviceHost}/api/tool/omics-datasets`
+  }
 }
 
 export default {

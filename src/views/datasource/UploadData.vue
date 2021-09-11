@@ -153,6 +153,14 @@ import UploadTaskList from '@/views/datasource/UploadTaskList'
 import { formatTitle } from '@/views/utils'
 import VueMarkdown from 'vue-markdown'
 import Prism from 'prismjs'
+import { mapGetters } from 'vuex'
+
+import { initTServiceHost } from '@/config/defaultSettings'
+
+const tserviceHost = initTServiceHost()
+const uploadingTaskEndpoints = {
+  taskApi: `${tserviceHost}/api/tool/omics-datasets`
+}
 
 export default {
   name: 'ProjectManagement',
@@ -178,6 +186,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['nickname']),
     refreshToken() {
       if (this.refresh) {
         return Math.random()
@@ -203,7 +212,17 @@ export default {
     onClose() {
       this.formVisible = false
     },
-    onCreateDataSet() {},
+    onCreateDataSet() {
+      this.formVisible = true
+    },
+    createDataSet(record) {
+      this.$http
+        .post(uploadingTaskEndpoints.taskApi, {
+
+        })
+        .then(response => {})
+        .catch(error => {})
+    },
     fetchHelp() {
       axios
         .get('/markdown/upload-data.md')
