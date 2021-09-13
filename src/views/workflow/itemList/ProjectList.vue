@@ -1,6 +1,6 @@
 <template>
   <div class="project-list">
-    <a-card style="margin-top: 10px; height: 81vh;" :bordered="false">
+    <a-card style="margin-top: 10px" :bordered="false">
       <a-badge slot="extra" showZero :count="pagination.total" :numberStyle="{ backgroundColor: '#52c41a' }" />
       <div slot="title">
         <a-radio-group @change="onClickRadioBtn" defaultValue="total" :value="radioGroupValue">
@@ -87,7 +87,8 @@
                     <span>{{ $t('workflow.itemList.projectList.totalJobs') }}</span>
                   </template>
                   <a-col class="badge" :style="{ backgroundColor: '#a2a2a2', color: '#fff' }">
-                    {{ item.statusDetails.total }}</a-col>
+                    {{ item.statusDetails.total }}</a-col
+                  >
                 </a-tooltip>
                 <!-- Submitted -->
                 <a-tooltip placement="top">
@@ -95,7 +96,8 @@
                     <span>{{ $t('workflow.itemList.projectList.submittedJobs') }}</span>
                   </template>
                   <a-col class="badge" :style="{ backgroundColor: '#838383', color: '#fff' }">
-                    {{ countSubmitted(item) }}</a-col>
+                    {{ countSubmitted(item) }}</a-col
+                  >
                 </a-tooltip>
                 <!-- Running -->
                 <a-tooltip placement="top">
@@ -103,7 +105,8 @@
                     <span>{{ $t('workflow.itemList.projectList.runningJobs') }}</span>
                   </template>
                   <a-col class="badge" :style="{ backgroundColor: '#108ee9', color: '#fff' }">
-                    {{ item.statusDetails.running }}</a-col>
+                    {{ item.statusDetails.running }}</a-col
+                  >
                 </a-tooltip>
                 <!-- Red -->
                 <a-tooltip placement="top">
@@ -111,7 +114,8 @@
                     <span>{{ $t('workflow.itemList.projectList.failedJobs') }}</span>
                   </template>
                   <a-col class="badge" :style="{ backgroundColor: '#f5222d', color: '#fff' }">
-                    {{ item.statusDetails.error }}</a-col>
+                    {{ item.statusDetails.error }}</a-col
+                  >
                 </a-tooltip>
                 <!-- Green -->
                 <a-tooltip placement="top">
@@ -141,12 +145,8 @@
               <span slot="content" style="margin-bottom: 10px; display: block">
                 {{ $t('workflow.itemList.projectList.noticeContent') }}
               </span>
-              <a-row slot="content" style="text-align: end;">
-                <a-button
-                  type="danger"
-                  @click="onAbortProject(item.id)"
-                  size="small"
-                >
+              <a-row slot="content" style="text-align: end">
+                <a-button type="danger" @click="onAbortProject(item.id)" size="small">
                   <a-icon type="delete" />{{ $t('workflow.itemList.projectList.archive') }}
                 </a-button>
               </a-row>
@@ -430,7 +430,7 @@ export default {
       console.log('Clear the refresh timer.')
       clearInterval(this.timer)
       this.timer = null
-    }    
+    }
   }
 }
 </script>
@@ -442,8 +442,16 @@ export default {
 
 .project-list {
   .ant-card-body {
-    height: calc(100% - 65px);
+    padding: 5px 24px;
+  }
+
+  .ant-list-pagination {
+    margin: 10px 0px;
+  }
+
+  .ant-spin-nested-loading {
     overflow: scroll;
+    height: calc(100vh - 300px);
   }
 
   .ant-list-item {

@@ -28,6 +28,8 @@ export default {
       startedTime: 'Started',
       finishedTime: 'Finished',
       status: 'Status',
+      dataType: 'Data Type',
+      uploadPath: 'Uploading Path',
       refreshToken: 'New Token',
       check: 'Check',
       accessKey: 'Access Key'

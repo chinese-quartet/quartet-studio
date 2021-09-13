@@ -6,7 +6,14 @@
     </template>
 
     <upload-task-list :id="refreshToken"></upload-task-list>
-    <a-modal title="Help for Uploading Omics Data" width="60%" class="help-markdown" :visible="helpVisible" :footer="null" @cancel="closeHelp">
+    <a-modal
+      title="Help for Uploading Omics Data"
+      width="60%"
+      class="help-markdown"
+      :visible="helpVisible"
+      :footer="null"
+      @cancel="closeHelp"
+    >
       <a-row style="display: flex; justify-content: flex-end; margin-top: -20px; margin-right: -20px">
         <a-checkbox :checked="helpChecked" @change="changeHelpCheckbox"> Don't show again </a-checkbox>
       </a-row>
@@ -130,8 +137,8 @@
         </a-row>
       </a-form>
       <div class="footer" style="float: right">
-        <a-button :style="{ marginRight: '8px' }" @click="onClose"> Cancel </a-button>
-        <a-button type="primary" @click="onSubmit"> Submit </a-button>
+        <a-button :style="{ marginRight: '8px' }" :disabled="btnLoading" @click="onClose"> Cancel </a-button>
+        <a-button type="primary" @click="onSubmit" :disabled="btnLoading" :loading="btnLoading"> Submit </a-button>
       </div>
     </a-drawer>
   </page-view>
@@ -174,13 +181,14 @@ export default {
       helpChecked: false,
       helpVisible: true,
       form: this.$form.createForm(this, {
-        onValuesChange: this.updatePath,
+        onValuesChange: this.updatePath
       }),
       formVisible: false,
       notices: 'Additional description and informations about copywriting.',
       uploadingPath: 'Uploading path...',
       name: '',
-      dataType: ''
+      dataType: '',
+      btnLoading: false
     }
   },
   computed: {
@@ -229,6 +237,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('Test UploadData: ', err, values)
+          this.btnLoading = true
           this.createDataSet(values)
         }
       })
@@ -246,11 +255,13 @@ export default {
           this.$message.success(`The Dataset ${record.name} created.`)
           console.log('Create Dataset: ', response)
           this.formVisible = false
+          this.btnLoading = false
         })
         .catch(error => {
           this.$message.error('Failed, Please retry later.')
           console.log('Create Dataset: ', error)
           this.formVisible = false
+          this.btnLoading = false
         })
     },
     fetchHelp() {

@@ -11,12 +11,12 @@ NProgress.configure({ showSpinner: true }) // NProgress Configuration
 
 const whiteList = [
   '/404',
+  '/welcome',
   // Menu
   '/',
   '/dashboard',
   '/materials',
   '/request-materials',
-  '/data/upload',
   '/data/download',
   '/seq-flow/app-store',
   '/reference-datasets/download',
@@ -39,31 +39,34 @@ router.beforeEach((to, from, next) => {
 
   store.dispatch('CheckToken').then(isAuthenticated => {
     if (store.getters.roles.length === 0) {
-      store.dispatch('GetInfo', !isAuthenticated).then(userInfo => {
-        console.log('userInfo: ', userInfo)
-        const roles = userInfo.role
+      store
+        .dispatch('GetInfo', !isAuthenticated)
+        .then(userInfo => {
+          console.log('userInfo: ', userInfo)
+          const roles = userInfo.role
 
-        store.dispatch('GenerateRoutes', { roles }).then(() => {
-          // 根据roles权限生成可访问的路由表
-          // 动态添加可访问路由表
-          router.addRoutes(store.getters.addRouters)
+          store.dispatch('GenerateRoutes', { roles }).then(() => {
+            // 根据roles权限生成可访问的路由表
+            // 动态添加可访问路由表
+            router.addRoutes(store.getters.addRouters)
 
-          const redirect = decodeURIComponent(from.query.redirect || to.path)
-          if (to.path === redirect) {
-            // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
-            next({ ...to, replace: true })
-          } else {
-            // 跳转到目的路由
-            next({ path: redirect })
-          }
+            const redirect = decodeURIComponent(from.query.redirect || to.path)
+            if (to.path === redirect) {
+              // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
+              next({ ...to, replace: true })
+            } else {
+              // 跳转到目的路由
+              next({ path: redirect })
+            }
+          })
         })
-      }).catch(error => {
-        store.dispatch('Logout')
-        console.log('Permission: ', error)
+        .catch(error => {
+          store.dispatch('Logout')
+          console.log('Permission: ', error)
 
-        next(false)
-        NProgress.done() // finish progress bar
-      })
+          next({ name: 'welcome' })
+          NProgress.done() // finish progress bar
+        })
     }
 
     if (isAuthenticated) {

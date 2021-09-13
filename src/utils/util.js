@@ -83,5 +83,7 @@ export const checkToken = () => {
     }
   }
 
+  console.log('Check Token: ', authJSON)
+
   return null
 }
