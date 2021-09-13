@@ -193,4 +193,18 @@ export default {
     border-radius: 5px;
   }
 }
+
+// For vue-markdown
+.markdown {
+  p {
+    text-align: justify;
+  }
+
+  pre {
+    border: 1px solid #d6d6d6;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #d6d6d6;
+  }
+}
 </style>

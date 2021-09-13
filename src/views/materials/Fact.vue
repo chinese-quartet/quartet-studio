@@ -2,30 +2,16 @@
   <a-row :gutter="24">
     <a-col v-for="item in factData" :xs="24" :md="12" :lg="6" :key="item.name">
       <div @click="selectItem(item.key)" class="fact-item">
+        <h4 class="fact-item-title">{{ item.name }}</h4>
+        <a-button class="request-btn" type="primary" @click.stop="requestMaterials">Request</a-button>
         <img
           width="100%"
           height="200"
           src="http://www.rainsurebio.com/qfy-content/uploads/2020/03/dca143037912404bfc097f509af837c4-e1584692168980-1024x429.jpg"
         />
-        <h4 class="fact-item-title">{{ item.name }}</h4>
         <div class="fact-info">
-          <a-button type="primary" @click="requestMaterials">Request</a-button>
-          <a-row class="fact-num" :class="'fact-num__' + item.name.toLowerCase()">
-            <a-col :span="16" class="label">
-              Requested Materials
-            </a-col>
-            <a-col :span="8" class="data">
-              <a-tag>{{ item.requestTubes }} Tubes</a-tag>
-            </a-col>
-          </a-row>
-          <a-row class="fact-num" :class="'fact-num__' + item.name.toLowerCase()">
-            <a-col :span="16" class="label">
-              Generated Data
-            </a-col>
-            <a-col :span="8" class="data">
-              <a-tag>{{ item.generatedData }} Tubes</a-tag>
-            </a-col>
-          </a-row>
+          <img width="100%" height="160px" style="border-bottom: 1px solid #d6d6d6;" :src="require(`@/assets/images/${item.key}-materials.png`)"/>
+          <p v-html="item.specification"></p>
         </div>
       </div>
     </a-col>
@@ -53,7 +39,7 @@ export default {
       this.$router.push({
         name: 'request-materials'
       })
-    },
+    }
   },
   created() {}
 }
@@ -61,6 +47,7 @@ export default {
 
 <style lang="less" scoped>
 .fact-item {
+  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -70,8 +57,16 @@ export default {
   border-radius: 5px;
   border: 1px solid #d6d6d6;
 
+  .request-btn {
+    position: absolute;
+    top: 5px;
+    right: 20px;
+  }
+
   img {
     border-radius: 5px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
   }
 
   .fact-link:hover,
@@ -81,6 +76,9 @@ export default {
   }
 
   .fact-item-title {
+    position: absolute;
+    top: 5px;
+    left: 25px;
     font-family: Helvetica, sans-serif;
     color: #000000;
     font-size: 18px;
@@ -101,26 +99,22 @@ export default {
     .ant-btn {
       margin-bottom: 10px;
     }
+  }
+}
+</style>
 
-    .fact-num {
-      margin-top: 5px;
-      width: 90%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+<style lang="less">
+.fact-item {
+  .fact-info {
+    padding: 0px !important;
+    margin: 0px !important;
+  }
 
-      .label {
-        display: flex;
-        justify-content: left;
-        font-size: 1rem;
-        font-weight: 300;
-      }
-
-      .data {
-        display: flex;
-        justify-content: center;
-      }
-    }
+  p {
+    text-align: justify;
+    border: unset;
+    height: 120px;
+    padding: 10px;
   }
 }
 </style>

@@ -7,6 +7,7 @@ import v from 'voca'
 const user = {
   state: {
     name: '',
+    email: '',
     lastname: '',
     welcome: '',
     avatar: '',
@@ -19,6 +20,9 @@ const user = {
     SET_NAME: (state, { name, welcome }) => {
       state.name = name
       state.welcome = welcome
+    },
+    SET_EMAIL: (state, { email }) => {
+      state.email = email
     },
     SET_LAST_NAME: (state, lastname) => {
       state.lastname = lastname
@@ -57,6 +61,7 @@ const user = {
           .then(response => {
             userInfo.name = response.name ? response.name : response.preferred_username
             userInfo.username = v.titleCase(userInfo.name)
+            userInfo.email = response.email
             userInfo.groups = response.groups
 
             console.log('GetInfo: ', isAnonymous, response, userInfo, userInfo.name)
@@ -83,6 +88,7 @@ const user = {
             }
 
             commit('SET_NAME', { name: userInfo.name, welcome: welcome() })
+            commit('SET_EMAIL', { email: userInfo.email })
             commit('SET_LAST_NAME', userInfo.name.split(' ').pop())
             commit('SET_AVATAR', userInfo.avatar)
 

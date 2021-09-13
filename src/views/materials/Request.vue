@@ -5,22 +5,12 @@
         <a-step v-for="item in steps" :key="item.title" :title="item.title" />
       </a-steps>
       <a-row class="steps-content">
-        <vue-markdown
-          v-if="current === 0"
-          :source="license"
-          @rendered="update"
-          class="markdown-viewer"
-        ></vue-markdown>
+        <vue-markdown v-if="current === 0" :source="license" @rendered="update" class="markdown-viewer"></vue-markdown>
         <a-row v-if="current === 1">
-          <a-form
-            style="margin: 0px 50px;"
-            :form="form"
-            :label-col="{ span: 5 }"
-            :wrapper-col="{ span: 16 }"
-          >
+          <a-form style="margin: 0px 50px" :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 16 }">
             <a-form-item label="Materials Type">
               <a-select
-                v-decorator="['materialsType', { rules: [{ required: true, message: 'Please select your request!' }] },]"
+                v-decorator="['materialsType', { rules: [{ required: true, message: 'Please select your request!' }] }]"
                 placeholder="Select a materials type"
               >
                 <a-select-option value="DNA">DNA</a-select-option>
@@ -68,11 +58,7 @@
               />
             </a-form-item>
             <a-form-item label="Additional Notes">
-              <a-textarea
-                v-decorator="['notes']"
-                placeholder="Any notes"
-                :auto-size="{ minRows: 3, maxRows: 5 }"
-              />
+              <a-textarea v-decorator="['notes']" placeholder="Any notes" :auto-size="{ minRows: 3, maxRows: 5 }" />
             </a-form-item>
           </a-form>
         </a-row>
@@ -96,14 +82,14 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { submitMessage } from '@/api/manage'
 import VueMarkdown from 'vue-markdown'
 import Prism from 'prismjs'
-import { mapActions } from 'vuex'
 
 export default {
   components: {
-    VueMarkdown,
+    VueMarkdown
   },
   data() {
     return {
@@ -161,9 +147,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions({
-      getMaterialsLicense: 'GetMaterialsLicense'
-    }),
     update() {
       this.$nextTick(() => {
         Prism.highlightAll()
@@ -217,31 +200,38 @@ export default {
           console.log('Received values of form: ', values)
           submitMessage({
             title: values.purpose,
-            description: values.notes ? values.notes : "",
+            description: values.notes ? values.notes : '',
             message_type: 'request-materials',
             payload: values,
             status: 'Unread'
-          }).then(response => {
-            const content = `Dear ${values.requestorTitle} ${values.requestorName},` +
-                            '<br/>' +
-                            'Thank you very much for your trust on us.' +
-                            '<br/>' +
-                            `We will contact you as soon as possible through the email address (${values.requestorEmail}) you provided.` + 
-                            '<br/>' +
-                            `You could contact us by <b>feedback function</b> or <b>${this.email}</b>, if you have any questions or feedbacks.` + 
-                            '<br/>' +
-                            'Yours sincerely,' +
-                            '<br/>' +
-                            '<br/>' +
-                            'GSCG Consortium' + 
-                            '<br/>' +
-                            `Email: ${this.email}`
-            this.setPageContent('additional-notes', content)
-            this.showNextPage()
-          }).catch(error => {
-            this.$message.error("Something wrong, please retry later.")
-            console.log('Submit Message Error: ', error)
           })
+            .then(response => {
+              const content =
+                `Dear ${values.requestorTitle} ${values.requestorName},` +
+                '<br/>' +
+                'Thank you very much for your trust on us.' +
+                '<br/>' +
+                `We will contact you as soon as possible through the email address (${
+                  values.requestorEmail
+                }) you provided.` +
+                '<br/>' +
+                `You could contact us by <b>feedback function</b> or <b>${
+                  this.email
+                }</b>, if you have any questions or feedbacks.` +
+                '<br/>' +
+                'Yours sincerely,' +
+                '<br/>' +
+                '<br/>' +
+                'GSCG Consortium' +
+                '<br/>' +
+                `Email: ${this.email}`
+              this.setPageContent('additional-notes', content)
+              this.showNextPage()
+            })
+            .catch(error => {
+              this.$message.error('Something wrong, please retry later.')
+              console.log('Submit Message Error: ', error)
+            })
         }
       })
     },
@@ -255,17 +245,23 @@ export default {
       } else {
         this.setPageStatus('license', false)
       }
+    },
+    fetchLicense() {
+      axios
+        .get('/markdown/materials-license.md')
+        .then(response => {
+          console.log('getMaterialsLicense: ', response.data)
+          this.setPageContent('license', response.data)
+        })
+        .catch(error => {
+          this.$message.error('Cannot find the license file.')
+          this.setPageContent('license', 'No license file.')
+          console.log('getMaterialsLicense Error: ', error)
+        })
     }
   },
   created() {
-    this.getMaterialsLicense().then(response => {
-      console.log('getMaterialsLicense: ', response)
-      this.setPageContent('license', response)
-    }).catch(error => {
-      this.$message.error('Cannot find the license file.')
-      this.setPageContent('license', 'No license file.')
-      console.log('getMaterialsLicense Error: ', error)
-    })
+    this.fetchLicense()
   }
 }
 </script>
@@ -289,7 +285,7 @@ export default {
       border: 1px dashed #e9e9e9;
       border-radius: 6px;
       background-color: #fafafa;
-      min-height: 450px;
+      height: 450px;
       text-align: center;
       padding-top: 30px;
       overflow: scroll;
@@ -308,6 +304,7 @@ export default {
       }
 
       .markdown-viewer {
+        overflow: scroll;
         text-align: left;
         margin: 0px 30px;
       }

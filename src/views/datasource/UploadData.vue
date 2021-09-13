@@ -2,11 +2,11 @@
   <page-view :title="getTitle()" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
     <template slot="action">
       <a-button icon="question-circle" style="margin-right: 10px" @click="showHelp">Help</a-button>
-      <a-button type="primary" disabled @click="onCreateDataSet">Upload Data</a-button>
+      <a-button type="primary" @click="onCreateDataSet">Register & Upload Your Data</a-button>
     </template>
 
     <upload-task-list :id="refreshToken"></upload-task-list>
-    <a-modal title="Help" width="60%" class="help-markdown" :visible="helpVisible" :footer="null" @cancel="closeHelp">
+    <a-modal title="Help for Uploading Omics Data" width="60%" class="help-markdown" :visible="helpVisible" :footer="null" @cancel="closeHelp">
       <a-row style="display: flex; justify-content: flex-end; margin-top: -20px; margin-right: -20px">
         <a-checkbox :checked="helpChecked" @change="changeHelpCheckbox"> Don't show again </a-checkbox>
       </a-row>
@@ -16,108 +16,99 @@
     </a-modal>
 
     <a-drawer
-      title="Create a new account"
+      title="Register & Upload Your Omics Data"
       class="upload-data-drawer"
       :width="720"
       :visible="formVisible"
+      :maskClosable="false"
       :body-style="{ paddingBottom: '80px' }"
       @close="onClose"
     >
-      <a-form :form="form" layout="vertical" hide-required-mark>
+      <a-alert style="margin-bottom: 15px" message="Notices" :description="notices" type="info" show-icon />
+      <a-form :form="form" layout="vertical">
+        <a-row :gutter="16">
+          <a-col :span="24">
+            <a-form-item label="Your Data Will Be Uploaded To">
+              <a-input disabled :value="uploadingPath">
+                <a-icon slot="prefix" type="upload" style="color: rgba(0, 0, 0, 0.25)" />
+              </a-input>
+            </a-form-item>
+          </a-col>
+        </a-row>
         <a-row :gutter="16">
           <a-col :span="12">
-            <a-form-item label="Name">
+            <a-form-item label="Dataset Name">
               <a-input
                 v-decorator="[
                   'name',
                   {
-                    rules: [{ required: true, message: 'Please enter user name' }],
+                    rules: [
+                      { required: true, message: 'Please enter the dataset name' },
+                      {
+                        pattern: /^[a-zA-Z0-9_\-]{6,64}$/,
+                        message:
+                          'Only numbers, upper and lower case letters, underscores and short dashes are supported, and are no longer than 64 characters and no shorter than 6 characters',
+                      },
+                    ],
                   },
                 ]"
-                placeholder="Please enter user name"
+                placeholder="Please enter the dataset name"
               />
             </a-form-item>
           </a-col>
           <a-col :span="12">
-            <a-form-item label="Url">
+            <a-form-item label="Contact Email">
               <a-input
+                disabled
                 v-decorator="[
-                  'url',
+                  'email',
                   {
-                    rules: [{ required: true, message: 'please enter url' }],
+                    initialValue: email,
+                    rules: [{ required: true, message: 'please enter your email.' }],
                   },
                 ]"
                 style="width: 100%"
-                addon-before="http://"
-                addon-after=".com"
-                placeholder="please enter url"
-              />
+                placeholder="Please enter your email."
+              >
+                <a-icon slot="prefix" type="mail" style="color: rgba(0, 0, 0, 0.25)" />
+              </a-input>
             </a-form-item>
           </a-col>
         </a-row>
         <a-row :gutter="16">
           <a-col :span="12">
-            <a-form-item label="Owner">
-              <a-select
+            <a-form-item label="Manager">
+              <a-input
+                disabled
                 v-decorator="[
-                  'owner',
+                  'manager',
                   {
+                    initialValue: manager,
                     rules: [{ required: true, message: 'Please select an owner' }],
                   },
                 ]"
-                placeholder="Please a-s an owner"
+                placeholder="Please enter your name."
               >
-                <a-select-option value="xiao"> Xiaoxiao Fu </a-select-option>
-                <a-select-option value="mao"> Maomao Zhou </a-select-option>
-              </a-select>
+                <a-icon slot="prefix" type="user" style="color: rgba(0, 0, 0, 0.25)" />
+              </a-input>
             </a-form-item>
           </a-col>
           <a-col :span="12">
-            <a-form-item label="Type">
+            <a-form-item label="DataType">
               <a-select
                 v-decorator="[
-                  'type',
+                  'data_type',
                   {
-                    rules: [{ required: true, message: 'Please choose the type' }],
+                    rules: [{ required: true, message: 'Please choose the data type' }],
                   },
                 ]"
-                placeholder="Please choose the type"
+                placeholder="Please choose the data type"
               >
-                <a-select-option value="private"> Private </a-select-option>
-                <a-select-option value="public"> Public </a-select-option>
+                <a-select-option value="genomics"> Genomics </a-select-option>
+                <a-select-option value="transcriptomics"> Transcriptomics </a-select-option>
+                <a-select-option value="proteomics"> Proteomics </a-select-option>
+                <a-select-option value="metabolomics"> Metabolomics </a-select-option>
               </a-select>
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="16">
-          <a-col :span="12">
-            <a-form-item label="Approver">
-              <a-select
-                v-decorator="[
-                  'approver',
-                  {
-                    rules: [{ required: true, message: 'Please choose the approver' }],
-                  },
-                ]"
-                placeholder="Please choose the approver"
-              >
-                <a-select-option value="jack"> Jack Ma </a-select-option>
-                <a-select-option value="tom"> Tom Liu </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :span="12">
-            <a-form-item label="DateTime">
-              <a-date-picker
-                v-decorator="[
-                  'dateTime',
-                  {
-                    rules: [{ required: true, message: 'Please choose the dateTime' }],
-                  },
-                ]"
-                style="width: 100%"
-                :get-popup-container="(trigger) => trigger.parentNode"
-              />
             </a-form-item>
           </a-col>
         </a-row>
@@ -128,25 +119,26 @@
                 v-decorator="[
                   'description',
                   {
-                    rules: [{ required: true, message: 'Please enter url description' }],
+                    rules: [{ required: false, message: 'Please enter the description for your dataset' }],
                   },
                 ]"
                 :rows="4"
-                placeholder="please enter url description"
+                placeholder="Please enter the description"
               />
             </a-form-item>
           </a-col>
         </a-row>
       </a-form>
-      <div class="footer">
+      <div class="footer" style="float: right">
         <a-button :style="{ marginRight: '8px' }" @click="onClose"> Cancel </a-button>
-        <a-button type="primary" @click="onClose"> Submit </a-button>
+        <a-button type="primary" @click="onSubmit"> Submit </a-button>
       </div>
     </a-drawer>
   </page-view>
 </template>
 
 <script>
+import v from 'voca'
 import axios from 'axios'
 import { PageView } from '@/layouts'
 import UploadTaskList from '@/views/datasource/UploadTaskList'
@@ -181,12 +173,21 @@ export default {
       helpMsg: '',
       helpChecked: false,
       helpVisible: true,
-      form: this.$form.createForm(this),
-      formVisible: false
+      form: this.$form.createForm(this, {
+        onValuesChange: this.updatePath,
+      }),
+      formVisible: false,
+      notices: 'Additional description and informations about copywriting.',
+      uploadingPath: 'Uploading path...',
+      name: '',
+      dataType: ''
     }
   },
   computed: {
-    ...mapGetters(['nickname']),
+    ...mapGetters(['nickname', 'email']),
+    manager() {
+      return v.snakeCase(this.nickname)
+    },
     refreshToken() {
       if (this.refresh) {
         return Math.random()
@@ -215,13 +216,42 @@ export default {
     onCreateDataSet() {
       this.formVisible = true
     },
+    updatePath(props, value) {
+      this.dataType = value.data_type ? value.data_type : this.dataType
+      this.name = value.name ? value.name : this.name
+      if (this.dataType && this.name) {
+        this.uploadingPath = `oss://quartet-data-portal/data/${this.manager}/${this.name}/${this.dataType}/`
+      }
+
+      console.log('Update Path: ', props, value, this.dataType, this.name, this.uploadingPath)
+    },
+    onSubmit() {
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Test UploadData: ', err, values)
+          this.createDataSet(values)
+        }
+      })
+    },
     createDataSet(record) {
       this.$http
         .post(uploadingTaskEndpoints.taskApi, {
-
+          name: record.name,
+          email: record.email,
+          manager: record.manager,
+          data_type: record.data_type,
+          description: record.description
         })
-        .then(response => {})
-        .catch(error => {})
+        .then(response => {
+          this.$message.success(`The Dataset ${record.name} created.`)
+          console.log('Create Dataset: ', response)
+          this.formVisible = false
+        })
+        .catch(error => {
+          this.$message.error('Failed, Please retry later.')
+          console.log('Create Dataset: ', error)
+          this.formVisible = false
+        })
     },
     fetchHelp() {
       axios
@@ -241,22 +271,20 @@ export default {
     changeHelpCheckbox(e) {
       console.log('Change Help Checkbox: ', e)
       this.helpChecked = e.target.checked
+      localStorage.setItem('datains__data__notShownUploadHelp', e.target.checked)
     },
     showHelp() {
       this.fetchHelp()
     },
     closeHelp() {
-      if (this.helpChecked) {
-        localStorage.setItem('datains__data__notShownUploadHelp', true)
-      }
-
       this.helpVisible = false
     }
   },
   created() {
-    const notShownHelp = localStorage.getItem('datains__data__notShownUploadHelp')
+    const notShownHelp = JSON.parse(localStorage.getItem('datains__data__notShownUploadHelp'))
     if (notShownHelp) {
       this.helpVisible = !notShownHelp
+      this.helpChecked = notShownHelp
     } else {
       this.fetchHelp()
     }

@@ -15,6 +15,7 @@ const whiteList = [
   '/',
   '/dashboard',
   '/materials',
+  '/request-materials',
   '/data/upload',
   '/data/download',
   '/seq-flow/app-store',
@@ -56,6 +57,12 @@ router.beforeEach((to, from, next) => {
             next({ path: redirect })
           }
         })
+      }).catch(error => {
+        store.dispatch('Logout')
+        console.log('Permission: ', error)
+
+        next(false)
+        NProgress.done() // finish progress bar
       })
     }
 

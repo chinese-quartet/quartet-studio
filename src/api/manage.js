@@ -83,14 +83,6 @@ export function getMaterialsRIN() {
   })
 }
 
-export function getMaterialsLicense() {
-  return axios({
-    url: 'http://nordata-cdn.oss-cn-shanghai.aliyuncs.com/materials_license.md',
-    method: 'get',
-    params: {}
-  })
-}
-
 export function getMaterialsTemperature() {
   return axios({
     url: 'http://nordata-cdn.oss-cn-shanghai.aliyuncs.com/materials_temperature.json',

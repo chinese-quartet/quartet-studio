@@ -10,6 +10,7 @@ const getters = {
   appListConfig: state => state.app.appListConfig,
   avatar: state => state.user.avatar,
   nickname: state => state.user.name,
+  email: state => state.user.email,
   lastname: state => state.user.lastname,
   welcome: state => state.user.welcome,
   roles: state => state.user.roles,

@@ -91,22 +91,20 @@ export default {
     changeHelpCheckbox(e) {
       console.log('Change Help Checkbox: ', e)
       this.helpChecked = e.target.checked
+      localStorage.setItem('datains__data__notShownAssessmentHelp', e.target.checked)
     },
     showHelp() {
       this.fetchHelp()
     },
     closeHelp() {
-      if (this.helpChecked) {
-        localStorage.setItem('datains__data__notShownAssessmentHelp', true)
-      }
-
       this.helpVisible = false
     },
   },
   created() {
-    const notShownHelp = localStorage.getItem('datains__data__notShownAssessmentHelp')
+    const notShownHelp = JSON.parse(localStorage.getItem('datains__data__notShownAssessmentHelp'))
     if (notShownHelp) {
       this.helpVisible = !notShownHelp
+      this.helpChecked = notShownHelp
     } else {
       this.fetchHelp()
     }

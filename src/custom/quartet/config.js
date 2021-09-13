@@ -140,17 +140,19 @@ export const projectSettings = {
       link: 'http://chinese-quartet.org'
     },
     {
-      name: 'Fast File Transfer',
-      icon: 'thunderbolt',
-      link: 'http://docs.3steps.cn/docs/datains/datains-intro.html#ossutil'
-    }, {
-      name: 'File Browser',
-      icon: 'global',
-      link: 'http://docs.3steps.cn/docs/datains/datains-intro.html#%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85-datains-browser'
-    }, {
       name: 'Documentation',
       icon: 'file-markdown',
       link: 'https://yuque.com/quartet/help'
+    },
+    {
+      name: 'Fast File Transfer',
+      icon: 'thunderbolt',
+      link: 'https://www.yuque.com/quartet/tools/ossutil'
+    },
+    {
+      name: 'File Browser',
+      icon: 'global',
+      link: 'https://www.yuque.com/quartet/tools/ossbrowser'
     }
   ],
   footerConfig: {
@@ -195,29 +197,64 @@ export const projectSettings = {
     ]
   },
   localTools: [
-    
+    {
+      app_name: 'chenqiaochu/quartet-prot-qc-v0.1.1',
+      author: 'chenqiaochu',
+      category: 'Pipeline',
+      description: 'Proteome Quality Control Pipeline for Quartet.',
+      hidden: false,
+      home: 'https://github.com/chinese-quartet/ProtQC',
+      icons: [
+        {
+          sizes: '192x192',
+          src: '',
+          type: 'image/png'
+        }
+      ],
+      id: 'ba0cc7c1c16ab9405cabfa41720629fd',
+      name: 'Proteome QC for Quartet',
+      short_name: 'quartet-prot-qc'
+    },
+    {
+      app_name: 'zhangnaixin/quartet-met-qc-v0.1.1',
+      author: 'zhangnaixin',
+      category: 'Pipeline',
+      description: 'Metabolomics Quality Control Pipeline for Quartet.',
+      hidden: false,
+      home: 'https://github.com/chinese-quartet/MetQC',
+      icons: [
+        {
+          sizes: '192x192',
+          src: '',
+          type: 'image/png'
+        }
+      ],
+      id: 'a9a88dd2be2b5377d0db81b1fee8fa7b',
+      name: 'Met QC for Quartet',
+      short_name: 'quartet-met-qc'
+    }
   ]
 }
 
-export function initBaseURL() {
+export function initBaseURL () {
   // const apiService = 'http://quartet-backend.3steps.cn'
   const apiService = 'http://47.103.58.251'
   console.log(`BASE_API_URL: ${apiService}`)
   return apiService
 }
 
-export function getDnaHost() {
+export function getDnaHost () {
   return `${initBaseURL()}:8080/quartet-dna-vis/`
 }
 
-export function getRnaHost() {
+export function getRnaHost () {
   return `${initBaseURL()}:8080/quartet-rna-vis/`
 }
 
-export function getMetabolismHost() {
+export function getMetabolismHost () {
   return `${initBaseURL()}:8080/quartet-metabolism-vis/`
 }
 
-export function getProteinHost() {
+export function getProteinHost () {
   return `${initBaseURL()}:8080/quartet-protein-vis/`
 }

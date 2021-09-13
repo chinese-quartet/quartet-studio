@@ -15,7 +15,7 @@ export const asyncRouterMap = [
         path: '/dashboard',
         name: 'dashboard',
         hidden: false,
-        component: () => import('@/custom/quartet/components/QuartetDashboard'),
+        component: () => import('@/views/dashboard/QuartetDashboard'),
         meta: { title: 'Overview', icon: 'dashboard', permission: ['dashboard'], keepAlive: false }
       },
 
@@ -186,7 +186,7 @@ export const asyncRouterMap = [
         path: '/request-materials',
         name: 'request-materials',
         hidden: true,
-        component: () => import('@/custom/quartet/components/Request'),
+        component: () => import('@/views/materials/Request'),
         meta: { titile: 'Request Materials', icon: 'pull-request', keepAlive: false }
       },
 

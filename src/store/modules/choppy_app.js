@@ -85,11 +85,17 @@ const app = {
           .then(response => {
             console.log('GetAppList: ', parameter, response)
 
+            let apps = response.data
+
+            if (config.localTools) {
+              apps = apps.concat(config.localTools)
+            }
+
             const data = {
               perPage: response['per_page'],
               page: response['page'],
               total: response['total'],
-              data: formatRecords(response.data)
+              data: formatRecords(apps)
             }
             commit('SET_APP_LIST', data)
 
@@ -106,16 +112,18 @@ const app = {
           .then(response => {
             console.log('GetAppManifest: ', parameter, response)
 
-            let apps = formatManifest(response.data)
+            let apps = response.data
             if (config.localTools) {
               apps = apps.concat(config.localTools)
+              console.log('Local Tools: ', apps)
             }
 
             const data = {
-              total: response['total'],
-              data: apps
+              total: response['total'] + config.localTools.length,
+              data: formatManifest(apps)
             }
 
+            console.log('Format Manifest: ', data)
             resolve(data)
           })
           .catch(error => {

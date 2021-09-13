@@ -148,7 +148,7 @@
       </a-card>
       <a-empty class="field-list" v-else />
     </a-modal>
-    <a-modal title="Help" width="60%" class="help-markdown" :visible="helpVisible" :footer="null" @cancel="closeHelp">
+    <a-modal title="Help for Multiomics Data" width="60%" class="help-markdown" :visible="helpVisible" :footer="null" @cancel="closeHelp">
       <a-row style="display: flex; justify-content: flex-end; margin-top: -20px; margin-right: -20px">
         <a-checkbox :checked="helpChecked" @change="changeHelpCheckbox"> Don't show again </a-checkbox>
       </a-row>
@@ -285,12 +285,9 @@ export default {
     changeHelpCheckbox(e) {
       console.log('Change Help Checkbox: ', e)
       this.helpChecked = e.target.checked
+      localStorage.setItem('datains__data__notShownHelp', e.target.checked)
     },
     closeHelp() {
-      if (this.helpChecked) {
-        localStorage.setItem('datains__data__notShownHelp', true)
-      }
-
       this.helpVisible = false
     },
     loadProject(name) {
@@ -420,9 +417,10 @@ export default {
   created() {
     this.getFieldsList(this.fetchCounts)
 
-    const notShownHelp = localStorage.getItem('datains__data__notShownHelp')
+    const notShownHelp = JSON.parse(localStorage.getItem('datains__data__notShownHelp'))
     if (notShownHelp) {
       this.helpVisible = !notShownHelp
+      this.helpChecked = notShownHelp
     } else {
       this.fetchHelp()
     }
@@ -698,6 +696,7 @@ export default {
     -webkit-transform: scale(1.1) rotate(2deg);
   }
 }
+
 @-moz-keyframes heartAnimate {
   0%,
   100% {
@@ -721,6 +720,7 @@ export default {
     -moz-transform: scale(1.1) rotate(2deg);
   }
 }
+
 @-o-keyframes heartAnimate {
   0%,
   100% {

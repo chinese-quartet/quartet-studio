@@ -230,13 +230,14 @@ export default {
       saveCurrentDataSet: 'SaveCurrentDataSet'
     }),
     redirectToRecord(path) {
-      this.$router.push({
-        name: 'record-viewer',
-        query: {
-          recordId: path,
-          project: this.defaultCollection
-        }
-      })
+      this.$message.info('Preview plugin will be available soon.')
+      // this.$router.push({
+      //   name: 'record-viewer',
+      //   query: {
+      //     recordId: path,
+      //     project: this.defaultCollection
+      //   }
+      // })
     },
     switchCartTable() {
       this.cartTableActive = !this.cartTableActive

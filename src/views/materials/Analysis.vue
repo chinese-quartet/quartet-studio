@@ -7,7 +7,7 @@
         <a-button icon="question-circle" slot="extra" @click="redirectHelp">Help</a-button>
       </a-card>
     </a-row>
-
+    <img class="btn-twinkle" @click.stop="selectPDF('dna')" :src="require('@/assets/images/arrow-bottom.png')" />
     <a-row :gutter="24" style="margin: 0px 0px 10px" id="specification-container">
       <a-card :loading="loading" title="Materials Specification">
         <a-tabs class="specification" v-model="currentTab" animated @change="selectPDF">
@@ -40,14 +40,14 @@ export default {
     return {
       loading: false,
       description:
-        'Quartet DNA, RNA, Protein, and Metabolite reference materials were generated simultaneously ' +
-        'from the same set of EBV immortalized lymphoblast cell lines (LCLs) including father (Quartet_F7), ' +
-        'mother (Quartet_M8), and two monozygotic twin daughters (Quartet_D5 and Quartet_D6). ' +
-        'These reference materials will benefit the quality control and standardization of large-scale, longitudinal, cross-lab, and cross-platform cohort studies. ' +
-        '<b>To promote the healthy development of the whole field, all Quartet reference materials will be open for use free of charge under the premise of complying with relevant national laws and regulations.</b> ' +
-        'Please click the <b style="color: #108ee9;">Request</b> button to request the materials, if you would like to use these materials. ' +
-        'After we reciving your request, we will contact you to confirm the delivery of the Quartet Referece Materials. ' +
-        '<a href="https://www.yuque.com/quartet/help?language=en-us">More details</a>',
+        'Quartet multi-omics reference materials of DNA, RNA, proteins, and metabolites were simultaneously ' +
+        'manufactured from the same batch of cultured immortalized B-lymphoblastoid cell line of a specific family member ' +
+        'of a Chinese Quartet family from Fudan Taizhou Cohort, including father (F7), mother (M8), and two monozygotic ' +
+        'twin daughters (D5 and D6). The Quartet Reference Materials suite is intended for quality control and performance ' +
+        'assessment of each omics profiling. It can measure and mitigate technical variation, enabling more accurate data ' +
+        'integration in large cohort studies. The Quartet multi-omics reference materials are publicly available and accessible. ' +
+        '<b>The recipients of the Reference Materials are highly encouraged to share their data with Fudan University through ' +
+        'the Quartet Data Portal in order for us to improve the reference datasets and to better serve the community.</b>',
       pdfViewerVisible: false,
       materialsDetails: [
         {
@@ -79,39 +79,34 @@ export default {
           key: 'dna',
           name: 'DNA',
           image: '',
-          requestTubes: '50',
-          generatedData: '10'
+          specification:
+            'Each vial contains approximately 10 μg of genomic DNA (200 ng/μL, 50 μL) in TE buffer (10 mM TRIS, 1 mM EDTA, pH 8.0)'
         },
         {
           key: 'rna',
           name: 'RNA',
           image: '',
-          requestTubes: '60',
-          generatedData: '10'
+          specification:
+            'Each vial contains approximately 5 μg of total RNA (~520 ng/μL, 10 μL), and the RNA is in water. miRNA and other small RNA are retained.'
         },
         {
           key: 'protein',
           name: 'Protein',
           image: '',
-          requestTubes: '5',
-          generatedData: '10'
+          specification:
+            'Each vial contains approximately 10 μg of dried, tryptic peptide mixtures. Four labeled peptides are spiked in at different weight ratios as external controls.'
         },
         {
           key: 'metabolite',
           name: 'Metabolite',
           image: '',
-          requestTubes: '5',
-          generatedData: '20'
+          specification:
+            'Each vial contains dried cell extracts from approximately 106 cells using methanol:water (6:1) solution.<br/>Eleven external controls are spiked in at known amounts.'
         }
       ]
     }
   },
   methods: {
-    requestMaterials() {
-      this.$router.push({
-        name: 'request-materials'
-      })
-    },
     selectPDF(pdfKey) {
       this.currentTab = pdfKey
       document.getElementById('specification-container').scrollIntoView({ behavior: 'smooth' })
@@ -152,6 +147,143 @@ export default {
     .ant-card-actions > li {
       margin: 0px 0px 12px 0px;
     }
+  }
+
+  @keyframes heartAnimate {
+    0%,
+    100% {
+      transform: scale(1) rotate(0);
+    }
+
+    10%,
+    30% {
+      transform: scale(0.9) rotate(2deg);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+      transform: scale(1.1) rotate(-2deg);
+    }
+
+    50%,
+    70% {
+      transform: scale(1.1) rotate(2deg);
+    }
+  }
+
+  @-webkit-keyframes heartAnimate {
+    0%,
+    100% {
+      -webkit-transform: scale(1) rotate(0);
+    }
+
+    10%,
+    30% {
+      -webkit-transform: scale(0.9) rotate(2deg);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+      -webkit-transform: scale(1.1) rotate(-2deg);
+    }
+
+    50%,
+    70% {
+      -webkit-transform: scale(1.1) rotate(2deg);
+    }
+  }
+
+  @-moz-keyframes heartAnimate {
+    0%,
+    100% {
+      -moz-transform: scale(1) rotate(0);
+    }
+
+    10%,
+    30% {
+      -moz-transform: scale(0.9) rotate(2deg);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+      -moz-transform: scale(1.1) rotate(-2deg);
+    }
+
+    50%,
+    70% {
+      -moz-transform: scale(1.1) rotate(2deg);
+    }
+  }
+
+  @-o-keyframes heartAnimate {
+    0%,
+    100% {
+      -o-transform: scale(1) rotate(0);
+    }
+
+    10%,
+    30% {
+      -o-transform: scale(0.9) rotate(2deg);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+      -o-transform: scale(1.1) rotate(-2deg);
+    }
+
+    50%,
+    70% {
+      -o-transform: scale(1.1) rotate(2deg);
+    }
+  }
+
+  @-ms-keyframes heartAnimate {
+    0%,
+    100% {
+      -ms-transform: scale(1) rotate(0);
+    }
+
+    10%,
+    30% {
+      -ms-transform: scale(0.9) rotate(2deg);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+      -ms-transform: scale(1.1) rotate(-2deg);
+    }
+
+    50%,
+    70% {
+      -ms-transform: scale(1.1) rotate(2deg);
+    }
+  }
+
+  .btn-twinkle {
+    position: absolute;
+    bottom: 0px;
+    right: calc(50% - 20px);
+    height: 50px;
+    margin-right: 5px;
+    -webkit-animation: heartAnimate 3s ease infinite;
+    -moz-animation: heartAnimate 3s ease infinite;
+    -o-animation: heartAnimate 3s ease infinite;
+    -ms-animation: heartAnimate 3s ease infinite;
+    animation: heartAnimate 3s ease infinite;
+  }
+
+  .btn-twinkle:hover {
+    cursor: pointer;
   }
 }
 </style>

@@ -35,20 +35,19 @@ export default {
     return {
       listData: [
         {
-          image:
-            'http://www.rainsurebio.com/qfy-content/uploads/2020/03/dca143037912404bfc097f509af837c4-e1584692168980-1024x429.jpg',
+          image: require('@/assets/images/dna-reference-datasets-overview.png'),
           title: 'Reference Datasets for DNA',
           avatar: require('@/assets/images/genomics.png'),
-          description: 'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-          content:
-            'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.'
+          description: 'Reference datasets could be used as "ground truth" to evaluate the accuracy of DNA-seq experiments.',
+          content: 'The Quartet DNA reference datasets are provided as a variant call file (vcf) that contains the high-confidence SNVs, small indels (less than 50 bp), and structural variants (insertions and deletion over than 50 bp), as well as a tab-delimited "bed" file that describes the high-confidence bed regions, using methods described in the Quartet DNA manuscript. The v20210909 of DNA reference datasets covers approximately 87.8% of the GRCh38 assembly (https://gdc.cancer.gov/about-data/gdc-data-processing/gdc-reference-files). As sequencing technologies and analysis methods improve, the reference datasets will be updated periodically.',
+          markdown: '/markdown/dna-reference-datasets.md'
         },
         {
           image: require('@/assets/images/rna-reference-datasets-overview.png'),
           title: 'Reference Datasets for RNA',
           avatar: require('@/assets/images/transcriptomics.png'),
           description: 'Reference datasets could be used as "ground truth" to evaluate the accuracy of RNA-seq experiments.',
-          content: 'Based on high-quality of multi-lab RNA-seq libraries, we have reached consensuses on the characterization of gene expression at relative level as reference datasets, and established performance metrics for proficiency test. We used expression profiles from 16 hiqh-quality RNA-seq batches to construct reference datasets (Figure 1). Of the 58,395 genes annotated in GRCh38.93, 10,067 (17.2%) for D6/D5, 11,560 (19.8 %) for F7/D5, 8,081 (13.8%) for F7/D6, 12,104 (20.7%) for M8/D5, 9,363 (16.0%) for M8/D6, and 10,401 (17.8%) for M8/F7 were determined as reference datasets. Moreover, the numbers of reference DEGs ranged from 1,617 to 3,044 for the six pairs of sample groups.',
+          content: 'Based on high-quality of multi-lab RNA-seq libraries, we have reached consensuses on the characterization of gene expression at relative level as reference datasets, and established performance metrics for proficiency test. We used expression profiles from 16 hiqh-quality RNA-seq batches to construct reference datasets. Of the 58,395 genes annotated in GRCh38.93, 10,067 (17.2%) for D6/D5, 11,560 (19.8 %) for F7/D5, 8,081 (13.8%) for F7/D6, 12,104 (20.7%) for M8/D5, 9,363 (16.0%) for M8/D6, and 10,401 (17.8%) for M8/F7 were determined as reference datasets. Moreover, the numbers of reference DEGs ranged from 1,617 to 3,044 for the six pairs of sample groups.',
           markdown: '/markdown/rna-reference-datasets.md'
         },
         {
