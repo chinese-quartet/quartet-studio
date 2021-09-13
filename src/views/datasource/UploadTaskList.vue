@@ -98,13 +98,12 @@
                 {{ $t('datasource.uploadTaskList.refreshToken') }}
               </a-button>
             </a-popconfirm>
-            <a-popconfirm
-              title="Do you confirm to mark the task as completed? NOTE: The Quartet team will get an email notification, and then make your data online after you do it."
-              ok-text="Yes"
-              cancel-text="No"
-              @confirm="onCheckTask(item)"
-              @cancel="() => {}"
-            >
+            <a-popconfirm ok-text="Yes" cancel-text="No" @confirm="onCheckTask(item)" @cancel="() => {}">
+              <span slot="title">
+                Do you confirm to mark the task as completed?<br /><br />
+                NOTE: The Quartet team will get an email notification, <br />
+                and then make your data online after reviewing your data.
+              </span>
               <a-button :disabled="item.percentage === 100" type="primary">
                 {{ $t('datasource.uploadTaskList.check') }}
               </a-button>
@@ -256,7 +255,10 @@ export default {
           description: record.description,
           status: 'Finished'
         })
-        .then(response => {})
+        .then(response => {
+          this.$message.success(`Dataset ${record.name} was finished!`)
+          this.onSearchTask(this.pagination.current, this.pagination.pageSize)
+        })
         .catch(error => {
           this.$message.warn('Something wrong, please retry later.')
         })
@@ -286,14 +288,22 @@ export default {
 
       return data
     },
-    onSearchTask(page, pageSize) {
+    onSearchTask(page, pageSize, status) {
+      let params = {
+        page: page,
+        page_size: pageSize,
+        plugin_name: 'omics-dataset'
+      }
+
+      if (status !== 'total') {
+        params = Object.assign(params, {
+          status: status
+        })
+      }
+
       this.$http
         .get(uploadingTaskEndpoints.taskListApi, {
-          params: {
-            page: page,
-            page_size: pageSize,
-            plugin_name: 'omics-dataset'
-          }
+          params: params
         })
         .then(response => {
           this.pagination.total = response.total
@@ -309,7 +319,11 @@ export default {
           this.data = []
         })
     },
-    onClickRadioBtn() {},
+    onClickRadioBtn(e) {
+      this.radioGroupValue = e.target.value
+
+      this.onSearchTask(this.pagination.current, this.pagination.pageSize, this.radioGroupValue)
+    },
     doCopy(text) {
       console.log('Copy ', text)
       this.$copyText(text)
