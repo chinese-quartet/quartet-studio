@@ -1,20 +1,24 @@
 <template>
   <a-row class="report-submitter">
-    <a-tabs class="report-submitter__tabs" default-active-key="report" tab-position="left">
-      <a-tab-pane class="report-submitter__tabs__report" key="report" tab="Select Report" :forceRender="true">
+    <a-alert type="warning" show-icon style="margin-left: 10px; display: none">
+      <span slot="message">Each QC Report contains several steps, <b>please finish it step by step.</b></span>
+    </a-alert>
+    <a-tabs class="report-submitter__tabs" default-active-key="report" tab-position="top">
+      <a-tab-pane class="report-submitter__tabs__report" key="report" tab="Step1: Choose Report" :forceRender="true">
         <a-alert style="margin-bottom: 15px" message="Notices" type="info" show-icon>
           <span slot="description">
-            <span>
-              The QC Report contains three steps: <b>Select Report</b> --> <b>Upload File(s)</b> --> <b>Parameters</b>.
-              <br />
-              <b>Please follow the order.</b>
-            </span>
+            <span> Additional description and informations about report choosing. </span>
           </span>
         </a-alert>
         <a-table :columns="columns" :data-source="data" :pagination="false" :row-selection="rowSelection" />
       </a-tab-pane>
-      <a-tab-pane class="report-submitter__tabs__uploader" key="files" tab="Upload File(s)" :forceRender="true">
-        <a-divider style="margin: 0px 0px 16px">Upload Data & Metadata File</a-divider>
+      <a-tab-pane
+        class="report-submitter__tabs__uploader"
+        v-if="reportMode"
+        key="files"
+        tab="Step2: Upload File(s)"
+        :forceRender="true"
+      >
         <a-alert style="margin-bottom: 15px" message="Notices" type="info" show-icon>
           <span slot="description">
             <span> Additional description and informations about data & metadata files. </span>
@@ -26,36 +30,87 @@
             <a href="/examples/protqc/metadata_example.csv">Metadata File</a>
           </span>
         </a-alert>
-        <a-upload-dragger
-          :disabled="uploadSuccessList.length === 2"
-          :remove="handleRemove"
-          :multiple="true"
-          :beforeUpload="beforeUpload"
-          :customRequest="uploadFile"
-          @change="handleChange"
-        >
-          <p class="ant-upload-drag-icon">
-            <a-icon type="inbox" />
+        <a-row class="uploader">
+          <a-upload-dragger
+            :disabled="uploadSuccessList.length === 2"
+            :remove="handleRemove"
+            :multiple="true"
+            :beforeUpload="beforeUpload"
+            :customRequest="uploadFile"
+            @change="handleChange"
+            accept="text/csv"
+          >
+            <p class="ant-upload-drag-icon">
+              <a-icon type="inbox" />
+            </p>
+            <p class="ant-upload-text">Click or drag file to this area to upload</p>
+            <p class="ant-upload-hint">A maximum of 2 matched files can be uploaded at a time.</p>
+          </a-upload-dragger>
+          <p class="ant-upload-help-text">
+            File naming conventions:
+            <br />1. A file name can contain only UTF-8 characters. <br />2. A file name is case-sensitive. <br />3. A
+            file name must be 1 to 1023 bytes in length. <br />4. A file name cannot start with a forward slash (/) or
+            consecutive backslashes (\).
+            <br />
           </p>
-          <p class="ant-upload-text">Click or drag file to this area to upload</p>
-          <p class="ant-upload-hint">A maximum of 2 matched files can be uploaded at a time.</p>
-        </a-upload-dragger>
-        <p class="ant-upload-help-text">
-          File naming conventions:
-          <br />1. A file name can contain only UTF-8 characters. <br />2. A file name is case-sensitive. <br />3. A
-          file name must be 1 to 1023 bytes in length. <br />4. A file name cannot start with a forward slash (/) or
-          consecutive backslashes (\).
-          <br />
-        </p>
+        </a-row>
       </a-tab-pane>
-      <a-tab-pane class="report-submitter__tabs__metadata-former" key="parameters" tab="Parameters" :forceRender="true">
-        <a-divider style="margin: 0px 0px 16px">Metadata for QC Report</a-divider>
+      <a-tab-pane
+        class="report-submitter__tabs__uploader"
+        v-else
+        key="projects"
+        tab="Step2: Load Project"
+        :forceRender="true"
+      >
+        <a-alert style="margin-bottom: 15px" message="Notices" type="info" show-icon>
+          <span slot="description">
+            <span> Additional description and informations about data & metadata files. </span>
+          </span>
+        </a-alert>
+        <project-mode-submitter @close="reset" :appKey="currentReport"></project-mode-submitter>
+      </a-tab-pane>
+      <a-tab-pane
+        v-if="reportMode"
+        class="report-submitter__tabs__metadata-former"
+        key="parameters"
+        tab="Step3: Parameters & Submit"
+        :forceRender="true"
+      >
         <a-alert style="margin-bottom: 15px" message="Notices" type="info" show-icon>
           <span slot="description">
             <span> Additional description and informations about data & metadata files. </span>
           </span>
         </a-alert>
         <a-form :form="form" layout="vertical" @submit="createReport">
+          <a-row :gutter="24">
+            <a-col :span="12">
+              <a-form-item label="Which Report?">
+                <a-input
+                  disabled
+                  v-decorator="[
+                    'report_tool',
+                    {
+                      initialValue: currentReport,
+                      rules: [{ required: true, message: 'Please input the report tool!' }],
+                    },
+                  ]"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="Report Name">
+                <a-input
+                  v-decorator="[
+                    'name',
+                    {
+                      initialValue: `QC Report with ${dataFileName} + ${metadataFileName}`,
+                      rules: [{ required: true, message: 'Please input the report name!' }],
+                    },
+                  ]"
+                />
+              </a-form-item>
+            </a-col>
+          </a-row>
           <a-row :gutter="24">
             <a-col :span="12">
               <a-form-item label="Data File">
@@ -92,35 +147,6 @@
               </a-form-item>
             </a-col>
           </a-row>
-          <a-row :gutter="24">
-            <a-col :span="12">
-              <a-form-item label="Report Name">
-                <a-input
-                  v-decorator="[
-                    'name',
-                    {
-                      initialValue: `QC Report with ${dataFileName} + ${metadataFileName}`,
-                      rules: [{ required: true, message: 'Please input the report name!' }],
-                    },
-                  ]"
-                />
-              </a-form-item>
-            </a-col>
-            <a-col :span="12">
-              <a-form-item label="Which Report?">
-                <a-input
-                  disabled
-                  v-decorator="[
-                    'report_tool',
-                    {
-                      initialValue: currentReport,
-                      rules: [{ required: true, message: 'Please input the report tool!' }],
-                    },
-                  ]"
-                />
-              </a-form-item>
-            </a-col>
-          </a-row>
           <a-form-item label="Description">
             <a-textarea
               :rows="8"
@@ -151,9 +177,9 @@
 import axios from 'axios'
 import map from 'lodash.map'
 import { mapActions } from 'vuex'
-import filter from 'lodash.filter'
 import { submitReport } from '@/api/manage'
 import { v4 as uuidv4 } from 'uuid'
+import ProjectModeSubmitter from './ProjectModeSubmitter.vue'
 
 const columns = [
   {
@@ -176,13 +202,25 @@ const columns = [
 
 const data = [
   {
-    name: 'quartet-protqc-report',
+    name: 'WGS QC Report for Quartet',
+    description: 'Quality control of germline variants calling results using a Chinese Quartet family.',
+    version: 'v0.1.2',
+    key: 'renluyao/quartet_dna_quality_control_wgs_big_pipeline-v0.1.2'
+  },
+  {
+    name: 'RNA-Seq QC Report for Quartet',
+    description: 'RNA Sequencing Quality Control Pipeline for Quartet.',
+    version: 'v0.1.2',
+    key: 'lizhihui/quartet-rnaseq-qc-v0.1.4'
+  },
+  {
+    name: 'Protqc Report for Quartet',
     description: 'Generate the QC Report for Quartet Proteomics data.',
     version: 'v0.1.1',
     key: 'quartet-protqc-report'
   },
   {
-    name: 'quartet-metqc-report',
+    name: 'Metqc Report for Quartet',
     description: 'Generate the QC Report for Quartet Metabolomics data.',
     version: 'v0.1.1',
     key: 'quartet-metqc-report'
@@ -190,6 +228,9 @@ const data = [
 ]
 
 export default {
+  components: {
+    ProjectModeSubmitter
+  },
   data() {
     return {
       columns,
@@ -201,27 +242,14 @@ export default {
           console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows)
         },
         onSelect: (record, selected, selectedRows) => {
-          console.log(record, selected, selectedRows)
+          console.log('onSelect: ', record, selected, selectedRows)
           this.currentReport = record.key
-        },
-        onSelectAll: (selected, selectedRows, changeRows) => {
-          console.log(selected, selectedRows, changeRows)
         }
       },
       fileList: [],
-      uploadSuccessList: [
-        {
-          name: 'datafile',
-          path: 'datafile'
-        },
-        {
-          name: 'metadata',
-          path: 'metadata'
-        }
-      ],
+      uploadSuccessList: [],
       form: this.$form.createForm(this, { name: 'coordinated' }),
-      loading: false,
-      modelOptions: []
+      loading: false
     }
   },
   watch: {
@@ -232,6 +260,9 @@ export default {
     }
   },
   computed: {
+    reportMode() {
+      return ['quartet-protqc-report', 'quartet-metqc-report'].indexOf(this.currentReport) >= 0
+    },
     submitBtnActive() {
       return this.uploadSuccessList.length !== 2
     },
@@ -282,15 +313,16 @@ export default {
             description: values.description,
             data_file: values.data_file,
             metadata_file: values.metadata_file
-          }).then(response => {
-            this.loading = false
-            this.reset()
           })
-          .catch(error => {
-            this.loading = false
-            this.$message.warning('Failed, Please retry later.')
-            this.reset()
-          })
+            .then(response => {
+              this.loading = false
+              this.reset()
+            })
+            .catch(error => {
+              this.loading = false
+              this.$message.warning('Failed, Please retry later.')
+              this.reset()
+            })
         }
       })
     },
@@ -423,11 +455,15 @@ export default {
   position: relative;
 
   .report-submitter__tabs__uploader {
-    .ant-upload-help-text {
-      border: 1px solid #eee;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 5px;
+    .uploader {
+      height: calc(100vh - 300px);
+
+      .ant-upload-help-text {
+        border: 1px solid #eee;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 5px;
+      }
     }
   }
 
@@ -435,7 +471,7 @@ export default {
     float: right;
     position: fixed;
     bottom: 5px;
-    right: 25px;
+    right: 10px;
     margin-bottom: 0px;
   }
 }
@@ -443,6 +479,14 @@ export default {
 
 <style lang="less">
 .report-submitter__tabs {
+  margin-left: 10px;
+
+  .uploader {
+    .ant-upload-drag {
+      height: 50%;
+    }
+  }
+
   .ant-tabs-left-bar {
     .ant-tabs-tab {
       height: 100px;

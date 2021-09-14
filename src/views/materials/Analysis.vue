@@ -52,24 +52,22 @@ export default {
       materialsDetails: [
         {
           key: 'dna',
-          pdfUrl:
-            'http://nordata-cdn.oss-cn-shanghai.aliyuncs.com/20181212_ZhengYuanting_Quartet_DNA_Processing_and_Sequence_Data_Reporting_Overview_Sop.pdf',
+          pdfUrl: '/pdf/Quartet_DNA_Manual_v20210908.pdf',
           title: 'DNA Materials'
         },
         {
           key: 'rna',
-          pdfUrl:
-            'http://nordata-cdn.oss-cn-shanghai.aliyuncs.com/Quartet_RNA_Processing_and_Sequence_Data_Reporting_Overview_Sop_v20200518.pdf',
+          pdfUrl: '/pdf/Quartet_RNA_Manual_v20210908.pdf',
           title: 'RNA Materials'
         },
         {
           key: 'protein',
-          pdfUrl: '',
+          pdfUrl: '/pdf/Quartet_Protein_Manual_v20210908.pdf',
           title: 'Protein Materials'
         },
         {
           key: 'metabolite',
-          pdfUrl: '',
+          pdfUrl: '/pdf/Quartet_Metabolite_Manual_v20210908.pdf',
           title: 'Metabolite Materials'
         }
       ],

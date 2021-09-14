@@ -7,7 +7,8 @@
       <a-button type="primary" shape="circle">{{pageNum}}/{{pageTotalNum}}</a-button>
       <a-button type="primary" shape="circle" icon="up" @click="prevPage"></a-button>
       <a-button type="primary" shape="circle" icon="down" @click="nextPage"></a-button>
-      <a-button type="primary" @click="pdfPrintAll" shape="circle" icon="printer"></a-button>
+      <a-button type="primary" @click="pdfPrintAll" style="display: none;" shape="circle" icon="printer"></a-button>
+      <a-button type="primary" @click="downloadFile(url)" shape="circle" icon="download"></a-button>
     </a-row>
     <a-row class="pdf-viewer" :style="{ height: height }">
       <pdf
@@ -52,6 +53,14 @@ export default {
     }
   },
   methods: {
+    downloadFile(link) {
+      const downloadAnchorNode = document.createElement('a')
+      downloadAnchorNode.setAttribute('href', link)
+      downloadAnchorNode.setAttribute('target', '_blank')
+      document.body.appendChild(downloadAnchorNode)
+      downloadAnchorNode.click()
+      downloadAnchorNode.remove()
+    },
     prevPage() {
       var page = this.pageNum
       page = page > 1 ? page - 1 : this.pageTotalNum
