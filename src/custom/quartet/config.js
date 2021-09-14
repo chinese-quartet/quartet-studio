@@ -196,44 +196,7 @@ export const projectSettings = {
       }
     ]
   },
-  localTools: [
-    {
-      app_name: 'chenqiaochu/quartet-prot-qc-v0.1.1',
-      author: 'chenqiaochu',
-      category: 'Pipeline',
-      description: 'Proteome Quality Control Pipeline for Quartet.',
-      hidden: false,
-      home: 'https://github.com/chinese-quartet/ProtQC',
-      icons: [
-        {
-          sizes: '192x192',
-          src: '',
-          type: 'image/png'
-        }
-      ],
-      id: 'ba0cc7c1c16ab9405cabfa41720629fd',
-      name: 'Proteome QC for Quartet',
-      short_name: 'quartet-prot-qc'
-    },
-    {
-      app_name: 'zhangnaixin/quartet-met-qc-v0.1.1',
-      author: 'zhangnaixin',
-      category: 'Pipeline',
-      description: 'Metabolomics Quality Control Pipeline for Quartet.',
-      hidden: false,
-      home: 'https://github.com/chinese-quartet/MetQC',
-      icons: [
-        {
-          sizes: '192x192',
-          src: '',
-          type: 'image/png'
-        }
-      ],
-      id: 'a9a88dd2be2b5377d0db81b1fee8fa7b',
-      name: 'Met QC for Quartet',
-      short_name: 'quartet-met-qc'
-    }
-  ]
+  localTools: []
 }
 
 export function initBaseURL () {

@@ -34,7 +34,7 @@
       :lg="{span: expanded ? 24 : 18}"
       :md="24" :sm="24" :xs="24">
       <a-tabs defaultActiveKey="1" :activeKey="currentTab" @change="onChangeTab">
-        <a-tab-pane tab="Apps" key="app">
+        <a-tab-pane tab="Pipelines" key="app">
           <app-list :appList="filteredApps" :key="localAppMode"></app-list>
         </a-tab-pane>
         <a-button slot="tabBarExtraContent" @click="expandPanel" type="primary" v-if="!expanded">

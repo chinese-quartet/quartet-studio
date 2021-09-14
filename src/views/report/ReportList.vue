@@ -1,236 +1,340 @@
 <template>
-  <div class="report-list">
-    <a-card style="margin-top: 10px; height: 81vh;" :bordered="false">
-      <a-badge slot="extra" showZero :count="pagination.total" :numberStyle="{ backgroundColor: '#52c41a' }" />
-      <div slot="title">
-        <a-radio-group @change="onClickRadioBtn" defaultValue="total" :value="radioGroupValue">
-          <a-radio-button value="total">Total</a-radio-button>
-          <a-radio-button value="Finished">Finished</a-radio-button>
-          <a-radio-button value="Checked">Checked</a-radio-button>
-          <a-radio-button value="Archived">Archived</a-radio-button>
-        </a-radio-group>
-        <a-input-search
-          style="margin-left: 16px; width: 272px"
-          placeholder="Please Enter Report Name"
-          :loading="loading"
-          :value="searchStr"
-          @search="searchReport"
+  <page-view title="QC Report for Quartet" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
+    <template slot="action">
+      <a-button type="primary" style="margin-right: 5px" @click="onCreateModels('single')">New QC Report</a-button>
+    </template>
+    <a-table
+      class="report-container"
+      :columns="filteredColumns"
+      :loading="reportLoading"
+      :data-source="data"
+      :pagination="pagination"
+      :scroll="{ y: 430 }"
+      rowKey="id"
+    >
+      <span slot="operation" slot-scope="text, record">
+        <a-button
+          @click="loadModelResults(record, showRecord)"
+          :disabled="record.status !== 'Finished'"
+          icon="eye"
+          type="primary"
+          style="margin-right: 5px"
+        >
+          Result
+        </a-button>
+        <a-button @click="getRecord(record.file_name)" icon="api" style="display: none">Connection</a-button>
+      </span>
+      <span slot="status" slot-scope="text, record" class="single-tag">
+        <a-progress
+          type="circle"
+          :showInfo="false"
+          :percent="record.percentage"
+          :width="45"
+          v-if="text === 'Started'"
         />
-      </div>
-
-      <a-list size="large" :loading="loading" :pagination="pagination">
-        <a-list-item :key="index" v-for="(item, index) in data">
-          <a-col :lg="10" :md="8" :sm="24" :xs="24">
-            <a-list-item-meta>
-              <div slot="description" v-if="item.status">
-                <span>{{ item.description }}</span>
-                <a-tag color="pink" v-if="item.status.checked">Checked</a-tag>
-                <a-tag color="blue" v-if="item.status.archived">Archived</a-tag>
-              </div>
-              <a-popover slot="avatar" placement="rightTop">
-                <template slot="content">
-                  <vue-friendly-iframe
-                    :src="item.reportUrl"
-                    class="popover"
-                    frameborder="0"
-                    scrolling="auto"
-                  ></vue-friendly-iframe>
-                </template>
-                <report-logo class="report-logo" />
-              </a-popover>
-              <a slot="title">{{ item.title }}</a>
-            </a-list-item-meta>
-          </a-col>
-          <a-col class="list-content" :lg="10" :md="12" :sm="24" :xs="24">
-            <div class="list-content-item">
-              <span>Started</span>
-              <p>{{ item.startedAt }}</p>
-            </div>
-            <div class="list-content-item">
-              <span>Finished</span>
-              <p>{{ item.finishedAt }}</p>
-            </div>
-          </a-col>
-          <div slot="actions">
-            <a @click="onShowReport(item.title, item.id)" :disabled="!item.id || !item.status.finished">View</a>
-            &nbsp;
-            <a-dropdown>
-              <a-menu slot="overlay">
-                <a-menu-item><a @click="downloadReport(item.reportUrl)">Download</a></a-menu-item>
-                <a-menu-item><a disabled>Update</a></a-menu-item>
-                <a-menu-item><a disabled>Delete</a></a-menu-item>
-                <a-menu-item><a disabled>Checked</a></a-menu-item>
-                <a-menu-item><a disabled>Archived</a></a-menu-item>
-              </a-menu>
-              <a>More<a-icon type="down" /></a>
-            </a-dropdown>
-          </div>
-        </a-list-item>
-      </a-list>
-    </a-card>
-  </div>
+        <a-tag color="#87d068" v-if="text === 'Finished'">
+          {{ text }}
+        </a-tag>
+        <a-tag color="#f50" v-if="text === 'Failed'">
+          {{ text }}
+        </a-tag>
+        <a-tag color="#108ee9" v-if="false && text === 'Started'">
+          {{ text }}
+        </a-tag>
+      </span>
+    </a-table>
+    <a-drawer
+      class="report-uploader"
+      title="New QC Report"
+      width="70%"
+      placement="right"
+      @close="hideSubmitPanel"
+      :maskClosable="false"
+      :destroyOnClose="true"
+      :visible="submitPanelVisible"
+    >
+      <submitter @close="hideSubmitPanel"></submitter>
+    </a-drawer>
+  </page-view>
 </template>
 
 <script>
-import VueFriendlyIframe from 'vue-friendly-iframe'
-import { reportLogo } from '@/core/icons'
-import { mapActions } from 'vuex'
-import { downloadFile } from '@/views/utils'
+import moment from 'moment'
+import { PageView } from '@/layouts'
+import Submitter from './Submitter'
+import filter from 'lodash.filter'
+import { GetTaskList } from './util'
+
+const columns = [
+  {
+    title: 'Report Name',
+    dataIndex: 'name',
+    key: 'name',
+    align: 'center',
+    visible: true
+  },
+  {
+    title: 'Description',
+    dataIndex: 'description',
+    key: 'description',
+    align: 'center',
+    visible: true
+  },
+  {
+    title: 'Report Type',
+    dataIndex: 'pluginName',
+    key: 'pluginName',
+    align: 'center',
+    visible: true
+  },
+  {
+    title: 'Created At',
+    dataIndex: 'startedAt',
+    key: 'startedAt',
+    align: 'center',
+    visible: true
+  },
+  {
+    title: 'Finished At',
+    dataIndex: 'finishedAt',
+    key: 'finishedAt',
+    align: 'center',
+    visible: true
+  },
+  {
+    title: 'Status',
+    dataIndex: 'status',
+    key: 'status',
+    align: 'center',
+    scopedSlots: { customRender: 'status' },
+    visible: true
+  },
+  {
+    title: 'Action',
+    key: 'operation',
+    scopedSlots: { customRender: 'operation' },
+    align: 'center',
+    visible: true
+  }
+]
 
 export default {
-  name: 'ReportList',
   components: {
-    VueFriendlyIframe,
-    reportLogo
+    PageView,
+    Submitter
   },
   data() {
     return {
-      searchStr: null,
-      data: {},
+      columns,
+      data: [],
+      reportLoading: false,
+      submitPanelVisible: false,
       pagination: {
-        pageSizeOptions: ['5', '10', '20', '30', '40', '50'],
+        pageSizeOptions: ['10', '30', '50', '100'],
         showSizeChanger: true,
         showQuickJumper: true,
-        pageSize: 5,
+        pageSize: 10,
         total: 0,
         current: 1,
         onChange: (page, pageSize) => {
-          this.searchReport(page, pageSize, this.searchStr)
+          this.pagination.current = page
+          this.pagination.pageSize = pageSize
+          this.getReports(this.pagination.current, this.pagination.pageSize)
         },
         onShowSizeChange: (current, pageSize) => {
-          this.searchReport(1, pageSize, this.searchStr)
+          this.pagination.current = current
+          this.pagination.pageSize = pageSize
+          this.getReports(this.pagination.current, this.pagination.pageSize)
         }
-      },
-      loading: false,
-      radioGroupValue: 'total'
+      }
+    }
+  },
+  computed: {
+    filteredColumns: function() {
+      return filter(this.columns, item => {
+        return item.visible
+      })
     }
   },
   methods: {
-    ...mapActions({
-      getReportList: 'GetReportList'
-    }),
-    downloadReport(reportUrl) {
-      this.$http
-        .get(reportUrl)
-        .then(response => {
-          downloadFile(response, 'report.html')
-        })
-        .catch(error => {
-          this.$message.warn('Something wrong, please retry later.')
-          console.log('Download Report: ', error)
-        })
+    onCreateModels(mode) {
+      this.submitPanelVisible = true
     },
-    searchReport(page, pageSize, status) {
-      this.loading = true
-      this.getReportList({
-        page: page,
-        page_size: pageSize,
-        status: status,
-        plugin_type: "ReportPlugin"
-      }).then(result => {
-        const that = this
-        that.data = result.data
-        that.pagination.pageSize = result.perPage
-        that.pagination.total = result.total
-        that.pagination.current = result.page
-        this.loading = false
-      })
+    hideSubmitPanel() {
+      this.submitPanelVisible = false
+      this.getReports(this.pagination.current, this.pagination.pageSize)
     },
-    onClickRadioBtn(event) {
-      this.radioGroupValue = event.target.value
-      console.log('Current Radio Button Value: ', this.radioGroupValue)
-      if (this.radioGroupValue === 'total') {
-        this.searchReport(this.pagination.current, this.pagination.pageSize)
+    formatDateTime(datetime) {
+      if (datetime) {
+        return moment(datetime).format('YYYY-MM-DD HH:mm')
       } else {
-        this.searchReport(this.pagination.current, this.pagination.pageSize, this.radioGroupValue)
+        return ''
       }
     },
-    onShowReport(projectName, reportId) {
-      this.$router.push({
-        name: 'report-details',
-        params: {
-          reportId: reportId
-        },
-        query: {
-          readonly: true
+    formatRecords(records) {
+      const data = []
+      records.forEach(record => {
+        console.log('Format Records: ', record)
+        const newRecord = {
+          payload: record.payload,
+          name: record.name,
+          description: record.description,
+          reportType: record.plugin_name,
+          startedAt: this.formatDateTime(record.started_time),
+          finishedAt: this.formatDateTime(record.finished_time),
+          status: record.status,
+          id: record.id,
+          percentage: record.percentage
         }
+
+        data.push(newRecord)
       })
+
+      return data
+    },
+    getReports(page, pageSize) {
+      this.reportLoading = true
+      GetTaskList({
+        page: page,
+        page_size: pageSize,
+        plugin_type: 'ReportPlugin'
+      })
+        .then(response => {
+          this.pagination.total = response.total
+          this.pagination.current = response.page
+          this.pagination.pageSize = response.pageSize
+          this.data = this.formatRecords(response.data)
+          // this.$message.success('Refresh successfully!', 3)
+          this.reportLoading = false
+        })
+        .catch(error => {
+          this.reportLoading = false
+          console.log('Get report Collection: ', error)
+          this.$message.error('Something wrong, please retry later!')
+          this.data = []
+        })
     }
   },
+  mounted() {
+    this.timer = setInterval(() => {
+      this.getReports(this.pagination.current, this.pagination.pageSize)
+    }, 30000)
+  },
   created() {
-    this.searchReport(this.pagination.current, this.pagination.pageSize, this.searchStr)
+    this.getReports(this.pagination.current, this.pagination.pageSize)
+  },
+  beforeRouteLeave(to, from, next) {
+    next()
+    if (this.timer) {
+      console.log('Clear the updateTasks timer.')
+      clearInterval(this.timer)
+      this.timer = null
+    }
+  },
+  beforeDestroy() {
+    if (this.timer) {
+      console.log('Clear the refresh timer.')
+      clearInterval(this.timer)
+      this.timer = null
+    }
   }
 }
 </script>
 
 <style lang="less">
-.report-list {
-  .ant-card-body {
-    height: calc(100% - 65px);
-    overflow: scroll;
+.report-container {
+  width: 100%;
+  height: 81vh;
+  background-color: #fff;
+
+  .ant-pagination {
+    margin-right: 5px;
   }
 
-  .ant-list-item {
-    flex-wrap: wrap;
+  .inner-table {
+    margin: 0px !important;
+    border-radius: 5px;
+    border: 1px solid #d6d6d6;
   }
 
-  .ant-avatar-lg {
-    width: 48px;
-    height: 48px;
-    line-height: 48px;
-  }
-
-  .list-content {
-    display: flex;
-    flex-direction: row;
-  }
-
-  .ant-list-item-meta,
-  .list-content-item {
-    margin-top: 5px;
-  }
-
-  .ant-list-item-action {
-    margin-left: 0px;
-    float: right;
-  }
-
-  .list-content-item {
-    color: rgba(0, 0, 0, 0.45);
-    display: flex;
-    flex-direction: column;
-    vertical-align: middle;
-    font-size: 14px;
-    margin-right: 40px;
-
+  .single-tag {
     .ant-tag {
-      margin-bottom: 5px;
-    }
-
-    span {
-      line-height: 20px;
-    }
-
-    p {
-      margin-top: 4px;
-      margin-bottom: 0;
-      line-height: 22px;
+      margin-right: 0px;
     }
   }
 }
 
-.popover {
-  iframe {
-    width: 500px;
-    min-height: 300px;
+.prediction-modal {
+  .ant-modal-body {
+    padding: 16px 24px;
   }
 }
 
-.report-logo {
-  font-size: 16px;
-  padding: 4px;
-  width: 60px;
-  height: 60px;
-  vertical-align: middle;
+.report-list-drawer {
+  .ant-collapse-content > .ant-collapse-content-box {
+    padding: 0px;
+  }
+
+  .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+    font-size: 16px;
+  }
+
+  .ant-drawer-body {
+    padding: 12px;
+  }
+
+  .file-viewer {
+    height: 450px;
+    width: 100%;
+  }
+
+  .empty-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 300px;
+  }
+
+  .ant-collapse-extra {
+    margin-top: -5px;
+  }
+
+  .ant-tabs-tab {
+    font-size: 16px;
+    font-weight: 800;
+  }
+
+  .ant-tabs-nav .ant-tabs-tab-active {
+    color: #ff0000;
+  }
+
+  .extra-actions {
+    .ant-dropdown-menu-item {
+      padding: 0px;
+    }
+
+    .ant-btn:hover {
+      border-color: #fff;
+    }
+  }
+
+  .report-image-viewer {
+    width: 100%;
+    height: 100%;
+
+    .heatmap {
+      position: absolute;
+      width: 200px;
+      right: 5px;
+      bottom: 5px;
+    }
+  }
+}
+
+.report-uploader {
+  .ant-drawer-body {
+    padding: 10px 10px 0px 0px;
+  }
 }
 </style>

@@ -89,14 +89,21 @@ export const asyncRouterMap = [
             name: 'appstore',
             hidden: false,
             component: () => import('@/views/appstore/FilterPanel'),
-            meta: { title: 'All Apps', icon: 'appstore', permission: ['table'], keepAlive: false }
+            meta: { title: 'All Pipelines', icon: 'appstore', permission: ['table'], keepAlive: false }
           },
           {
             path: '/seq-flow/quality-assessment-management',
             name: 'project-management',
             hidden: false,
             component: () => import('@/views/workflow/ProjectManagement'),
-            meta: { title: 'Assessment History', icon: 'solution', permission: ['table'], keepAlive: false }
+            meta: { title: 'QC Pipeline History', icon: 'solution', permission: ['table'], keepAlive: false }
+          },
+          {
+            path: '/seq-flow/qc-report-management',
+            name: 'report-management',
+            hidden: false,
+            component: () => import('@/views/report/ReportList'),
+            meta: { title: 'QC Report', icon: 'file-text', permission: ['table'], keepAlive: false }
           },
           {
             path: '/seq-flow/file-manager',
