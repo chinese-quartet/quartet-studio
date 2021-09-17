@@ -170,7 +170,7 @@ export default {
       } else {
         return {
           createdTime: moment(),
-          group: 'Choppy Team'
+          group: 'Quartet Team'
         }
       }
     },

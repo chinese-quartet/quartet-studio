@@ -125,7 +125,7 @@
         </a-col>
       </a-row>
     </a-form>
-    <a-row class="box" v-show="fileManagerActive">
+    <a-row class="box" v-if="fileManagerActive">
       <popup-file-browser
         @select-files="confirmSelectFiles"
         @cancel-select-files="cancelSelectFiles"
@@ -202,10 +202,14 @@ export default {
       this.options[model] = []
       const value = this.clonedModel.getFieldValue(model)
       console.log('selected: ', value, typeof value)
-      if (typeof value == 'string') {
-        this.selected = [value]
+      if (value) {
+        if (typeof value == 'string') {
+          this.selected = [value]
+        } else {
+          this.selected = value
+        }
       } else {
-        this.selected = value
+        this.selected = []
       }
 
       console.log('Registry File Manager: ', model, multiple, filterType, this.selected)
@@ -235,7 +239,7 @@ export default {
         fields[this.whichFileManager] = filePathList[0]
       }
 
-      this.options[this.whichFileManager] = flatMap(filePathList, o => ({ value: o, text: o }))
+      this.options[this.whichFileManager] = flatMap(filePathList, o => ({ value: o, text: o.split('/').pop() }))
       this.clonedModel.setFieldsValue(fields)
       console.log('Selected Files: ', fields, this.whichFileManager, filePathList)
     },

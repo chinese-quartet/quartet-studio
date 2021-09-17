@@ -33,12 +33,7 @@ export default {
   data() {
     return {
       installedApps: [],
-      finishedProjects: [
-        {
-          id: 'test',
-          project_name: 'test'
-        }
-      ],
+      finishedProjects: [],
       reportMetadata: {},
       loading: false,
       submitBtnActive: false

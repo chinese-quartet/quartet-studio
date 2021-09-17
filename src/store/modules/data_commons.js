@@ -10,7 +10,7 @@ import { config } from '@/config/defaultSettings'
 import merge from 'lodash.merge'
 import findIndex from 'lodash.findindex'
 
-const formatCounts = function(data) {
+const formatCounts = function (data) {
   const newRecords = []
   for (let item of data) {
     newRecords.push({
@@ -23,7 +23,7 @@ const formatCounts = function(data) {
   return orderBy(newRecords, 'count', 'desc')
 }
 
-const formatBytes = function(bytes, decimals = 2) {
+const formatBytes = function (bytes, decimals = 2) {
   if (bytes === 0) return ''
 
   const k = 1024
@@ -35,7 +35,7 @@ const formatBytes = function(bytes, decimals = 2) {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
 }
 
-const formatRecords = function(data) {
+const formatRecords = function (data) {
   const newRecords = []
 
   for (const record of data) {
@@ -56,7 +56,7 @@ const formatRecords = function(data) {
   return newRecords
 }
 
-const formatRecord = function(record) {
+const formatRecord = function (record) {
   const newRecord = {
     key: record.file_name,
     path: record.file_path,
@@ -88,7 +88,7 @@ const formatRecord = function(record) {
   return { ...record, ...newRecord }
 }
 
-const makeRule = function(field, value, type, operator) {
+const makeRule = function (field, value, type, operator) {
   // TODO: how to keep operator valid?
   if (type == 'category') {
     return {
@@ -111,7 +111,7 @@ const makeRule = function(field, value, type, operator) {
   }
 }
 
-const makeGroupRule = function(operator, rule1, rule2) {
+const makeGroupRule = function (operator, rule1, rule2) {
   return {
     type: 'group',
     operator: operator,
@@ -120,12 +120,12 @@ const makeGroupRule = function(operator, rule1, rule2) {
 }
 
 // eslint-disable-next-line no-unused-vars
-const formatField = function(fieldName) {
+const formatField = function (fieldName) {
   console.log('formatField: ', fieldName, fieldName.replace('.', '_'))
   return fieldName.replace('.', '_')
 }
 
-const existRecord = function(collection, record) {
+const existRecord = function (collection, record) {
   const filtered = filter(collection, o => {
     return o.key === record.key
   })
@@ -137,7 +137,7 @@ const existRecord = function(collection, record) {
   }
 }
 
-const initCurrentDataSet = function(defaultCollection) {
+const initCurrentDataSet = function (defaultCollection) {
   const dataset = JSON.parse(localStorage.getItem(`datains__${defaultCollection}__cart_files`))
   if (dataset) {
     return dataset
@@ -146,7 +146,7 @@ const initCurrentDataSet = function(defaultCollection) {
   }
 }
 
-const remarkAllFields = function(allFields, predict) {
+const remarkAllFields = function (allFields, predict) {
   return map(allFields, o => {
     if (predict(o)) {
       o['selected'] = true
@@ -186,7 +186,7 @@ const remarkAllFields = function(allFields, predict) {
   })
 }
 
-const makeQueryMap = function(fieldsData) {
+const makeQueryMap = function (fieldsData) {
   const rules = []
   const fieldKeys = Object.keys(fieldsData)
 
@@ -241,7 +241,7 @@ const data = {
     currentDataSet: initCurrentDataSet(config.defaultCollection)
   },
   getters: {
-    getTabs: state => (key) => {
+    getTabs: state => key => {
       const collection = filter(state.collections, o => {
         return o.key == key
       })
@@ -372,11 +372,16 @@ const data = {
     },
     PUSH_RECORD: (state, record) => {
       if (!existRecord(state.currentDataSet, record)) {
-        state.currentDataSet.push(record)
+        if (record.path.startsWith('oss://')) {
+          state.currentDataSet.push(record)
+        }
       }
     },
     PUSH_RECORDS: (state, records) => {
-      const dataset = state.currentDataSet.concat(records)
+      const onlyAliyunRecords = filter(records, record => {
+        return record.path.startsWith('oss://')
+      })
+      const dataset = state.currentDataSet.concat(onlyAliyunRecords)
       state.currentDataSet = uniqBy(dataset, 'key')
     },
     POP_RECORD: (state, record) => {
@@ -390,10 +395,10 @@ const data = {
     }
   },
   actions: {
-    SaveCurrentDataSet({ state }) {
+    SaveCurrentDataSet ({ state }) {
       localStorage.setItem(`datains__${state.defaultCollection}__cart_files`, JSON.stringify(state.currentDataSet))
     },
-    GetDataSchema({ commit, state }) {
+    GetDataSchema ({ commit, state }) {
       return new Promise((resolve, reject) => {
         getDataSchema(state.defaultCollection)
           .then(response => {
@@ -410,7 +415,7 @@ const data = {
           })
       })
     },
-    ListCollections({ state }) {
+    ListCollections ({ state }) {
       return new Promise((resolve, reject) => {
         listCollections()
           .then(response => {
@@ -421,7 +426,7 @@ const data = {
           })
       })
     },
-    GetCollection({ state }, { key, value, defaultCollection }) {
+    GetCollection ({ state }, { key, value, defaultCollection }) {
       const parameter = {
         page: 1,
         per_page: 10
@@ -450,7 +455,7 @@ const data = {
           })
       })
     },
-    GetCollections({ state }, { formatMode, parameter }) {
+    GetCollections ({ state }, { formatMode, parameter }) {
       let payload = {}
       let parameters = {}
 
@@ -483,7 +488,7 @@ const data = {
           })
       })
     },
-    CountCollections({ state }, parameter) {
+    CountCollections ({ state }, parameter) {
       let payload = {}
       let parameters = {}
 

@@ -1,42 +1,51 @@
 <template>
   <!--eslint-disable-->
   <a-row class="filter-panel" :gutter="16">
-    <a-col class="left" :xl="{span: expanded ? 0 : 6}"
-      :lg="{span: expanded ? 0 : 6}"
-      :md="{span: expanded ? 0 : 24}"
-      :sm="{span: expanded ? 0 : 24}"
-      :xs="{span: expanded ? 0 : 24}">
+    <a-col
+      class="left"
+      :xl="{ span: expanded ? 0 : 6 }"
+      :lg="{ span: expanded ? 0 : 6 }"
+      :md="{ span: expanded ? 0 : 24 }"
+      :sm="{ span: expanded ? 0 : 24 }"
+      :xs="{ span: expanded ? 0 : 24 }"
+    >
       <a-tabs default-active-key="1">
         <a-tab-pane key="1" tab="Filter">
-          <a-row style="display: flex; justify-content: center; margin: 10px 10px;">
+          <a-row style="display: flex; justify-content: center; margin: 10px 10px">
             <a-input-search
               allowClear
               data-v-step="appstore-filter-panel-search"
               placeholder="Enter Search Text"
-              style="margin-bottom: 5px;"
+              style="margin-bottom: 5px"
               @change="filterFieldsList"
             />
           </a-row>
           <a-collapse :activeKey="activeFilterList">
-            <a-collapse-panel
-              :header="toTitleCase(field.name)"
-              :key="field.name"
-              v-for="field in filteredFieldsList"
-            >
-              <filter-list :checkboxMode="false" :dataSource="field.data" @select-filter="filterItems(field.key, $event)"></filter-list>
+            <a-collapse-panel :header="toTitleCase(field.name)" :key="field.name" v-for="field in filteredFieldsList">
+              <filter-list
+                :checkboxMode="false"
+                :dataSource="field.data"
+                @select-filter="filterItems(field.key, $event)"
+              ></filter-list>
             </a-collapse-panel>
           </a-collapse>
         </a-tab-pane>
       </a-tabs>
     </a-col>
-    <a-col class="right" :class="{expanded: expanded}"
-      :xl="{span: expanded ? 24 : 18}"
-      :lg="{span: expanded ? 24 : 18}"
-      :md="24" :sm="24" :xs="24">
+    <a-col
+      class="right"
+      :class="{ expanded: expanded }"
+      :xl="{ span: expanded ? 24 : 18 }"
+      :lg="{ span: expanded ? 24 : 18 }"
+      :md="24"
+      :sm="24"
+      :xs="24"
+    >
       <a-tabs defaultActiveKey="1" :activeKey="currentTab" @change="onChangeTab">
         <a-tab-pane tab="Pipelines" key="app">
           <app-list :appList="filteredApps" :key="localAppMode"></app-list>
         </a-tab-pane>
+        <a-button icon="question-circle" slot="tabBarExtraContent" @click="fetchHelp" style="margin-right: 5px;"> Help </a-button>
         <a-button slot="tabBarExtraContent" @click="expandPanel" type="primary" v-if="!expanded">
           Hide Filter Panel<a-icon type="fullscreen" />
         </a-button>
@@ -45,6 +54,14 @@
         </a-button>
       </a-tabs>
     </a-col>
+    <a-modal title="Help for Pipelines" width="60%" class="help-markdown" :visible="helpVisible" :footer="null" @cancel="closeHelp">
+      <a-row style="display: flex; justify-content: flex-end; margin-top: -20px; margin-right: -20px">
+        <a-checkbox :checked="helpChecked" @change="changeHelpCheckbox"> Don't show again </a-checkbox>
+      </a-row>
+      <a-row class="markdown">
+        <vue-markdown :source="helpMsg" @rendered="update"></vue-markdown>
+      </a-row>
+    </a-modal>
   </a-row>
 </template>
 
@@ -57,12 +74,16 @@ import orderBy from 'lodash.orderby'
 import map from 'lodash.map'
 import groupBy from 'lodash.groupby'
 import filter from 'lodash.filter'
+import axios from 'axios'
+import VueMarkdown from 'vue-markdown'
+import Prism from 'prismjs'
 
 export default {
   name: 'FilterPanel',
   components: {
     FilterList,
-    AppList
+    AppList,
+    VueMarkdown,
   },
   data() {
     return {
@@ -92,7 +113,10 @@ export default {
       currentTab: 'app',
       localAppMode: false,
       localApps: [],
-      expanded: true
+      expanded: true,
+      helpChecked: false,
+      helpVisible: false,
+      helpMsg: ''
     }
   },
   props: {},
@@ -136,8 +160,31 @@ export default {
   methods: {
     ...mapActions({
       getAppList: 'GetAppList',
-      getAppManifest: 'GetAppManifest',
+      getAppManifest: 'GetAppManifest'
     }),
+    changeHelpCheckbox(e) {
+      console.log('Change Help Checkbox: ', e)
+      this.helpChecked = e.target.checked
+      localStorage.setItem('datains__data__notShownAssessmentHelp', e.target.checked)
+    },
+    closeHelp() {
+      this.helpVisible = false
+    },
+    fetchHelp() {
+      axios
+        .get('/markdown/project-management.md')
+        .then(response => {
+          console.log('Fetch Help: ', response)
+          this.helpMsg = response.data
+        })
+        .catch(error => {
+          console.log('Fetch Help Error: ', error)
+          this.helpMsg = 'No Content.'
+        })
+        .finally(() => {
+          this.helpVisible = true
+        })
+    },
     expandPanel() {
       this.expanded = !this.expanded
     },
@@ -201,7 +248,7 @@ export default {
     filterItems(key, e) {
       if (this.currentTab === 'app') {
         this.localAppMode = true
-        this.localApps = filter(this.appList, (record) => {
+        this.localApps = filter(this.appList, record => {
           return record[key] === e.key
         })
       }
@@ -215,6 +262,20 @@ export default {
         this.generateFieldsList(this.appList)
         this.loading = false
       })
+    },
+    update() {
+      this.$nextTick(() => {
+        Prism.highlightAll()
+      })
+    },
+  },
+  created() {
+    const notShownHelp = JSON.parse(localStorage.getItem('datains__data__notShownAssessmentHelp'))
+    if (notShownHelp) {
+      this.helpVisible = !notShownHelp
+      this.helpChecked = notShownHelp
+    } else {
+      this.fetchHelp()
     }
   }
 }

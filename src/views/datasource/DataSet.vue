@@ -4,15 +4,10 @@
       :row-selection="rowSelection"
       :data-source="data"
       :columns="filteredColumns"
-      :scroll="{y: scrollHeight}"
+      :scroll="{ y: scrollHeight }"
       :pagination="false"
     >
-      <span
-        slot="action"
-        slot-scope="text, record"
-        @click="deleteRecord(record)"
-        style="cursor: pointer"
-      >
+      <span slot="action" slot-scope="text, record" @click="deleteRecord(record)" style="cursor: pointer">
         <a-icon type="delete" />
       </span>
       <div
@@ -21,11 +16,11 @@
         style="padding: 8px"
       >
         <a-input
-          v-ant-ref="c => (searchInput = c)"
+          v-ant-ref="(c) => (searchInput = c)"
           :placeholder="`Search ${column.dataIndex}`"
           :value="selectedKeys[0]"
-          style="width: 188px; margin-bottom: 8px; display: block;"
-          @change="e => setSelectedKeys(e.target.value ? [e.target.value] : [])"
+          style="width: 188px; margin-bottom: 8px; display: block"
+          @change="(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])"
           @pressEnter="() => handleSearch(selectedKeys, confirm, column.dataIndex)"
         />
         <a-button
@@ -34,7 +29,8 @@
           size="small"
           style="width: 90px; margin-right: 8px"
           @click="() => handleSearch(selectedKeys, confirm, column.dataIndex)"
-        >Search</a-button>
+          >Search</a-button
+        >
         <a-button size="small" style="width: 90px" @click="() => handleReset(clearFilters)">Reset</a-button>
       </div>
       <a-icon
@@ -50,15 +46,11 @@
           </template>
           <span v-if="searchText && searchedColumn === column.dataIndex">
             <template
-              v-for="(fragment, i) in text
-            .toString()
-            .split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))"
+              v-for="(fragment, i) in text.toString().split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))"
             >
-              <mark
-                v-if="fragment.toLowerCase() === searchText.toLowerCase()"
-                :key="i"
-                class="highlight"
-              >{{ fragment }}</mark>
+              <mark v-if="fragment.toLowerCase() === searchText.toLowerCase()" :key="i" class="highlight">{{
+                fragment
+              }}</mark>
               <template v-else>{{ fragment }}</template>
             </template>
           </span>
@@ -70,7 +62,12 @@
       <a-button icon="download" type="primary" @click="downloadAsJSON(data, 'downloadDataSet')" :disabled="disabled">
         JSON ({{ numOfRecords }})
       </a-button>
-      <a-button icon="download" type="primary" @click="downloadAsCSV(data, 'downloadDataSet', ['_id'])" :disabled="disabled">
+      <a-button
+        icon="download"
+        type="primary"
+        @click="downloadAsCSV(data, 'downloadDataSet', ['_id'])"
+        :disabled="disabled"
+      >
         CSV ({{ numOfRecords }})
       </a-button>
       <a id="downloadDataSet" v-show="false"></a>
@@ -82,6 +79,7 @@
 import { mapActions } from 'vuex'
 import uniqBy from 'lodash.uniqby'
 import filter from 'lodash.filter'
+import map from 'lodash.map'
 import { downloadAsCSV, downloadAsJSON } from '@/views/utils'
 
 export default {
@@ -244,6 +242,7 @@ export default {
         onSelect: (record, selected, selectedRows) => {
           const selectedItems = this.filterByType(selectedRows, this.filterType)
 
+          console.log('onSelect: ', selectedItems)
           if (selectedItems.length !== selectedRows.length) {
             if (this.filterType === '/') {
               this.$message.warn('Only support directory.')
@@ -251,16 +250,27 @@ export default {
               this.$message.warn('Only support ' + this.filterType + ' files')
             }
 
-            this.rowSelection.selectedRowKeys = this.getFilePath(selectedItems)
+            // Why need it?
+            // this.rowSelection.selectedRowKeys = map(selectedRows, record => {
+            //   return this.getFilePath(record)
+            // })
           }
 
-          this.selectedRows = this.selectedRows.concat(selectedItems)
-          this.selectedRows = uniqBy(this.filterByArray(this.selectedRows, this.rowSelection.selectedRowKeys), 'path')
+          if (this.rowSelection.selectedRowKeys) {
+            this.selectedRows = this.selectedRows.concat(selectedItems)
+            this.selectedRows = uniqBy(this.filterByArray(this.selectedRows, this.rowSelection.selectedRowKeys), 'path')
 
-          this.$emit('file-select', this.selectedRows)
-          console.log('File selection: ', selectedRows, selectedItems, this.selectedRows, this.rowSelection.selectedRowKeys)
+            this.$emit('file-select', this.selectedRows)
+            console.log(
+              'File selection: ',
+              selectedRows,
+              selectedItems,
+              this.selectedRows,
+              this.rowSelection.selectedRowKeys
+            )
+          }
         }
-      },
+      }
     }
   },
   computed: {
@@ -305,7 +315,7 @@ export default {
     },
     filterByArray(items, keys) {
       return filter(items, o => {
-        return keys.includes(o.path)
+        return keys.includes(o.key)
       })
     },
     deleteRecord(record) {
@@ -345,7 +355,9 @@ export default {
   },
   created() {
     if (this.mode === 'selection') {
-      this.rowSelection.selectedRowKeys = this.selected
+      this.rowSelection.selectedRowKeys = map(this.selected, o => {
+        return o.split('/').pop()
+      })
     } else {
       this.rowSelection = null
     }
@@ -362,7 +374,7 @@ export default {
 .dataset-container {
   .float-element {
     position: absolute;
-    top: -45px;
+    top: -40px;
     right: 50px;
 
     .ant-btn {

@@ -1,7 +1,7 @@
 <template>
   <a-row class="file-manager-container">
     <a-tabs :default-active-key="defaultActiveKey">
-      <a-tab-pane key="file-browser">
+      <!-- <a-tab-pane key="file-browser">
         <span slot="tab">
           <a-icon type="cloud" />FileBrowser
         </span>
@@ -13,7 +13,7 @@
           :allowMultiSelection="multiple"
           :filterType="filterType"
         ></file-browser>
-      </a-tab-pane>
+      </a-tab-pane> -->
       <a-tab-pane key="dataset">
         <span slot="tab">
           <a-icon type="experiment" />Custom DataSet
@@ -42,8 +42,8 @@ import DataSet from '@/views/datasource/DataSet'
 
 export default {
   components: {
-    FileBrowser: () => import('@/views/filemanager/FileBrowser'),
-    DataSet: () => import('@/views/datasource/DataSet')
+    FileBrowser,
+    DataSet
   },
   props: {
     multiple: {
@@ -67,7 +67,7 @@ export default {
   },
   computed: {
     defaultActiveKey() {
-      return 'file-browser'
+      return 'dataset'
     }
   },
   watch: {

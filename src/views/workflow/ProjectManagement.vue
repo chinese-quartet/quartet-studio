@@ -10,7 +10,7 @@
     </template>
 
     <project-list :id="refreshToken"></project-list>
-    <a-modal title="Help" width="60%" class="help-markdown" :visible="helpVisible" :footer="null" @cancel="closeHelp">
+    <a-modal title="Help for Piplines" width="60%" class="help-markdown" :visible="helpVisible" :footer="null" @cancel="closeHelp">
       <a-row style="display: flex; justify-content: flex-end; margin-top: -20px; margin-right: -20px">
         <a-checkbox :checked="helpChecked" @change="changeHelpCheckbox"> Don't show again </a-checkbox>
       </a-row>

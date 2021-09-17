@@ -4,7 +4,7 @@
       <a-col :xl="16" :lg="16" :md="24" :sm="24" :xs="24">
         <a-popover v-model="menuVisible" trigger="click" placement="bottom">
           <a-input-search
-            style="margin-bottom: 10px;"
+            style="margin-bottom: 10px"
             slot="content"
             placeholder="Filter Columns"
             allowClear
@@ -17,7 +17,8 @@
                 :defaultChecked="item.visible"
                 :key="item.key"
                 @change="onSelectColumn(item.title, $event)"
-              >{{ item.title }}</a-checkbox>
+                >{{ item.title }}</a-checkbox
+              >
             </a-col>
           </a-row>
           <a-button>
@@ -32,7 +33,7 @@
         <a-button @click="switchCartTable">
           <a-icon type="experiment" />
           <span>Cart Files &nbsp;</span>
-          <a-tag color="#87d068" style="margin: 0px;">{{ recordCounts }}</a-tag>
+          <a-tag color="#87d068" style="margin: 0px">{{ recordCounts }}</a-tag>
         </a-button>
       </a-col>
       <a-col :xl="8" :lg="8" :md="24" :sm="24" :xs="24">
@@ -40,7 +41,12 @@
       </a-col>
     </a-row>
     <a-table
-      :row-selection="{ onSelectAll: onSelectAll, onSelect: onSelectRecord, selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
+      :row-selection="{
+        onSelectAll: onSelectAll,
+        onSelect: onSelectRecord,
+        selectedRowKeys: selectedRowKeys,
+        onChange: onSelectChange,
+      }"
       :columns="visibleColumns"
       :pagination="pagination"
       :dataSource="data"
@@ -246,10 +252,25 @@ export default {
       console.log('onSelectAll: ', selected, selectedRows, changeRows)
       if (selected) {
         this.$store.commit('PUSH_RECORDS', changeRows)
-        this.$message.success(`Added ${changeRows.length} Records to the Currect Dataset.`, 3)
+
+        const valid = filter(changeRows, row => {
+          return row.path.startsWith('oss://')
+        })
+        if (valid.length > 0) {
+          this.$message.success(`Added ${valid.length} Records to the Currect Dataset.`, 3)
+        } else {
+          this.$message.warning('No valid records for custom analysis', 3)
+        }
       } else {
         this.$store.commit('POP_RECORDS', changeRows)
-        this.$message.warn(`Removed ${changeRows.length} Records from the Current Dataset.`, 3)        
+        const valid = filter(changeRows, row => {
+          return row.path.startsWith('oss://')
+        })
+        if (valid.length > 0) {
+          this.$message.warn(`Removed ${valid.length} Records from the Current Dataset.`, 3)
+        } else {
+          this.$message.warning('No valid records for custom analysis', 3)
+        }
       }
       this.saveCurrentDataSet()
     },
@@ -257,10 +278,19 @@ export default {
       console.log('onSelectRecord: ', record, selected, selectedRows)
       if (selected) {
         this.$store.commit('PUSH_RECORD', record)
-        this.$message.success(`Added ${record.key} to the Current Dataset.`, 3)
+
+        if (record.path.startsWith('oss://')) {
+          this.$message.success(`Added ${record.key} to the Current Dataset.`, 3)
+        } else {
+          this.$message.warning('Not a valid record for custom analysis', 3)
+        }
       } else {
         this.$store.commit('POP_RECORD', record)
-        this.$message.warn(`Removed ${record.key} from the Current Dataset.`, 3)
+        if (record.path.startsWith('oss://')) {
+          this.$message.warn(`Removed ${record.key} from the Current Dataset.`, 3)
+        } else {
+          this.$message.warning('Not a valid record for custom analysis', 3)
+        }
       }
       this.saveCurrentDataSet()
     },
@@ -281,7 +311,7 @@ export default {
       // this.selectedRowKeys = selectedRowKeys
     },
     removeFields(fields, exclude) {
-      return fields.filter(x => !exclude.includes(x));
+      return fields.filter(x => !exclude.includes(x))
     },
     resetPage() {
       this.set_page({
@@ -296,7 +326,7 @@ export default {
       })
     },
     downloadAsJSON() {
-      this.$message.success('Downloading..., Please don\'t refresh the page.')
+      this.$message.success("Downloading..., Please don't refresh the page.")
       if (this.allowDownload) {
         this.setTotal()
         this.searchCollections(data => {
