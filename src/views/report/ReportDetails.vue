@@ -6,43 +6,33 @@
       <detail-list-item term="Finished Time">{{ report.finishedAt }}</detail-list-item>
       <detail-list-item term="Description">{{ report.description }}</detail-list-item>
       <detail-list-item term="Status">
-        <a-tag color="pink" v-if="checked">Checked</a-tag>
-        <a-tag color="blue" v-if="archived">Archived</a-tag>
+        <a-tag color="green">Finished</a-tag>
       </detail-list-item>
     </detail-list>
     <a-row slot="extra" class="status-list">
-      <a-col :xs="8" :sm="8" >
+      <a-col :xs="8" :sm="8">
         <div class="text">Related Project</div>
         <div class="heading">
-          <a-button type="primary" size="small" icon="logout" @click.native="backToProjectList(report.relatedProjectId)"/>
+          <a-button
+            type="primary"
+            size="small"
+            icon="logout"
+            @click.native="backToProjectList(report.relatedProjectId)"
+          />
         </div>
-      </a-col>
-      <a-col :xs="8" :sm="8">
-        <div class="text">Team</div>
-        <div class="heading">{{ report.groupName }}</div>
       </a-col>
       <a-col :xs="8" :sm="8">
         <div class="text">Report Log</div>
         <div class="heading">
           <a-popover placement="left">
             <template slot="content">
-              <a-row v-html="report.reportLog" class="log-container"></a-row>
+              <a-row v-html="log" class="log-container"></a-row>
             </template>
-            <a-button type="primary" size="small" icon="eye"/>
+            <a-button type="primary" size="small" @click="loadLog(report.response.log)" icon="eye" />
           </a-popover>
         </div>
       </a-col>
     </a-row>
-    <!-- actions -->
-    <template slot="action">
-      <a-button-group style="margin-right: 4px;">
-        <a-button disabled>Save</a-button>
-        <a-button disabled>Edit</a-button>
-        <a-button disabled>{{ switchBtnText }}</a-button>
-        <!-- <a-button><a-icon type="ellipsis"/></a-button> -->
-      </a-button-group>
-      <a-button type="primary" disabled>Archive</a-button>
-    </template>
 
     <embeded-frame :src="reportUrl" class="embeded-frame"></embeded-frame>
   </page-view>
@@ -51,8 +41,9 @@
 <script>
 import { PageView } from '@/layouts'
 import EmbededFrame from '@/views/iframe/EmbededFrame'
-import { mapActions } from 'vuex'
 import DetailList from '@/components/Tools/DetailList'
+import { GetTask } from './util'
+import { makeDownloadUrl } from '@/api/manage'
 
 const DetailListItem = DetailList.Item
 
@@ -70,69 +61,55 @@ export default {
       default: true
     }
   },
-  data () {
+  data() {
     return {
-      report: {}
+      report: {},
+      log: '',
+      reportUrl: ''
     }
   },
   computed: {
-    reportUrl () {
-      const reportUrl = this.report.reportUrl
-      if (reportUrl) {
-        return reportUrl
-      } else {
-        return ''
-      }
-    },
-    checked () {
-      const status = this.report.status
-      if (status) {
-        return status.checked
-      } else {
-        return false
-      }
-    },
-    archived () {
-      const status = this.report.status
-      if (status) {
-        return status.archived
-      } else {
-        return false
-      }
-    },
-    reportId () {
+    reportId() {
       return this.$route.params.reportId
-    },
-    switchBtnText () {
-      if (this.report.status === 'Checked') {
-        return 'Uncheck'
-      } else {
-        return 'Check'
-      }
     }
   },
   methods: {
-    ...mapActions({
-      getReport: 'GetReport'
-    }),
-    backToProjectList (projectId) {
+    loadLog(logLink) {
+      this.log = ''
+    },
+    backToProjectList(projectId) {
       this.$router.push({ name: 'project-management', params: { projectId: projectId } })
     },
-    getTitle () {
+    getTitle() {
       return this.$route.meta.title
     },
-    searchReport (reportId) {
-      this.getReport(reportId).then(data => {
-        const that = this
-        that.report = data
+    searchReport(reportId) {
+      GetTask(reportId).then(data => {
+        this.report = data
         console.log('Report Record: ', data)
+
+        if (this.report.response) {
+          const key = JSON.parse(this.report.response).report
+
+          makeDownloadUrl('minio', 'tservice', {
+            key: key
+          })
+            .then(response => {
+              console.log('Make Download Url: ', key, response)
+
+              this.reportUrl = response.download_url
+            })
+            .catch(error => {
+              console.log('Make Download Url Error: ', error)
+              this.$message.warn('Not found the report.')
+              this.$router.go(-1)
+            })
+        }
       })
     }
   },
-  mounted () {
-
-  },
-  created () {
+  mounted() {},
+  created() {
     console.log('Request Report: ', this.reportId)
     this.searchReport(this.reportId)
   }
@@ -156,13 +133,13 @@ export default {
 
 .text {
   text-align: right;
-  color: rgba(0, 0, 0, .45);
+  color: rgba(0, 0, 0, 0.45);
 }
 
 .heading {
   text-align: right;
   display: block;
-  color: rgba(0, 0, 0, .85);
+  color: rgba(0, 0, 0, 0.85);
   font-size: 16px;
 }
 

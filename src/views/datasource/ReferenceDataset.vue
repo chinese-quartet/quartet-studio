@@ -3,7 +3,9 @@
     <a-list item-layout="vertical" size="large" :data-source="listData">
       <a-list-item slot="renderItem" key="item.title" slot-scope="item, index">
         <template slot="actions">
-          <a-button type="primary" icon="cloud-download" @click="fetchHelp(item.markdown, item.title)">Download</a-button>
+          <a-button type="primary" icon="cloud-download" @click="fetchHelp(item.markdown, item.title)"
+            >Download</a-button
+          >
         </template>
         <img slot="extra" width="400" alt="logo" :src="item.image" />
         <a-list-item-meta :description="item.description">
@@ -13,7 +15,14 @@
         {{ item.content }}
       </a-list-item>
     </a-list>
-    <a-modal :title="helpTitle" width="60%" class="help-markdown" :visible="helpVisible" :footer="null" @cancel="closeHelp">
+    <a-modal
+      :title="helpTitle"
+      width="60%"
+      class="help-markdown"
+      :visible="helpVisible"
+      :footer="null"
+      @cancel="closeHelp"
+    >
       <a-row class="markdown">
         <vue-markdown :source="helpMsg" @rendered="update"></vue-markdown>
       </a-row>
@@ -22,7 +31,6 @@
 </template>
 
 <script>
-import v from 'voca'
 import axios from 'axios'
 import VueMarkdown from 'vue-markdown'
 import Prism from 'prismjs'
@@ -38,35 +46,41 @@ export default {
           image: require('@/assets/images/dna-reference-datasets-overview.png'),
           title: 'Reference Datasets for DNA',
           avatar: require('@/assets/images/genomics.png'),
-          description: 'Reference datasets could be used as "ground truth" to evaluate the accuracy of DNA-seq experiments.',
-          content: 'The Quartet DNA reference datasets are provided as a variant call file (vcf) that contains the high-confidence SNVs, small indels (less than 50 bp), and structural variants (insertions and deletion over than 50 bp), as well as a tab-delimited "bed" file that describes the high-confidence bed regions, using methods described in the Quartet DNA manuscript. The v20210909 of DNA reference datasets covers approximately 87.8% of the GRCh38 assembly (https://gdc.cancer.gov/about-data/gdc-data-processing/gdc-reference-files). As sequencing technologies and analysis methods improve, the reference datasets will be updated periodically.',
+          description:
+            'Reference datasets could be used as "ground truth" to evaluate the accuracy of DNA-seq experiments.',
+          content:
+            'The Quartet DNA reference datasets are provided as a variant call file (vcf) that contains the high-confidence SNVs, small indels (less than 50 bp), and structural variants (insertions and deletion over than 50 bp), as well as a tab-delimited "bed" file that describes the high-confidence bed regions, using methods described in the Quartet DNA manuscript. The v20210909 of DNA reference datasets covers approximately 87.8% of the GRCh38 assembly (https://gdc.cancer.gov/about-data/gdc-data-processing/gdc-reference-files). As sequencing technologies and analysis methods improve, the reference datasets will be updated periodically.',
           markdown: '/markdown/dna-reference-datasets.md'
         },
         {
           image: require('@/assets/images/rna-reference-datasets-overview.png'),
           title: 'Reference Datasets for RNA',
           avatar: require('@/assets/images/transcriptomics.png'),
-          description: 'Reference datasets could be used as "ground truth" to evaluate the accuracy of RNA-seq experiments.',
-          content: 'Based on high-quality of multi-lab RNA-seq libraries, we have reached consensuses on the characterization of gene expression at relative level as reference datasets, and established performance metrics for proficiency test. We used expression profiles from 16 hiqh-quality RNA-seq batches to construct reference datasets. Of the 58,395 genes annotated in GRCh38.93, 10,067 (17.2%) for D6/D5, 11,560 (19.8 %) for F7/D5, 8,081 (13.8%) for F7/D6, 12,104 (20.7%) for M8/D5, 9,363 (16.0%) for M8/D6, and 10,401 (17.8%) for M8/F7 were determined as reference datasets. Moreover, the numbers of reference DEGs ranged from 1,617 to 3,044 for the six pairs of sample groups.',
+          description:
+            'Reference datasets could be used as "ground truth" to evaluate the accuracy of RNA-seq experiments.',
+          content:
+            'Based on high-quality of multi-lab RNA-seq libraries, we have reached consensuses on the characterization of gene expression at relative level as reference datasets, and established performance metrics for proficiency test. We used expression profiles from 16 hiqh-quality RNA-seq batches to construct reference datasets. Of the 58,395 genes annotated in GRCh38.93, 10,067 (17.2%) for D6/D5, 11,560 (19.8 %) for F7/D5, 8,081 (13.8%) for F7/D6, 12,104 (20.7%) for M8/D5, 9,363 (16.0%) for M8/D6, and 10,401 (17.8%) for M8/F7 were determined as reference datasets. Moreover, the numbers of reference DEGs ranged from 1,617 to 3,044 for the six pairs of sample groups.',
           markdown: '/markdown/rna-reference-datasets.md'
         },
         {
-          image:
-            'http://www.rainsurebio.com/qfy-content/uploads/2020/03/dca143037912404bfc097f509af837c4-e1584692168980-1024x429.jpg',
+          image: require('@/assets/images/protein-reference-datasets-overview.png'),
           title: 'Reference Dataset for Proteomics',
           avatar: require('@/assets/images/proteomics.png'),
-          description: 'Ant Design, a design language for background applications, is refined by Ant UED Team.',
+          description:
+            'Reference datasets could be used as "ground truth" to evaluate the accuracy of Proteomics experiments.',
           content:
-            'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.'
+            'The preliminary expression profile with 6,319 features (proteins mapped to gene symbols) and 72 replicates was merged from six batches of data (DDA-APT, DDA-FDU, DDA-NVG, DIA-APT, DIA-BGI, DIA-FDU), which were generated by two technologies (DDA and DIA) using six units of Quartet Protein Reference Materials.',
+          markdown: '/markdown/protein-reference-datasets.md'
         },
         {
-          image:
-            'http://www.rainsurebio.com/qfy-content/uploads/2020/03/dca143037912404bfc097f509af837c4-e1584692168980-1024x429.jpg',
+          image: require('@/assets/images/metabolite-reference-datasets-overview.png'),
           title: 'Reference Dataset for Metabolomics',
           avatar: require('@/assets/images/metabolomics.png'),
-          description: 'Ant Design, a design language for background applications, is refined by Ant UED Team.',
+          description:
+            'Reference datasets could be used as "ground truth" to evaluate the accuracy of Metabolomics experiments.',
           content:
-            'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.'
+            'A reference dataset was built with the following steps in the workflow. We first filter out low-quality metabolites with CV greater than 25% and the number of replicates less two in each batch. Subsequently, only metabolites that were jointly detected in at least two datasets were retained, and the ratio results of the six sample combinations in each batch of these metabolites were calculated. Taking the total CV <10% as the criterion for consensual results between datasets, we searched for metabolites agreed by at least 2 datasets in each sample combination and took the average ratio of the largest agreed datasets in these metabolites as the consensual relative reference dataset.',
+          markdown: '/markdown/metabolite-reference-datasets.md'
         }
       ],
       helpVisible: false,
@@ -99,7 +113,7 @@ export default {
         .finally(() => {
           this.helpVisible = true
         })
-    },
+    }
   },
   created() {}
 }

@@ -1,11 +1,26 @@
-### How to download the reference datasets?
 <img src="https://img.shields.io/badge/Version-v20210909-blue"/>
 
-[Use the OSS Utility](https://www.yuque.com/quartet/tools/ossutil) / [Use the OSS Browser](https://www.yuque.com/quartet/tools/ossbrowser)
+### How to download the reference datasets?
 
-```
-# Download Link
-oss://reference-datasets/v20210909/DNA/
+#### Download with Browser
+| Name                        | Link                                                                                                        |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| LCL5.high.confidence.calls.vcf | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/LCL5.high.confidence.calls.vcf) |
+| LCL6.high.confidence.calls.vcf | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/LCL6.high.confidence.calls.vcf) |
+| LCL7.high.confidence.calls.vcf | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/LCL7.high.confidence.calls.vcf) |
+| LCL8.high.confidence.calls.vcf | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/LCL8.high.confidence.calls.vcf) |
+| Quartet.high.confidence.region.v202103.bed | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/Quartet.high.confidence.region.v202103.bed) |
+| contig.txt | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/contig.txt) |
+
+#### Download with wget
+
+```text
+http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/LCL5.high.confidence.calls.vcf
+http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/LCL6.high.confidence.calls.vcf
+http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/LCL7.high.confidence.calls.vcf
+http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/LCL8.high.confidence.calls.vcf
+http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/Quartet.high.confidence.region.v202103.bed
+http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/contig.txt
 ```
 
 ### Description

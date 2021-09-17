@@ -20,15 +20,7 @@
         :forceRender="true"
       >
         <a-alert style="margin-bottom: 15px" message="Notices" type="info" show-icon>
-          <span slot="description">
-            <span> Additional description and informations about data & metadata files. </span>
-            <br />
-
-            Example Files: &nbsp;
-            <a href="/examples/protqc/data_log2_example.csv">Data File</a>
-            &nbsp;
-            <a href="/examples/protqc/metadata_example.csv">Metadata File</a>
-          </span>
+          <span slot="description" v-html="getDescription(currentReport, 'uploadNotice')"> </span>
         </a-alert>
         <a-row class="uploader">
           <a-upload-dragger
@@ -64,7 +56,7 @@
       >
         <a-alert style="margin-bottom: 15px" message="Notices" type="info" show-icon>
           <span slot="description">
-            <span> Additional description and informations about data & metadata files. </span>
+            <span> {{ getDescription(currentReport, 'description') }} </span>
           </span>
         </a-alert>
         <project-mode-submitter @close="reset" :appKey="currentReport"></project-mode-submitter>
@@ -78,7 +70,7 @@
       >
         <a-alert style="margin-bottom: 15px" message="Notices" type="info" show-icon>
           <span slot="description">
-            <span> Additional description and informations about data & metadata files. </span>
+            <span> {{ getDescription(currentReport, 'description') }} </span>
           </span>
         </a-alert>
         <a-form :form="form" layout="vertical" @submit="createReport">
@@ -249,7 +241,37 @@ export default {
       fileList: [],
       uploadSuccessList: [],
       form: this.$form.createForm(this, { name: 'coordinated' }),
-      loading: false
+      loading: false,
+      description: {
+        dna: '',
+        rna: '',
+        protein:
+          'Quality Assessment of a Quartet proteomic profiling dataset is based on built-in biological differences of the samples and consistency with the reference dataset at relative quantitation levels. The former is scored as an Signal-to-Noise Ratio (SNR) and displayed in a PCA scatterplot, and the latter is scored as Pearson correlation to the reference dataset and displayed in a scatterplot, in which a strict filter criteria was applied (features with p.adj<0.05 in at least 4 batches were kept).',
+        metabolite:
+          'Quality Assessment of a Quartet metabolomic profiling dataset is based on built-in biological differences of the samples, consistency with the reference dataset at relative quantitation levels. The three QC metrics, including Signal-to-Noise Ratio (SNR), Correlation to reference dataset (CTR), and Root Mean Square Error (RMSE), to comprehensively assess the performance of metabolic profiles from 2 aspects: reproducibility and accuracy.'
+      },
+      uploadNotice: {
+        dna: '',
+        rna: '',
+        protein:
+          '<span> Additional description and informations about data & metadata files. </span>' +
+          '<br />' +
+          '<br />' +
+          'Example Files: &nbsp;' +
+          '<a href="/examples/protqc/data_log2_example.csv">Data File</a>' +
+          '&nbsp;&nbsp;' +
+          '<a href="/examples/protqc/metadata_example.csv">Metadata File</a>',
+        metabolite:
+          'The <b>data file</b> is the metabolite concentration result of metabolomics profiling. The required file format has samples in columns and two columns named "metabolites" and "HMDBID" including the names and HMDB IDs of metabolite compounds.&nbsp;' +
+          '<br />' +
+          'The <b>metadata file</b> has the information of each sample in the data file. With columns named "col_names" (names of samples, identical to their names in the columns of data file), "strategy" (Targeted or Untargeted), "lab" (the name of lab), "sample" (D5, D6, F7 and M8 for Quartet samples), "rep" (the replicates for each sample) and "batch" (the name of batch).' +
+          '<br />' +
+          '<br />' +
+          'Example Files: &nbsp;' +
+          '<a href="/examples/metqc/data_example.csv">Data File</a>' +
+          '&nbsp;&nbsp;' +
+          '<a href="/examples/metqc/metadata_example.csv">Metadata File</a>',
+      }
     }
   },
   watch: {
@@ -287,6 +309,17 @@ export default {
       makeUploadUrl: 'MakeUploadUrl',
       getObjectMeta: 'GetObjectMeta'
     }),
+    getDescription(key, obj) {
+      if (key === 'renluyao/quartet_dna_quality_control_wgs_big_pipeline-v0.1.2') {
+        return this[obj]['dna']
+      } else if (key === 'lizhihui/quartet-rnaseq-qc-v0.1.4') {
+        return this[obj]['rna']
+      } else if (key === 'quartet-protqc-report') {
+        return this[obj]['protein']
+      } else {
+        return this[obj]['metabolite']
+      }
+    },
     handleChange(info) {
       if (info.file.status !== 'uploading') {
         console.log(info.file, info.fileList)
@@ -349,12 +382,7 @@ export default {
 
       console.log('Before Upload: ', fileList, fileExtList, fileNameList)
 
-      if (
-        fileList.length === 2 &&
-        fileExtList.length === 2 &&
-        fileNameList[0] === fileNameList[1] &&
-        fileExtList.includes('csv')
-      ) {
+      if (fileList.length === 2 && fileExtList.length === 2 && fileExtList.includes('csv')) {
         return true
       } else {
         this.$message.warn('Please upload matched data & metadata files.')
@@ -368,7 +396,7 @@ export default {
       return new Promise((resolve, reject) => {
         this.getObjectMeta({
           service: 'minio',
-          name: 'reports',
+          name: 'tservice',
           key: filekey
         })
           .then(response => {
@@ -387,7 +415,7 @@ export default {
           console.log(file.name, 'exist.', response)
           this.uploadSuccessList.push({
             name: file.name,
-            path: `file:///data/quartet-data-portal/${filekey}`
+            path: `file:///data/quartet-data-portal/tservice/${filekey}`
           })
           onSuccess(response, file)
         })
@@ -395,7 +423,7 @@ export default {
           console.log(error, ', so we can upload it...')
           this.makeUploadUrl({
             service: 'minio',
-            name: 'reports',
+            name: 'tservice',
             key: filekey
           })
             .then(response => {
@@ -426,7 +454,7 @@ export default {
                   console.log('Upload Files: ', response, file)
                   this.uploadSuccessList.push({
                     name: file.name,
-                    path: `file:///data/quartet-data-portal/${filekey}`
+                    path: `file:///data/quartet-data-portal/tservice/${filekey}`
                   })
                   onSuccess(response, file)
                 })

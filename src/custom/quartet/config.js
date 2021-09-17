@@ -201,7 +201,7 @@ export const projectSettings = {
 
 export function initBaseURL () {
   // const apiService = 'http://quartet-backend.3steps.cn'
-  const apiService = 'http://47.103.58.251'
+  const apiService = 'http://47.103.146.236'
   console.log(`BASE_API_URL: ${apiService}`)
   return apiService
 }

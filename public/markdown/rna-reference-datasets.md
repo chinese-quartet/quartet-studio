@@ -1,12 +1,28 @@
-### How to download the reference datasets? 
 <img src="https://img.shields.io/badge/Version-v20210909-blue"/>
 
-[Use the OSS Utility](https://www.yuque.com/quartet/tools/ossutil) / [Use the OSS Browser](https://www.yuque.com/quartet/tools/ossbrowser)
+### How to download the reference datasets? 
 
+#### Download with Browser
+| Name                        | Link                                                                                                        |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| D6_D5_ReferenceDatasets.csv | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/D6_D5_ReferenceDatasets.csv) |
+| F7_D5_ReferenceDatasets.csv | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/F7_D5_ReferenceDatasets.csv) |
+| F7_D6_ReferenceDatasets.csv | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/F7_D6_ReferenceDatasets.csv) |
+| M8_D5_ReferenceDatasets.csv | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/M8_D5_ReferenceDatasets.csv) |
+| M8_D6_ReferenceDatasets.csv | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/M8_D6_ReferenceDatasets.csv) |
+| M8_F7_ReferenceDatasets.csv | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/M8_F7_ReferenceDatasets.csv) |
+
+#### Download with wget
+
+```text
+http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/D6_D5_ReferenceDatasets.csv
+http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/F7_D5_ReferenceDatasets.csv
+http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/F7_D6_ReferenceDatasets.csv
+http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/M8_D5_ReferenceDatasets.csv
+http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/M8_D6_ReferenceDatasets.csv
+http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/M8_F7_ReferenceDatasets.csv
 ```
-# Download Link
-oss://reference-datasets/v20210909/DNA/
-```
+
 
 ### Description
 Based on high-quality of multi-lab RNA-seq libraries, we have reached consensuses on the characterization of gene expression at relative level as reference datasets, and established performance metrics for proficiency test. 

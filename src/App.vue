@@ -182,6 +182,7 @@ export default {
 <style lang="less">
 @import url('./components/global.less');
 @import '~shepherd.js/dist/css/shepherd.css';
+@import url('./assets/css/markdown.less');
 
 #app {
   height: 100%;
@@ -191,20 +192,6 @@ export default {
     pointer-events: auto;
     z-index: 9999;
     border-radius: 5px;
-  }
-}
-
-// For vue-markdown
-.markdown {
-  p {
-    text-align: justify;
-  }
-
-  pre {
-    border: 1px solid #d6d6d6;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #d6d6d6;
   }
 }
 </style>

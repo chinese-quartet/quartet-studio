@@ -14,7 +14,7 @@
     >
       <span slot="operation" slot-scope="text, record">
         <a-button
-          @click="loadModelResults(record, showRecord)"
+          @click="loadResult(record)"
           :disabled="record.status !== 'Finished'"
           icon="eye"
           type="primary"
@@ -22,7 +22,6 @@
         >
           Result
         </a-button>
-        <a-button @click="getRecord(record.file_name)" icon="api" style="display: none">Connection</a-button>
       </span>
       <span slot="status" slot-scope="text, record" class="single-tag">
         <a-progress
@@ -59,7 +58,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { PageView } from '@/layouts'
 import Submitter from './Submitter'
 import filter from 'lodash.filter'
@@ -82,8 +80,8 @@ const columns = [
   },
   {
     title: 'Report Type',
-    dataIndex: 'pluginName',
-    key: 'pluginName',
+    dataIndex: 'reportType',
+    key: 'reportType',
     align: 'center',
     visible: true
   },
@@ -157,40 +155,18 @@ export default {
     }
   },
   methods: {
+    loadResult(record) {
+      this.$router.push({
+        name: 'report-details',
+        params: { reportId: record.id }
+      })
+    },
     onCreateModels(mode) {
       this.submitPanelVisible = true
     },
     hideSubmitPanel() {
       this.submitPanelVisible = false
       this.getReports(this.pagination.current, this.pagination.pageSize)
-    },
-    formatDateTime(datetime) {
-      if (datetime) {
-        return moment(datetime).format('YYYY-MM-DD HH:mm')
-      } else {
-        return ''
-      }
-    },
-    formatRecords(records) {
-      const data = []
-      records.forEach(record => {
-        console.log('Format Records: ', record)
-        const newRecord = {
-          payload: record.payload,
-          name: record.name,
-          description: record.description,
-          reportType: record.plugin_name,
-          startedAt: this.formatDateTime(record.started_time),
-          finishedAt: this.formatDateTime(record.finished_time),
-          status: record.status,
-          id: record.id,
-          percentage: record.percentage
-        }
-
-        data.push(newRecord)
-      })
-
-      return data
     },
     getReports(page, pageSize) {
       this.reportLoading = true
@@ -203,7 +179,7 @@ export default {
           this.pagination.total = response.total
           this.pagination.current = response.page
           this.pagination.pageSize = response.pageSize
-          this.data = this.formatRecords(response.data)
+          this.data = response.data
           // this.$message.success('Refresh successfully!', 3)
           this.reportLoading = false
         })
