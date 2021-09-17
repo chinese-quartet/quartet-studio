@@ -15,8 +15,8 @@
               >
                 <a-select-option value="DNA">DNA</a-select-option>
                 <a-select-option value="RNA">RNA</a-select-option>
-                <a-select-option value="Cell">Cell</a-select-option>
-                <a-select-option value="Plasma">Plasma</a-select-option>
+                <a-select-option value="Protein">Protein</a-select-option>
+                <a-select-option value="Metabolite">Metabolite</a-select-option>
               </a-select>
             </a-form-item>
             <a-form-item label="Tubes">
@@ -113,7 +113,7 @@ export default {
       ],
       formLayout: 'horizontal',
       form: this.$form.createForm(this, { name: 'coordinated' }),
-      email: 'gscg_quartet@163.com'
+      email: 'quartet@fudan.edu.cn'
     }
   },
   computed: {
@@ -222,7 +222,7 @@ export default {
                 'Yours sincerely,' +
                 '<br/>' +
                 '<br/>' +
-                'GSCG Consortium' +
+                'Quartet Team' +
                 '<br/>' +
                 `Email: ${this.email}`
               this.setPageContent('additional-notes', content)
@@ -286,7 +286,6 @@ export default {
       border-radius: 6px;
       background-color: #fafafa;
       height: 450px;
-      text-align: center;
       padding-top: 30px;
       overflow: scroll;
 

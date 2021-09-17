@@ -31,7 +31,7 @@
       </div>
     </Animated>
     <div class="on-off-btn" v-if="drawerMode" @click="switchHeader()" :class="{ 'drawer-mode-btn': !activeHeader }">
-      <a-tooltip placement="bottom">
+      <a-tooltip placement="bottom" :visible="tooltipVisible">
         <template slot="title">
           <span>Click me and show more details.</span>
         </template>
@@ -74,12 +74,14 @@ export default {
   },
   methods: {
     switchHeader () {
+      this.tooltipVisible = false
       this.activeHeader = !this.activeHeader
     }
   },
   data () {
     return {
-      activeHeader: !this.drawerMode
+      activeHeader: !this.drawerMode,
+      tooltipVisible: true,
     }
   }
 }

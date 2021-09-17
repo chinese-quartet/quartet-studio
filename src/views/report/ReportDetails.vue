@@ -14,6 +14,7 @@
         <div class="text">Related Project</div>
         <div class="heading">
           <a-button
+            disabled
             type="primary"
             size="small"
             icon="logout"
@@ -22,6 +23,17 @@
         </div>
       </a-col>
       <a-col :xs="8" :sm="8">
+        <div class="text">Download Report</div>
+        <div class="heading">
+          <a-button
+            type="primary"
+            size="small"
+            icon="download"
+            @click.native="downloadFile('multi-report.html', reportUrl)"
+          />
+        </div>
+      </a-col>
+      <a-col :xs="8" :sm="8" style="display: none">
         <div class="text">Report Log</div>
         <div class="heading">
           <a-popover placement="left">
@@ -44,6 +56,7 @@ import EmbededFrame from '@/views/iframe/EmbededFrame'
 import DetailList from '@/components/Tools/DetailList'
 import { GetTask } from './util'
 import { makeDownloadUrl } from '@/api/manage'
+import axios from 'axios'
 
 const DetailListItem = DetailList.Item
 
@@ -74,6 +87,22 @@ export default {
     }
   },
   methods: {
+    downloadFile(filename, link) {
+      this.$message.info('Please hold on, downloading...')
+      axios.get(link).then(response => {
+        var element = document.createElement('a')
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(response.data))
+        element.setAttribute('target', '_blank')
+        element.setAttribute('download', filename)
+
+        element.style.display = 'none'
+        document.body.appendChild(element)
+
+        element.click()
+
+        document.body.removeChild(element)
+      })
+    },
     loadLog(logLink) {
       this.log = ''
     },

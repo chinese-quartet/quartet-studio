@@ -69,6 +69,7 @@ const columns = [
     dataIndex: 'name',
     key: 'name',
     align: 'center',
+    width: 300,
     visible: true
   },
   {
@@ -104,6 +105,7 @@ const columns = [
     dataIndex: 'status',
     key: 'status',
     align: 'center',
+    width: 80,
     scopedSlots: { customRender: 'status' },
     visible: true
   },
