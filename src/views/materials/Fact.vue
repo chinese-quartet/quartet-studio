@@ -7,7 +7,7 @@
         <img
           width="100%"
           height="200"
-          src="http://www.rainsurebio.com/qfy-content/uploads/2020/03/dca143037912404bfc097f509af837c4-e1584692168980-1024x429.jpg"
+          :src="require(`@/assets/images/${item.key}-materials-pack.jpg`)"
         />
         <div class="fact-info">
           <img width="100%" height="160px" style="border-bottom: 1px solid #d6d6d6;" :src="require(`@/assets/images/${item.key}-materials.png`)"/>
