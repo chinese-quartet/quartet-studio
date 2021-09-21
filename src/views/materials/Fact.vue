@@ -3,7 +3,7 @@
     <a-col v-for="item in factData" :xs="24" :md="12" :lg="6" :key="item.name">
       <div @click="selectItem(item.key)" class="fact-item">
         <h4 class="fact-item-title">{{ item.name }}</h4>
-        <a-button class="request-btn" type="primary" @click.stop="requestMaterials">Request</a-button>
+        <a-button class="request-btn" type="primary" @click.stop="requestMaterials(item.name)">Request</a-button>
         <img
           width="100%"
           height="200"
@@ -35,9 +35,12 @@ export default {
     selectItem(itemKey) {
       this.$emit('select-item', itemKey)
     },
-    requestMaterials() {
+    requestMaterials(materialsType) {
       this.$router.push({
-        name: 'request-materials'
+        name: 'request-materials',
+        query: {
+          materialsType: materialsType
+        }
       })
     }
   },

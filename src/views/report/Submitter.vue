@@ -51,12 +51,12 @@
         class="report-submitter__tabs__uploader"
         v-else
         key="projects"
-        tab="Step2: Load Project"
+        tab="Step2: Load Project & Submit"
         :forceRender="true"
       >
         <a-alert style="margin-bottom: 15px" message="Notices" type="info" show-icon>
           <span slot="description">
-            <span> {{ getDescription(currentReport, 'description') }} </span>
+            <span v-html="getDescription(currentReport, 'description')"></span>
           </span>
         </a-alert>
         <project-mode-submitter @close="reset" :appKey="currentReport"></project-mode-submitter>
@@ -70,7 +70,7 @@
       >
         <a-alert style="margin-bottom: 15px" message="Notices" type="info" show-icon>
           <span slot="description">
-            <span> {{ getDescription(currentReport, 'description') }} </span>
+            <span v-html="getDescription(currentReport, 'description')"></span>
           </span>
         </a-alert>
         <a-form :form="form" layout="vertical" @submit="createReport">
@@ -203,7 +203,7 @@ const data = [
     name: 'RNA-Seq QC Report for Quartet',
     description: 'RNA Sequencing Quality Control Pipeline for Quartet.',
     version: 'v0.1.2',
-    key: 'lizhihui/quartet-rnaseq-qc-v0.1.4'
+    key: 'lizhihui/quartet-rnaseq-qc-v0.2.1'
   },
   {
     name: 'Protqc Report for Quartet',
@@ -248,7 +248,9 @@ export default {
         protein:
           'Quality Assessment of a Quartet proteomic profiling dataset is based on built-in biological differences of the samples and consistency with the reference dataset at relative quantitation levels. The former is scored as an Signal-to-Noise Ratio (SNR) and displayed in a PCA scatterplot, and the latter is scored as Pearson correlation to the reference dataset and displayed in a scatterplot, in which a strict filter criteria was applied (features with p.adj<0.05 in at least 4 batches were kept).',
         metabolite:
-          'Quality Assessment of a Quartet metabolomic profiling dataset is based on built-in biological differences of the samples, consistency with the reference dataset at relative quantitation levels. The three QC metrics, including Signal-to-Noise Ratio (SNR), Correlation to reference dataset (CTR), and Root Mean Square Error (RMSE), to comprehensively assess the performance of metabolic profiles from 2 aspects: reproducibility and accuracy.'
+          'Quality Assessment of a Quartet metabolomic profiling dataset is based on built-in biological differences of the samples, consistency with the reference dataset at relative quantitation levels. The three QC metrics, including Signal-to-Noise Ratio (SNR), Correlation to reference dataset (CTR), and Root Mean Square Error (RMSE), to comprehensively assess the performance of metabolic profiles from 2 aspects: reproducibility and accuracy.',
+        default:
+          'Please finish the <b>Step1: Choose Report</b> firstly.'
       },
       uploadNotice: {
         dna: '',
@@ -312,12 +314,14 @@ export default {
     getDescription(key, obj) {
       if (key === 'renluyao/quartet_dna_quality_control_wgs_big_pipeline-v0.1.2') {
         return this[obj]['dna']
-      } else if (key === 'lizhihui/quartet-rnaseq-qc-v0.1.4') {
+      } else if (key === 'lizhihui/quartet-rnaseq-qc-v0.2.1') {
         return this[obj]['rna']
       } else if (key === 'quartet-protqc-report') {
         return this[obj]['protein']
-      } else {
+      } else if (key === 'quartet-metqc-report') {
         return this[obj]['metabolite']
+      } else {
+        return this[obj]['default']
       }
     },
     handleChange(info) {

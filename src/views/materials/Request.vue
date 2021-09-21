@@ -10,7 +10,13 @@
           <a-form style="margin: 0px 50px" :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 16 }">
             <a-form-item label="Materials Type">
               <a-select
-                v-decorator="['materialsType', { rules: [{ required: true, message: 'Please select your request!' }] }]"
+                v-decorator="[
+                  'materialsType',
+                  {
+                    initialValue: materialsType,
+                    rules: [{ required: true, message: 'Please select your request!' }],
+                  },
+                ]"
                 placeholder="Select a materials type"
               >
                 <a-select-option value="DNA">DNA</a-select-option>
@@ -117,6 +123,9 @@ export default {
     }
   },
   computed: {
+    materialsType() {
+      return this.$route.query.materialsType ? this.$route.query.materialsType : 'DNA'
+    },
     additionalNotes() {
       return this.getPageContent('additional-notes')
     },

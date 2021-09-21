@@ -273,9 +273,6 @@ export default {
 
       if (this.radioGroupValue !== 'total') {
         payload['status'] = this.radioGroupValue
-      } else {
-        // TODO: datains service need to support advanced query condition
-        payload['status'] = 'Submitted'
       }
 
       return payload
@@ -409,7 +406,7 @@ export default {
     }
   },
   created() {
-    this.searchProject(this.pagination.current, this.pagination.pageSize, { status: 'Submitted' })
+    this.searchProject(this.pagination.current, this.pagination.pageSize, {})
     this.getInstalledApps()
   },
   mounted() {

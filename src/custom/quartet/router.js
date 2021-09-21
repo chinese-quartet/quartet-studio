@@ -194,7 +194,7 @@ export const asyncRouterMap = [
         name: 'request-materials',
         hidden: true,
         component: () => import('@/views/materials/Request'),
-        meta: { titile: 'Request Materials', icon: 'pull-request', keepAlive: false }
+        meta: { title: 'Request Materials', icon: 'pull-request', keepAlive: false }
       },
 
       // Account

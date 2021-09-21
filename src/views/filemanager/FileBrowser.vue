@@ -3,36 +3,25 @@
     <a-card
       :bordered="false"
       :class="{ standalone: standalone }"
-      :style="[standalone ? { 'height': '91vh' } : { 'height': 'unset' }]"
+      :style="[standalone ? { height: '91vh' } : { height: 'unset' }]"
     >
       <a-col slot="title" :lg="12" :md="12" :sm="24" :xs="24">
         <a-select :value="service" style="width: 80px" @change="selectService">
-          <a-select-option
-            v-for="item in services"
-            :key="item"
-            :value="item"
-          >{{ translateName(item) }}</a-select-option>
+          <a-select-option v-for="item in services" :key="item" :value="item">{{
+            translateName(item)
+          }}</a-select-option>
         </a-select>
         <a-select :value="bucketName" style="width: 200px" @change="selectBucket">
           <a-select-option v-for="bucket in buckets" :key="bucket">{{ bucket }}</a-select-option>
         </a-select>
-        <a-button @click="switchUploadPanel" v-if="standalone" disabled>
-          <a-icon type="upload" />Upload
-        </a-button>
+        <a-button @click="switchUploadPanel" v-if="standalone" disabled> <a-icon type="upload" />Upload </a-button>
         <a-button @click="switchFolderDialog" v-if="standalone" disabled>
           <a-icon type="folder-add" />Add Folder
         </a-button>
-        <a-button @click="refresh">
-          <a-icon type="cloud-sync" />Refresh
-        </a-button>
+        <a-button @click="refresh"> <a-icon type="cloud-sync" />Refresh </a-button>
       </a-col>
       <a-col slot="title" :lg="12" :md="12" :sm="24" :xs="24">
-        <a-select
-          show-search
-          :value="currentPath"
-          @search="onSearch"
-          style="width: calc(100% - 276px);"
-        >
+        <a-select show-search :value="currentPath" @search="onSearch" style="width: calc(100% - 276px)">
           <a-select-option v-for="address in addressList" :key="address">
             <a-tooltip>
               <template slot="title">{{ address }}</template>
@@ -40,16 +29,13 @@
             </a-tooltip>
           </a-select-option>
         </a-select>
-        <a-button
-          style="line-height: unset; margin-top: 0px; padding: 0px 10px;"
-          @click="handleBookmark"
-        >
+        <a-button style="line-height: unset; margin-top: 0px; padding: 0px 10px" @click="handleBookmark">
           <a-icon type="star" :theme="theme" />
         </a-button>
         <a-input-search
           placeholder="Enter a link or a prefix of file name"
           allowClear
-          style="width: 230px;"
+          style="width: 230px"
           @search="onSearch"
         />
       </a-col>
@@ -57,7 +43,7 @@
         <a-breadcrumb>
           <a-breadcrumb-item>
             <a @click="redirectHome()">
-              <a-icon type="user" style="margin-right: 3px;" />
+              <a-icon type="user" style="margin-right: 3px" />
               <span>Home</span>
             </a>
           </a-breadcrumb-item>
@@ -79,24 +65,19 @@
         :columns="columns"
         rowKey="path"
         :class="{ 'standalone-browser': height === 0 }"
-        :scroll="{y: height - 100}"
+        :scroll="{ y: height - 100 }"
         :data-source="data"
         :row-selection="{ ...rowSelection, selectedRowKeys: selectedRowKeys }"
       >
         <span slot="icon" slot-scope="text, record">
-          <a-icon type="file" :style="{fontSize: '20px'}" v-if="record.storageClass" />
-          <a-icon
-            type="folder-open"
-            theme="filled"
-            :style="{fontSize: '20px', color: '#ffcb01'}"
-            v-else
-          />
+          <a-icon type="file" :style="{ fontSize: '20px' }" v-if="record.storageClass" />
+          <a-icon type="folder-open" theme="filled" :style="{ fontSize: '20px', color: '#ffcb01' }" v-else />
         </span>
         <span slot="size" slot-scope="text, record">{{ formatBytes(text) }}</span>
         <span slot="action" slot-scope="text, record" v-if="record.storageClass">
-          <a style="margin-right: 10px;" @click="switchDetailsPanel(record)">Details</a>
+          <a style="margin-right: 10px" @click="switchDetailsPanel(record)">Details</a>
           <a-dropdown>
-            <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+            <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
               More
               <a-icon type="down" />
             </a>
@@ -117,8 +98,8 @@
           <a-input
             :placeholder="`Search ${column.dataIndex}`"
             :value="selectedKeys[0]"
-            style="width: 188px; margin-bottom: 8px; display: block;"
-            @change="e => setSelectedKeys(e.target.value ? [e.target.value] : [])"
+            style="width: 188px; margin-bottom: 8px; display: block"
+            @change="(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])"
             @pressEnter="() => handleSearch(selectedKeys, confirm, column.dataIndex)"
           />
           <a-button
@@ -127,13 +108,11 @@
             size="small"
             style="width: 90px; margin-right: 8px"
             @click="() => handleSearch(selectedKeys, confirm, column.dataIndex)"
-          >Search</a-button>
-          <a-button
-            ref="resetBtn"
-            size="small"
-            style="width: 90px"
-            @click="() => handleReset(clearFilters)"
-          >Reset</a-button>
+            >Search</a-button
+          >
+          <a-button ref="resetBtn" size="small" style="width: 90px" @click="() => handleReset(clearFilters)"
+            >Reset</a-button
+          >
         </div>
         <a-icon
           slot="filterIcon"
@@ -148,13 +127,13 @@
             </template>
             <a @click="onClickName(record)">
               <template
-                v-for="(fragment, i) in formatFileName(text).toString().split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))"
+                v-for="(fragment, i) in formatFileName(text)
+                  .toString()
+                  .split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))"
               >
-                <mark
-                  v-if="fragment.toLowerCase() === searchText.toLowerCase()"
-                  :key="i"
-                  class="highlight"
-                >{{ fragment }}</mark>
+                <mark v-if="fragment.toLowerCase() === searchText.toLowerCase()" :key="i" class="highlight">{{
+                  fragment
+                }}</mark>
                 <template v-else>{{ fragment }}</template>
               </template>
             </a>
@@ -192,10 +171,9 @@
         </a-upload-dragger>
         <p class="help-text">
           File naming conventions:
-          <br />1. A file name can contain only UTF-8 characters.
-          <br />2. A file name is case-sensitive.
-          <br />3. A file name must be 1 to 1023 bytes in length.
-          <br />4. A file name cannot start with a forward slash (/) or consecutive backslashes (\).
+          <br />1. A file name can contain only UTF-8 characters. <br />2. A file name is case-sensitive. <br />3. A
+          file name must be 1 to 1023 bytes in length. <br />4. A file name cannot start with a forward slash (/) or
+          consecutive backslashes (\).
           <br />
         </p>
       </a-row>
@@ -223,7 +201,7 @@
         </a-row>
         <a-row class="detail-item" :gutter="gutter">
           <a-col :span="labelSpan" class="label">ETag</a-col>
-          <a-col :span="24 - labelSpan">{{ recordDetail.etag.replace(/"/g, "") }}</a-col>
+          <a-col :span="24 - labelSpan">{{ recordDetail.etag.replace(/"/g, '') }}</a-col>
         </a-row>
         <a-row class="detail-item" :gutter="gutter">
           <a-col :span="labelSpan" class="label">URL</a-col>
@@ -231,7 +209,7 @@
             <a-textarea :value="downloadUrl" :rows="8" />
             <a-row>
               <a @click="downloadFile(downloadUrl)">Download</a>
-              <span style="margin: 0px 10px;">|</span>
+              <span style="margin: 0px 10px">|</span>
               <a @click="doCopy(downloadUrl)">Copy URL</a>
             </a-row>
           </a-col>
@@ -244,8 +222,8 @@
         <a-form-item label="Folder Name">
           <a-input allowClear autofocus v-decorator="['folderName', { rules: folderNameRule }]" />
         </a-form-item>
-        <a-form-item style="float: right;">
-          <a-button type="danger" style="margin-right: 10px;" @click="switchFolderDialog">Cancel</a-button>
+        <a-form-item style="float: right">
+          <a-button type="danger" style="margin-right: 10px" @click="switchFolderDialog">Cancel</a-button>
           <a-button type="primary" html-type="submit">Submit</a-button>
         </a-form-item>
       </a-form>
@@ -358,6 +336,11 @@ export default {
       default: 0,
       type: Number
     },
+    hideLocal: {
+      required: false,
+      default: true,
+      type: Boolean
+    },
     filterType: {
       required: false,
       default: '.*',
@@ -365,7 +348,7 @@ export default {
     },
     defaultService: {
       required: false,
-      default: 'minio',
+      default: 'oss',
       type: String
     }
   },
@@ -383,11 +366,11 @@ export default {
           this.selectedRowKeys = selectedRowKeys
         },
         onSelect: (record, selected, selectedRows) => {
-          console.log("onSelect", record, selected, selectedRows)
+          console.log('onSelect', record, selected, selectedRows)
           this.filterAndSelect(selectedRows)
         },
         onSelectAll: (selected, selectedRows, changeRows) => {
-          console.log("onSelectAll", selected, selectedRows, changeRows)
+          console.log('onSelectAll', selected, selectedRows, changeRows)
           this.filterAndSelect(selectedRows)
         },
         getCheckboxProps: record => ({
@@ -605,7 +588,13 @@ export default {
       this.getServices()
         .then(response => {
           console.log('Load Services: ', response)
-          this.services = response.services
+          if (this.hideLocal) {
+            this.services = filter(response.services, item => {
+              return item !== 'minio'
+            })
+          } else {
+            this.services = response.services
+          }
           console.log('loadServices: ', this.defaultService, this.services)
 
           if (this.services.indexOf(this.defaultService) > -1) {
@@ -1076,7 +1065,7 @@ export default {
         } else {
           // Need to add / when the path is a directory
           const self = path.dirname(this.selected[0]) + '/'
-          this.onSearch(self)        
+          this.onSearch(self)
         }
       }
     }
