@@ -63,7 +63,7 @@
                 <template slot="title">
                   <span style="cursor: pointer" @click="doCopy(item.uploadPath)">Copy Uploading Path</span>
                 </template>
-                <a-tag color="blue" style="display: block; margin-top: 5px; margin-bottom: 0px; width: fit-content">
+                <a-tag color="blue" class="path-tag">
                   {{ item.uploadPath }}
                 </a-tag>
               </a-tooltip>
@@ -453,6 +453,14 @@ export default {
       margin-top: 4px;
       margin-bottom: 0;
       line-height: 22px;
+    }
+
+    .path-tag {
+      display: block;
+      margin-top: 5px;
+      margin-bottom: 0px;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
   }
 

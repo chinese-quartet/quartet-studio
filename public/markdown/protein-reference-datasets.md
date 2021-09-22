@@ -5,13 +5,13 @@
 #### Download with Browser
 | Name                        | Link                                                                                                        |
 | --------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| ref_relative_dt.csv | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/Protein/ref_relative_dt.csv) |
-| ref_relative_filtered_D6_D5.csv | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/Protein/ref_relative_filtered_D6_D5.csv) |
-| ref_relative_filtered_F7_D5.csv | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/Protein/ref_relative_filtered_F7_D5.csv) |
-| ref_relative_filtered_F7_D6.csv | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/Protein/ref_relative_filtered_F7_D6.csv) |
-| ref_relative_filtered_M8_D5.csv | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/Protein/ref_relative_filtered_M8_D5.csv) |
-| ref_relative_filtered_M8_D6.csv | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/Protein/ref_relative_filtered_M8_D6.csv) |
-| ref_relative_filtered_M8_F7.csv | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/Protein/ref_relative_filtered_M8_F7.csv) |
+| ref_relative_dt.csv | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/Protein/ref_relative_dt.csv" target="_blank">Download</a> |
+| ref_relative_filtered_D6_D5.csv | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/Protein/ref_relative_filtered_D6_D5.csv" target="_blank">Download</a> |
+| ref_relative_filtered_F7_D5.csv | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/Protein/ref_relative_filtered_F7_D5.csv" target="_blank">Download</a> |
+| ref_relative_filtered_F7_D6.csv | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/Protein/ref_relative_filtered_F7_D6.csv" target="_blank">Download</a> |
+| ref_relative_filtered_M8_D5.csv | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/Protein/ref_relative_filtered_M8_D5.csv" target="_blank">Download</a> |
+| ref_relative_filtered_M8_D6.csv | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/Protein/ref_relative_filtered_M8_D6.csv" target="_blank">Download</a> |
+| ref_relative_filtered_M8_F7.csv | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/Protein/ref_relative_filtered_M8_F7.csv" target="_blank">Download</a> |
 
 #### Download with wget
 

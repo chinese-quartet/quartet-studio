@@ -5,12 +5,12 @@
 #### Download with Browser
 | Name                        | Link                                                                                                        |
 | --------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| D6_D5_ReferenceDatasets.csv | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/D6_D5_ReferenceDatasets.csv) |
-| F7_D5_ReferenceDatasets.csv | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/F7_D5_ReferenceDatasets.csv) |
-| F7_D6_ReferenceDatasets.csv | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/F7_D6_ReferenceDatasets.csv) |
-| M8_D5_ReferenceDatasets.csv | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/M8_D5_ReferenceDatasets.csv) |
-| M8_D6_ReferenceDatasets.csv | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/M8_D6_ReferenceDatasets.csv) |
-| M8_F7_ReferenceDatasets.csv | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/M8_F7_ReferenceDatasets.csv) |
+| D6_D5_ReferenceDatasets.csv | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/D6_D5_ReferenceDatasets.csv" target="_blank">Download</a> |
+| F7_D5_ReferenceDatasets.csv | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/F7_D5_ReferenceDatasets.csv" target="_blank">Download</a> |
+| F7_D6_ReferenceDatasets.csv | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/F7_D6_ReferenceDatasets.csv" target="_blank">Download</a> |
+| M8_D5_ReferenceDatasets.csv | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/M8_D5_ReferenceDatasets.csv" target="_blank">Download</a> |
+| M8_D6_ReferenceDatasets.csv | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/M8_D6_ReferenceDatasets.csv" target="_blank">Download</a> |
+| M8_F7_ReferenceDatasets.csv | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/RNA/M8_F7_ReferenceDatasets.csv" target="_blank">Download</a> |
 
 #### Download with wget
 

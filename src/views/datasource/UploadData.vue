@@ -5,7 +5,7 @@
       <a-button type="primary" @click="onCreateDataSet">Register & Upload Your Data</a-button>
     </template>
 
-    <upload-task-list :id="refreshToken"></upload-task-list>
+    <upload-task-list :id="refreshToken" :key="forceUpdateKey"></upload-task-list>
     <a-modal
       title="Help for Uploading Omics Data"
       width="60%"
@@ -52,9 +52,9 @@
                     rules: [
                       { required: true, message: 'Please enter the dataset name' },
                       {
-                        pattern: /^[a-zA-Z0-9_\-]{6,64}$/,
+                        pattern: /^[a-zA-Z0-9_\-]{6,16}$/,
                         message:
-                          'Only numbers, upper and lower case letters, underscores and short dashes are supported, and are no longer than 64 characters and no shorter than 6 characters',
+                          'Only numbers, upper and lower case letters, underscores and short dashes are supported, and are no longer than 16 characters and no shorter than 6 characters',
                       },
                     ],
                   },
@@ -188,7 +188,8 @@ export default {
       uploadingPath: 'Uploading path...',
       name: '',
       dataType: '',
-      btnLoading: false
+      btnLoading: false,
+      forceUpdateKey: ''
     }
   },
   computed: {
@@ -253,9 +254,14 @@ export default {
         })
         .then(response => {
           this.$message.success(`The Dataset ${record.name} created.`)
+          this.forceUpdateKey = Math.random()
+            .toString(36)
+            .slice(-8)
           console.log('Create Dataset: ', response)
           this.formVisible = false
           this.btnLoading = false
+          this.form.resetFields()
+          this.uploadingPath = 'Uploading path...'
         })
         .catch(error => {
           this.$message.error('Failed, Please retry later.')

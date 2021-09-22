@@ -5,12 +5,12 @@
 #### Download with Browser
 | Name                        | Link                                                                                                        |
 | --------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| LCL5.high.confidence.calls.vcf | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/LCL5.high.confidence.calls.vcf) |
-| LCL6.high.confidence.calls.vcf | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/LCL6.high.confidence.calls.vcf) |
-| LCL7.high.confidence.calls.vcf | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/LCL7.high.confidence.calls.vcf) |
-| LCL8.high.confidence.calls.vcf | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/LCL8.high.confidence.calls.vcf) |
-| Quartet.high.confidence.region.v202103.bed | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/Quartet.high.confidence.region.v202103.bed) |
-| contig.txt | [Download](http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/contig.txt) |
+| LCL5.high.confidence.calls.vcf | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/LCL5.high.confidence.calls.vcf" target="_blank">Download</a> |
+| LCL6.high.confidence.calls.vcf | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/LCL6.high.confidence.calls.vcf" target="_blank">Download</a> |
+| LCL7.high.confidence.calls.vcf | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/LCL7.high.confidence.calls.vcf" target="_blank">Download</a> |
+| LCL8.high.confidence.calls.vcf | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/LCL8.high.confidence.calls.vcf" target="_blank">Download</a> |
+| Quartet.high.confidence.region.v202103.bed | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/Quartet.high.confidence.region.v202103.bed" target="_blank">Download</a> |
+| contig.txt | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/contig.txt" target="_blank">Download</a> |
 
 #### Download with wget
 
