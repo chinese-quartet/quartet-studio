@@ -121,7 +121,9 @@
       :footer="null"
       :maskClosable="false"
     >
-      <vue-json-pretty class="json-viewer" :data="token"></vue-json-pretty>
+      <a-spin :spinning="spinning">
+        <vue-json-pretty class="json-viewer" :data="token"></vue-json-pretty>
+      </a-spin>
       <a-button class="token-download-btn" icon="download" @click="downloadAsJSON(token, 'tokenTag')">
         Download
       </a-button>
@@ -178,13 +180,14 @@ export default {
       radioGroupValue: 'total',
       strokeColor: { '0%': '#108ee9', '100%': '#87d068' },
       timer: null,
+      spinning: false,
       tokenVisible: false,
       token: {
         accessKey: 'test',
         accessSecret: 'test',
         stsToken: 'test',
         authorizedCode: 'test',
-        uploadPath: 'oss://quartet-data-portal/data/yangjingcheng/test-dataset/genomics/',
+        uploadPath: 'oss://quartet-data-portal/data/test/test-dataset/genomics/',
         region: 'oss-cn-shanghai',
         durationHours: 12,
         expiration: moment('2021-09-14T02:18:33Z').toLocaleString()
@@ -195,11 +198,12 @@ export default {
     downloadAsJSON,
     ...mapGetters(['userInfo']),
     onRefreshToken(record) {
+      this.spinning = true
       this.tokenVisible = true
       this.$http
         .post(uploadingTaskEndpoints.getTokenApi(record.id), {
           name: record.name,
-          manager: record.manager,
+          email: record.email,
           data_type: record.dataType
         })
         .then(response => {
@@ -214,8 +218,10 @@ export default {
             stsToken: response.sts_token.stoken,
             authorizedCode: response.authorization_code
           }
+          this.spinning = false
         })
         .catch(error => {
+          this.spinning = false
           this.$message.warn('Something wrong, please retry later.')
         })
     },
