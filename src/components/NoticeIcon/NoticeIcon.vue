@@ -85,7 +85,7 @@ export default {
     }
   },
   created () {
-    this.searchNotification(1, 1, 'Unread')
+    // this.searchNotification(1, 1, 'Unread')
   }
 }
 </script>

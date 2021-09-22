@@ -110,9 +110,9 @@
             @click="() => handleSearch(selectedKeys, confirm, column.dataIndex)"
             >Search</a-button
           >
-          <a-button ref="resetBtn" size="small" style="width: 90px" @click="() => handleReset(clearFilters)"
-            >Reset</a-button
-          >
+          <a-button ref="resetBtn" size="small" style="width: 90px" @click="() => handleReset(clearFilters)">
+            Reset
+          </a-button>
         </div>
         <a-icon
           slot="filterIcon"
@@ -349,6 +349,11 @@ export default {
     defaultService: {
       required: false,
       default: 'oss',
+      type: String
+    },
+    strictedPrefix: {
+      required: false,
+      default: null,
       type: String
     }
   },
@@ -863,41 +868,49 @@ export default {
       }
     },
     searchObjects(bucketName, page, pageSize, prefix) {
-      this.resetFilters()
-      this.loading = true
-      this.getObjects({
-        service: this.service,
-        name: bucketName,
-        page: page,
-        pageSize: pageSize,
-        prefix: prefix
-      })
-        .then(response => {
-          // It contains the self, so we need to remove it.
-          this.data = filter(response.data, item => {
-            return item.path !== response.location
+      const link = `${this.service}://${bucketName}/${prefix}`
+      console.log('Search Objects: ', this.strictedPrefix, link)
+
+      if (this.strictedPrefix && !link.includes(this.strictedPrefix)) {
+        this.$message.warn('No such key or no permission.')
+      } else {
+        this.resetFilters()
+        this.loading = true
+
+        this.getObjects({
+          service: this.service,
+          name: bucketName,
+          page: page,
+          pageSize: pageSize,
+          prefix: prefix
+        })
+          .then(response => {
+            // It contains the self, so we need to remove it.
+            this.data = filter(response.data, item => {
+              return item.path !== response.location
+            })
+
+            // No any results
+            if (this.data.length > 0) {
+              this.currentPath = response.location
+            }
+
+            this.pagination.total = response.total
+            this.pagination.current = response.page
+            this.pagination.pageSize = response.pageSize
+            this.loading = false
           })
-
-          // No any results
-          if (this.data.length > 0) {
-            this.currentPath = response.location
-          }
-
-          this.pagination.total = response.total
-          this.pagination.current = response.page
-          this.pagination.pageSize = response.pageSize
-          this.loading = false
-        })
-        .catch(error => {
-          this.$message.warning('Not Found / No Permission')
-          this.currentPath = this.service + '://' + this.bucketName
-          this.data = []
-          this.pagination.total = 0
-          this.pagination.current = 1
-          this.pagination.pageSize = 10
-          console.log('searchObjects: ', error)
-          this.loading = false
-        })
+          .catch(error => {
+            this.$message.warning('Not Found / No Permission')
+            this.currentPath = this.service + '://' + this.bucketName
+            this.data = []
+            this.pagination.total = 0
+            this.pagination.current = 1
+            this.pagination.pageSize = 10
+            console.log('searchObjects: ', error)
+            this.loading = false
+          })
+      }
     },
     switchUploadPanel() {
       this.uploadPanelVisible = !this.uploadPanelVisible

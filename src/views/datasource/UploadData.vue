@@ -145,7 +145,7 @@
 </template>
 
 <script>
-import v from 'voca'
+// import v from 'voca'
 import axios from 'axios'
 import { PageView } from '@/layouts'
 import UploadTaskList from '@/views/datasource/UploadTaskList'
@@ -195,7 +195,7 @@ export default {
   computed: {
     ...mapGetters(['nickname', 'email']),
     manager() {
-      return v.snakeCase(this.nickname)
+      return this.nickname
     },
     refreshToken() {
       if (this.refresh) {
@@ -229,7 +229,7 @@ export default {
       this.dataType = value.data_type ? value.data_type : this.dataType
       this.name = value.name ? value.name : this.name
       if (this.dataType && this.name) {
-        this.uploadingPath = `oss://quartet-data-portal/data/${this.manager}/${this.name}/${this.dataType}/`
+        this.uploadingPath = `oss://quartet-data-portal/data/${this.email}/${this.name}/${this.dataType}/`
       }
 
       console.log('Update Path: ', props, value, this.dataType, this.name, this.uploadingPath)

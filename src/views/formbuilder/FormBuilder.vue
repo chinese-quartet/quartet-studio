@@ -132,6 +132,8 @@
         :multiple="multiple"
         :filterType="filterType"
         :selected="selected"
+        :path="defaultPath"
+        :strictedPrefix="strictedPrefix"
       ></popup-file-browser>
     </a-row>
   </div>
@@ -141,6 +143,7 @@
 import v from 'voca'
 import flatMap from 'lodash.flatmap'
 import { v4 as uuidv4 } from 'uuid'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'FormBuilder',
@@ -170,7 +173,16 @@ export default {
       files: [],
       selected: [],
       options: {},
-      autoGenMode: true
+      autoGenMode: true,
+    }
+  },
+  computed: {
+    ...mapGetters(['email']),
+    defaultPath() {
+      return `oss://quartet-data-portal/data/${this.email}/`
+    },
+    strictedPrefix() {
+      return `oss://quartet-data-portal/data/${this.email}`
     }
   },
   created() {

@@ -90,7 +90,7 @@
 
 <script>
 /* eslint-disable */
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import orderBy from 'lodash.orderby'
 import filter from 'lodash.filter'
 import moment from 'moment'
@@ -134,6 +134,9 @@ export default {
         ]
       }
     }
+  },
+  computed: {
+    ...mapGetters(['email']),
   },
   methods: {
     ...mapActions({
@@ -187,7 +190,7 @@ export default {
           localStorage.setItem('datains_PROJECT_DATA', JSON.stringify({
             ...this.projectData,
             appName: app[0].name,
-            author: 'Choppy'
+            author: this.email
           }))
           this.$emit('nextStep')
         } else {

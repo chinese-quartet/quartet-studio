@@ -10,8 +10,10 @@
           :standalone="false"
           :selected="selected"
           :height="400"
+          :path="path"
           :allowMultiSelection="multiple"
           :filterType="filterType"
+          :strictedPrefix="strictedPrefix"
         ></file-browser>
       </a-tab-pane>
       <a-tab-pane key="dataset">
@@ -54,10 +56,20 @@ export default {
       type: String,
       default: ''
     },
+    path: {
+      required: false,
+      default: '',
+      type: String
+    },
     selected: {
       required: false,
       default: () => [],
       type: Array
+    },
+    strictedPrefix: {
+      required: false,
+      default: null,
+      type: String
     }
   },
   data() {
