@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <a-row :gutter="24" style="margin: 0px 0px 10px">
-      <a-card :loading="loading" title="Request Materials">
+      <a-card :loading="loading" title="Reference Materials">
         <p style="margin-bottom: 10px; text-align: justify" v-html="description"></p>
         <fact :factData="factData" @select-item="selectPDF"></fact>
         <a-button icon="question-circle" slot="extra" @click="redirectHelp">Help</a-button>

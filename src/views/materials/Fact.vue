@@ -6,8 +6,8 @@
         <a-button class="request-btn" type="primary" @click.stop="requestMaterials(item.name)">Request</a-button>
         <img
           width="100%"
-          height="200"
-          :src="require(`@/assets/images/${item.key}-materials-pack.jpg`)"
+          height="150"
+          :src="require(`@/assets/images/${item.key}-materials-pack.png`)"
         />
         <div class="fact-info">
           <img width="100%" height="160px" style="border-bottom: 1px solid #d6d6d6;" :src="require(`@/assets/images/${item.key}-materials.png`)"/>
