@@ -1,11 +1,11 @@
 <template>
   <a-row class="search-page">
     <a-row class="header-container">
-      <a-col class="left" :span="8">
+      <a-col class="left" :span="7">
         <!-- <img width="100%" height="100%" src="https://xenabrowser.net/bdbd099a8d2ef9593481ec8369f88ab4.png" /> -->
         <img width="100%" height="100%" :src="require('@/assets/images/design-qc.png')" />
       </a-col>
-      <a-col class="right" :span="16">
+      <a-col class="right" :span="17">
         <span class="title">{{ title }}</span>
         <p class="content" v-html="welcomeMsg"></p>
         <span class="date">Version: Data Release 1.0 - September 09, 2021</span>
@@ -85,9 +85,9 @@
           </a-row>
         </a-row>
       </a-col>
-      <a-col class="right">
+      <a-col class="right" :xl="16" :lg="16" :md="24" :sm="24">
         <fact style="display: none" class="fact-container"></fact>
-        <img style="width: 100%" :src="require('@/assets/images/quality-platform-framework-v3.png')" />
+        <img style="width: 100%; margin: 0px 10px;" :src="require('@/assets/images/quality-platform-framework-v3.png')" />
       </a-col>
     </a-row>
     <a-row class="footer-container">
@@ -104,7 +104,7 @@ export default {
   name: 'Quartet',
   data() {
     return {
-      title: 'Welcome to the Quartet Data Portal',
+      title: 'Welcome to the Quartet Project',
       welcomeMsg:
         'The Quartet Data Portal is built to democratize access to the unique Quartet resources and enhance quality consciousness of the community.',
       viewExamples: [],
@@ -135,7 +135,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@height: 160px;
 @border-radius: 4px;
 
 .search-page {
@@ -146,7 +145,7 @@ export default {
   overflow: scroll;
 
   .header-container {
-    height: @height;
+    height: fit-content;
     border-radius: @border-radius;
     // background-color: #1a535c;
     // background-color: #dae1ed;
@@ -163,7 +162,6 @@ export default {
     }
 
     .left {
-      height: @height;
       border-radius: @border-radius;
       padding: 10px;
     }
@@ -171,7 +169,6 @@ export default {
     .right {
       display: flex;
       flex-direction: column;
-      height: @height;
       padding: 10px 20px 0px;
 
       .title {
