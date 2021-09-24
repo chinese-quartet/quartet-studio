@@ -301,9 +301,10 @@ export default {
 <style lang="less" scoped>
 .filter-panel {
   margin-right: 0px !important;
+  height: 100%;
 
   .left {
-    height: 91vh;
+    height: 100%;
 
     .ant-tabs {
       height: 100%;
@@ -334,7 +335,7 @@ export default {
     border-radius: 4px;
     border: 1px solid #d9d9d9;
     background-color: #fff;
-    height: 91vh;
+    height: 100%;
 
     .graph-tab {
       h4 {

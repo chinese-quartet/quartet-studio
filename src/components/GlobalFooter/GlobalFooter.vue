@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <div class="footer" style="display: none;">
     <div class="links">
       <a v-for="link in links" :key="link.href" :href="link.href" target="_blank">
         <a-icon :type="link.logo" v-if="link.logo" />

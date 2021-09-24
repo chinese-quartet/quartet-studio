@@ -8,7 +8,7 @@
       </a-card>
     </a-row>
     <img class="btn-twinkle" @click.stop="selectPDF('dna')" :src="require('@/assets/images/arrow-bottom.png')" />
-    <a-row :gutter="24" style="margin: 0px 0px 10px" id="specification-container">
+    <a-row :gutter="24" style="margin: 0px 0px" id="specification-container">
       <a-card :loading="loading" title="Materials Specification">
         <a-tabs class="specification" v-model="currentTab" animated @change="selectPDF">
           <a-tab-pane
@@ -99,7 +99,7 @@ export default {
           name: 'Metabolite',
           image: '',
           specification:
-            'Each vial contains dried cell extracts from approximately 106 cells using methanol:water (6:1) solution.<br/>Eleven external controls are spiked in at known amounts.'
+            'Each vial contains dried cell extracts from approximately 106 cells using methanol / water (6/1) solution. Eleven external controls are spiked in at known amounts.'
         }
       ]
     }

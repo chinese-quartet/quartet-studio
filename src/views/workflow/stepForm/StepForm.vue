@@ -6,9 +6,9 @@
       <a-step :title="$t('workflow.stepForm.stepForm.submit')" />
     </a-steps>
     <div class="content">
-      <step1 v-if="stepNum === 0" @nextStep="nextStep" :appId="appId"/>
-      <step2 v-if="stepNum === 1" @nextStep="nextStep" @prevStep="prevStep"/>
-      <step3 v-if="stepNum === 2" @finished="submitStepForm" @prevStep="prevStep"/>
+      <step1 v-if="stepNum === 0" @nextStep="nextStep" :appId="appId" />
+      <step2 v-if="stepNum === 1" @nextStep="nextStep" @prevStep="prevStep" />
+      <step3 v-if="stepNum === 2" @finished="submitStepForm" @prevStep="prevStep" />
     </div>
   </a-card>
 </template>
@@ -31,13 +31,11 @@ export default {
       type: String
     }
   },
-  data () {
-    return {
-
-    }
+  data() {
+    return {}
   },
   computed: {
-    stepNum () {
+    stepNum() {
       let num = this.$route.query.step
       try {
         num = parseInt(num)
@@ -53,17 +51,17 @@ export default {
   },
   methods: {
     // handler
-    nextStep () {
+    nextStep() {
       if (this.stepNum < 2) {
         this.$router.push({ name: 'create-project', query: { step: this.stepNum + 1 } })
       }
     },
-    prevStep () {
+    prevStep() {
       if (this.stepNum > 0) {
         this.$router.push({ name: 'create-project', query: { step: this.stepNum - 1 } })
       }
     },
-    submitStepForm (data) {
+    submitStepForm(data) {
       console.log('Project Id: ', data)
       localStorage.removeItem('datains_PROJECT_DATA')
       localStorage.removeItem('datains_APP_DATA')
@@ -72,15 +70,14 @@ export default {
       this.$router.push({ name: 'project-management', props: { refresh: true } })
     }
   },
-  created () {
-
-  }
+  created() {}
 }
 </script>
 
 <style lang="less" scoped>
 .step-form {
-  min-height: 91vh;
+  height: 100%;
+  overflow: scroll;
 
   .steps {
     max-width: 750px;

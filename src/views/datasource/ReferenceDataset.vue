@@ -125,6 +125,7 @@ export default {
   border-radius: 5px;
   padding: 20px;
   height: 100%;
+  overflow: scroll;
 
   .ant-list-item-extra {
     margin-left: 0px;

@@ -222,7 +222,7 @@ export default {
 <style lang="less">
 .report-container {
   width: 100%;
-  height: 81vh;
+  height: 100%;
   background-color: #fff;
 
   .ant-pagination {

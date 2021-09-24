@@ -2,16 +2,19 @@
   <a-row :gutter="24">
     <a-col v-for="item in factData" :xs="24" :md="12" :lg="6" :key="item.name">
       <div @click="selectItem(item.key)" class="fact-item">
-        <h4 class="fact-item-title">{{ item.name }}</h4>
-        <a-button class="request-btn" type="primary" @click.stop="requestMaterials(item.name)">Request</a-button>
-        <img
-          width="100%"
-          height="150"
-          :src="require(`@/assets/images/${item.key}-materials-pack.png`)"
-        />
+        <!-- <h4 class="fact-item-title">{{ item.name }}</h4> -->
+        <img width="100%" height="100%" :src="require(`@/assets/images/${item.key}-materials-pack.png`)" />
+        <a-button size="small" class="request-btn" type="primary" @click.stop="requestMaterials(item.name)">
+          Request
+        </a-button>
         <div class="fact-info">
-          <img width="100%" height="160px" style="border-bottom: 1px solid #d6d6d6;" :src="require(`@/assets/images/${item.key}-materials.png`)"/>
-          <p v-html="item.specification"></p>
+          <img
+            width="100%"
+            height="100%"
+            style="border-bottom: 1px solid #d6d6d6"
+            :src="require(`@/assets/images/${item.key}-materials.png`)"
+          />
+          <p v-html="item.specification" style="margin-bottom: 0px"></p>
         </div>
       </div>
     </a-col>
@@ -62,8 +65,18 @@ export default {
 
   .request-btn {
     position: absolute;
-    top: 5px;
-    right: 20px;
+    top: 10px;
+    left: 20px;
+    font-size: 10px;
+    font-weight: 500;
+    background-color: #ffffff;
+    color: #5f5f5f;
+    border-color: #d7d7d7;
+  }
+
+  .request-btn:hover {
+    color: #1890ff;
+    border-color: #1890ff;
   }
 
   img {
@@ -116,7 +129,8 @@ export default {
   p {
     text-align: justify;
     border: unset;
-    height: 120px;
+    height: 110px;
+    overflow: scroll;
     padding: 10px;
   }
 }

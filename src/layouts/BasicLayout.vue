@@ -40,7 +40,7 @@
       />
 
       <!-- layout content -->
-      <a-layout-content :style="{ height: 'calc(100% - 74px)', margin: '10px 10px 0', marginTop: fixedHeader ? '74px' : '10px' }">
+      <a-layout-content :style="{ height: 'calc(100vh - 84px)', margin: '10px 10px 10px', marginTop: fixedHeader ? '74px' : '10px' }">
         <multi-tab v-if="multiTab"></multi-tab>
         <transition name="page-transition">
           <route-view />
@@ -53,8 +53,7 @@
       </a-layout-footer>
 
       <!-- Setting Drawer (show in development mode) -->
-      <!-- <setting-drawer v-if="!production"></setting-drawer> -->
-      <setting-drawer></setting-drawer>
+      <setting-drawer v-if="!production"></setting-drawer>
       <a-back-top />
     </a-layout>
   </a-layout>

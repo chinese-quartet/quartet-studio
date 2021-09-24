@@ -1,9 +1,10 @@
 const path = require('path')
 const webpack = require('webpack')
+const UglifyPlugin = require('uglifyjs-webpack-plugin')
 const createThemeColorReplacerPlugin = require('./config/plugin.config')
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
-function resolve(dir) {
+function resolve (dir) {
   return path.join(__dirname, dir)
 }
 
@@ -15,15 +16,27 @@ const vueConfig = {
   configureWebpack: {
     plugins: [
       // Ignore all locale files of moment.js
-      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
       // new BundleAnalyzerPlugin()
     ],
     optimization: {
+      // minimizer: [
+      //   new UglifyPlugin({
+      //     uglifyOptions: {
+      //       warnings: false,
+      //       compress: {
+      //         drop_console: true,
+      //         drop_debugger: false,
+      //         pure_funcs: ['console.log']
+      //       }
+      //     }
+      //   })
+      // ],
       splitChunks: {
         cacheGroups: {
           common: {
-            name: "chunk-common",
-            chunks: "initial",
+            name: 'chunk-common',
+            chunks: 'initial',
             minChunks: 2,
             maxInitialRequests: 5,
             minSize: 0,
@@ -32,20 +45,20 @@ const vueConfig = {
             enforce: true
           },
           vendors: {
-            name: "chunk-vendors",
+            name: 'chunk-vendors',
             test: /[\\/]node_modules[\\/]/,
-            chunks: "initial",
+            chunks: 'initial',
             priority: 2,
             reuseExistingChunk: true,
             enforce: true
           },
           handsontable: {
-            name: "chunk-handsontable",
+            name: 'chunk-handsontable',
             test: /[\\/]node_modules[\\/]handsontable[\\/]/,
-            chunks: "all",
+            chunks: 'all',
             priority: 6,
             reuseExistingChunk: true,
-            enforce: true            
+            enforce: true
           }
         }
       }
@@ -103,8 +116,8 @@ const vueConfig = {
     app: {
       entry: 'src/main.js',
       template: 'public/index.html',
-      filename: 'index.html',
-    },
+      filename: 'index.html'
+    }
   },
 
   // disable source map in production

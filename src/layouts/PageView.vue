@@ -1,5 +1,5 @@
 <template>
-  <div :style="!$route.meta.hiddenHeaderContent ? 'margin: -10px -10px 0px;' : null">
+  <div :style="!$route.meta.hiddenHeaderContent ? 'margin: -10px -10px 0px; height: calc(100% + 10px);' : null">
     <!-- pageHeader , route meta :true on hide -->
     <page-header v-if="!$route.meta.hiddenHeaderContent" :drawerMode="$route.meta.drawerMode" :title="pageTitle" :logo="logo" :avatar="avatar">
       <slot slot="action" name="action"></slot>
@@ -124,7 +124,13 @@ export default {
 
 <style lang="less" scoped>
 .content {
+  height: calc(100% - 104px);
   margin: 10px 10px 0;
+
+  .page-header-index-wide {
+    height: 100%;
+  }
+
   .link {
     margin-top: 16px;
     &:not(:empty) {

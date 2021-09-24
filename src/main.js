@@ -19,11 +19,18 @@ import './core/use'
 import './permission' // permission control
 import './utils/filter' // global filter
 import i18n from './locales'
+import { config } from '@/config/defaultSettings'
 
-Vue.config.productionTip = false
+if (config.production) {
+  Vue.config.devtools = false
+  Vue.config.productionTip = false
+} else {
+  Vue.config.devtools = true
+  Vue.config.productionTip = true
+}
 
-import VueShepherd from 'vue-shepherd';
-Vue.use(VueShepherd);
+import VueShepherd from 'vue-shepherd'
+Vue.use(VueShepherd)
 
 // mount axios Vue.$http and this.$http
 Vue.use(VueAxios)
