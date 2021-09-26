@@ -1,6 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
-const UglifyPlugin = require('uglifyjs-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const createThemeColorReplacerPlugin = require('./config/plugin.config')
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
@@ -16,22 +16,33 @@ const vueConfig = {
   configureWebpack: {
     plugins: [
       // Ignore all locale files of moment.js
-      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
-      // new BundleAnalyzerPlugin()
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^\.\/locale$/, 
+        contextRegExp: /moment$/
+      })
+      // new BundleAnalyzerPlugin(),
     ],
     optimization: {
-      // minimizer: [
-      //   new UglifyPlugin({
-      //     uglifyOptions: {
-      //       warnings: false,
-      //       compress: {
-      //         drop_console: true,
-      //         drop_debugger: false,
-      //         pure_funcs: ['console.log']
-      //       }
-      //     }
-      //   })
-      // ],
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            ecma: undefined,
+            warnings: false,
+            parse: {},
+            compress: { drop_console: true },
+            mangle: true, // Note `mangle.properties` is `false` by default.
+            module: false,
+            output: { comments: false },
+            toplevel: false,
+            nameCache: null,
+            ie8: false,
+            keep_classnames: undefined,
+            keep_fnames: false,
+            safari10: false
+          }
+        })
+      ],
       splitChunks: {
         cacheGroups: {
           common: {

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "publish-code": "npx --max_old_space_size=4096 vue-cli-service build && ossutilmac64 cp -r -u ./dist/ oss://chinese-quartet-frontend/ -c ~/.ossutilconfig-tgmc -e oss-ap-southeast-1.aliyuncs.com",
+    "publish-code": "vue-cli-service build && ossutilmac64 cp -r -u ./dist/ oss://chinese-quartet-frontend/ -c ~/.ossutilconfig-tgmc -e oss-ap-southeast-1.aliyuncs.com",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build:preview": "vue-cli-service build --mode preview",
@@ -77,6 +77,7 @@
     "prismjs": "^1.20.0",
     "querystring": "^0.2.0",
     "uuid": "^7.0.2",
+    "v-viewer": "^1.6.4",
     "viser-vue": "^2.4.6",
     "voca": "^1.4.0",
     "vue": "^2.6.10",

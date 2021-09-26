@@ -268,6 +268,7 @@ export default {
   }
 
   .btn-twinkle {
+    z-index: 1000;
     position: absolute;
     bottom: 0px;
     right: calc(50% - 20px);
