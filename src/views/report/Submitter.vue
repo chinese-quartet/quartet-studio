@@ -256,7 +256,9 @@ export default {
         dna: '',
         rna: '',
         protein:
-          '<span> Additional description and informations about data & metadata files. </span>' +
+          'The <b>data file</b> contains gene symbols of each protein and its quantitated expression level in each sample (replicate), and the missing values are allowed . The required file format has samples in columns and a column named "rowname".' +
+          '<br />' +
+          'The <b>metadata file</b> has the information of each sample in the data file. With columns named "name" ,  "sample" (D5, D6, F7 and M8 for Quartet samples).  Remember that the column "name" and column names of the data file table must be in one-to-one correspondence.' + 
           '<br />' +
           '<br />' +
           'Example Files: &nbsp;' +

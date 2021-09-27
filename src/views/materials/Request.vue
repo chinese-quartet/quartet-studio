@@ -25,12 +25,12 @@
                 <a-select-option value="Metabolite">Metabolite</a-select-option>
               </a-select>
             </a-form-item>
-            <a-form-item label="Tubes">
+            <a-form-item label="Sets">
               <a-input-number
                 :min="1"
                 :max="10"
-                v-decorator="['tubes', { rules: [{ required: true, message: 'How many tubes?' }] }]"
-                placeholder="How many tubes you request?"
+                v-decorator="['tubes', { rules: [{ required: true, message: 'How many sets?' }] }]"
+                placeholder="How many sets you request?"
               />
             </a-form-item>
             <a-form-item label="Purpose">
