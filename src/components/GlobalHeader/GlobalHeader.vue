@@ -13,7 +13,8 @@
         <div v-else :class="['top-nav-header-index', theme]">
           <div class="header-index-wide" style="cursor: grab; -webkit-app-region: drag;">
             <div class="header-index-left">
-              <logo class="top-nav-header" :logo="websiteLogo" :title="websiteName" :show-title="device !== 'mobile'"/>
+              <logo class="top-nav-header" v-if="device !== 'mobile'" :logo="websiteLogo" :title="websiteName" :show-title="false"/>
+              <logo class="top-nav-header" v-else :logo="websiteMiniLogo" />
               <s-menu v-if="device !== 'mobile'" mode="horizontal" :menu="menus" :theme="theme" />
               <a-icon v-else class="trigger" :type="collapsed ? 'menu-fold' : 'menu-unfold'" @click="toggle" />
             </div>
@@ -30,7 +31,7 @@ import UserMenu from '../Tools/UserMenu'
 import SMenu from '../Menu/'
 import Logo from '../Tools/Logo'
 import { mixin } from '@/utils/mixin'
-import { websiteName, websiteLogo } from '@/config/defaultSettings'
+import { websiteName, websiteLogo, websiteMiniLogo } from '@/config/defaultSettings'
 
 export default {
   name: 'GlobalHeader',
@@ -70,6 +71,7 @@ export default {
     return {
       websiteName,
       websiteLogo,
+      websiteMiniLogo,
       visible: true,
       oldScrollTop: 0
     }

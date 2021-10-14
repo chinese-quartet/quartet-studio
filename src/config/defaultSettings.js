@@ -41,6 +41,8 @@ export const websiteName = config.websiteName
 
 export const websiteLogo = config.websiteLogo
 
+export const websiteMiniLogo = config.websiteMiniLogo
+
 export const websiteDesc = config.websiteDesc
 
 export function timeFix() {

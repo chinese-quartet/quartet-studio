@@ -34,6 +34,7 @@ export const projectSettings = {
   domTitle: 'Quartet Data Portal',
   // eslint-disable-next-line no-undef
   websiteLogo: require('@/assets/logo.png'),
+  websiteMiniLogo: require('@/assets/mini-logo.png'),
   websiteName: 'QUARTET',
   websiteId: 'quartet',
   websiteDesc: 'The Quartet Project for the Quality Control of Omics Data',

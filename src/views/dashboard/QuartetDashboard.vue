@@ -1,17 +1,30 @@
 <template>
   <a-row class="search-page">
     <a-row class="header-container">
-      <a-col class="left" :span="7">
+      <a-col class="left" :lg="4" :md="0" :sm="0" :xs="0">
         <!-- <img width="100%" height="100%" src="https://xenabrowser.net/bdbd099a8d2ef9593481ec8369f88ab4.png" /> -->
-        <img width="100%" height="100%" :src="require('@/assets/images/design-qc.png')" />
+        <img width="100%" height="100%" :src="require('@/assets/images/qdp_logo.png')" />
       </a-col>
-      <a-col class="right" :span="17">
-        <span class="title">{{ title }}</span>
+      <a-col class="right" :lg="20" :md="24" :sm="24" :xs="0">
+        <span class="title" v-html="title"></span>
         <p class="content" v-html="welcomeMsg"></p>
-        <span class="date">Version: Data Release 1.0 - September 09, 2021</span>
       </a-col>
     </a-row>
-    <a-row class="content-container">
+    <a-row class="description-container">
+      <a-col class="top">
+        <span class="title">Data Portal Summary</span>
+        <span class="description">Release v1.0 (October 18, 2021)</span>
+      </a-col>
+      <a-col class="bottom">
+        <a-col v-for="item in statisticsData" :key="item.key" :span="6">
+          <a-row class="item">
+            <span class="label">{{ item.label }}</span>
+            <span class="value">{{ item.value }}</span>
+          </a-row>
+        </a-col>
+      </a-col>
+    </a-row>
+    <a-row class="content-container" style="display: none">
       <a-col class="left" :xl="8" :lg="8" :md="24" :sm="24">
         <a-row style="height: 135px">
           <span style="font-size: 1rem; font-weight: bold">News</span>
@@ -87,11 +100,13 @@
       </a-col>
       <a-col class="right" :xl="16" :lg="16" :md="24" :sm="24">
         <fact style="display: none" class="fact-container"></fact>
-        <img style="width: 100%; margin: 0px 10px;" :src="require('@/assets/images/quality-platform-framework-v3.png')" />
+        <img
+          style="width: 100%; margin: 0px 10px"
+          :src="require('@/assets/images/quality-platform-framework-v3.png')"
+        />
       </a-col>
     </a-row>
     <a-row class="footer-container">
-      <span class="title">{{ title }}</span>
       <p class="description" v-html="description"></p>
     </a-row>
   </a-row>
@@ -104,24 +119,53 @@ export default {
   name: 'Quartet',
   data() {
     return {
-      title: 'Welcome to the Quartet Project',
+      title: 'The Quartet Project: <br/> Quality Control and Data Integration of Multi-omics Profiling',
       welcomeMsg:
-        'The Quartet Data Portal is built to democratize access to the unique Quartet resources and enhance quality consciousness of the community.',
-      viewExamples: [],
+        '<span>Multi-omics (or molecular phenomics) profiling at the genomic, transcriptomic, proteomic, and metabolomic levels is the cornerstone of high-throughput technologies for discovering biomarkers for precision medicine. However, the lack of quality control procedures of multi-omics profiling during data generation and data analysis can lead to false findings, raising serious concerns about the reliability of multi-omics studies.</span><span>The Quartet Project provides publicly accessible multi-omics reference materials and practical tools to enhance the reproducibility and reliability of multi-omics results. Well-characterized multiomics reference materials and quality control metrics pertinent to precision medicine study purposes can be used to measure and mitigate technical variation, enabling more accurate cross-batch and cross-omics data integration in increasingly large-scale and longitudinal studies such as the International Human Phenome Project.</span>',
+      statisticsData: [
+        {
+          key: 'cell-lines',
+          label: 'Cell Lines',
+          value: 4
+        },
+        {
+          key: 'omics',
+          label: 'Omics',
+          value: 6
+        },
+        {
+          key: 'reference-materials',
+          label: 'Reference Materials',
+          value: 20
+        },
+        {
+          key: 'reference-datasets',
+          label: 'Reference Datasets',
+          value: 4
+        },
+        {
+          key: 'platforms',
+          label: 'Platforms',
+          value: 10
+        },
+        {
+          key: 'sites',
+          label: 'Sites',
+          value: 1
+        },
+        {
+          key: 'libraries',
+          label: 'Libraries',
+          value: 1
+        },
+        {
+          key: 'files',
+          label: 'Files',
+          value: 1
+        }
+      ],
       description:
-        'Quality control of multi-omics profiling requires reliable reference materials and reference datasets, ' +
-        'which have been established in the Quartet Project. The Quartet Data Portal is built to democratize ' +
-        'access to the unique Quartet resources and enhance quality consciousness of the community. ' +
-        'We provide a convenient channel for users to request the reference DNA, RNA, ' +
-        'protein and metabolite materials, as well as multi-level datasets that are generated across platforms, ' +
-        'labs, protocols, and batches. Interactive visualization is supported to explore the datasets ' +
-        'from different dimensions and scenarios. We further integrate knowledge gained ' +
-        'from the Quartet Project to evaluate the quality of user-submitted multi-omics data ' +
-        'and generate a quality assessment report. ' +
-        'Importantly, the Quartet Data Portal can achieve continuous evolution ' +
-        'with communitywide participation by facilitating reference materials sharing, ' +
-        'integrating new data generated by the community, and upgrading the reference datasets, ' +
-        'analysis methods, and thresholds of QC metrics.'
+        'The Quartet project is designed in Fudan University (Shanghai, China). The Quartet multi-omics reference materials and datasets are publicly available and accessible. The recipients of the Reference Materials are highly encouraged to share their data with Fudan University through the Quartet Data Portal in order for us to improve the reference datasets and to better serve the community.'
     }
   },
   props: {},
@@ -134,7 +178,7 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @border-radius: 4px;
 
 .search-page {
@@ -147,14 +191,8 @@ export default {
   .header-container {
     height: fit-content;
     border-radius: @border-radius;
-    // background-color: #1a535c;
-    // background-color: #dae1ed;
-    background-color: #e7e7e7;
-    // border: 1px solid #fff;
     color: rgb(78, 78, 78);
     text-align: center;
-    margin-bottom: 20px;
-    overflow: scroll;
 
     .date {
       font-size: 1rem;
@@ -162,8 +200,13 @@ export default {
     }
 
     .left {
+      margin-top: 70px;
       border-radius: @border-radius;
       padding: 10px;
+
+      img {
+        border-radius: 5px;
+      }
     }
 
     .right {
@@ -174,14 +217,74 @@ export default {
       .title {
         font-size: 1.5rem;
         padding: 0px 0px 10px;
-        text-align: left;
+        text-align: center;
+        color: red;
+        font-weight: bold;
       }
 
       .content {
-        font-size: 1.1rem;
+        font-size: 1rem;
         margin-bottom: 10px;
         text-align: justify;
         font-weight: 300;
+
+        span {
+          display: block;
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+
+  .description-container {
+    margin: 0px auto;
+    border: 2px solid #d6d6d6;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+
+    .top {
+      text-align: center;
+
+      .title {
+        display: block;
+        font-size: 1.4rem;
+        color: #011049a6;
+        font-weight: bold;
+        margin-right: 10px;
+      }
+
+      .description {
+        display: block;
+        font-size: 1.1rem;
+        color: #d6d6d6;
+      }
+    }
+
+    .bottom {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      .item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 80px;
+
+        .label {
+          font-size: 1rem;
+          font-weight: bold;
+          margin-bottom: 5px;
+          text-align: center;
+        }
+
+        .value {
+          text-align: center;
+          font-size: 1rem;
+          font-weight: bold;
+        }
       }
     }
   }
@@ -258,17 +361,42 @@ export default {
   }
 
   .footer-container {
-    display: none;
-    padding: 1rem 1.5rem 0px 1.5rem;
-
-    .title {
-      font-size: 2rem;
-    }
+    padding: 1rem 16px;
 
     .description {
-      font-size: 1rem;
+      font-size: 0.9rem;
       margin: 0px;
       text-align: justify;
+    }
+  }
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+  .search-page {
+    .description-container {
+      width: calc(100% - 32px);
+      margin: 0px 16px;
+    }
+  }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+  .search-page {
+    .description-container {
+      width: calc(100% - 32px);
+      margin: 0px 16px;
+    }
+  }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+  .search-page {
+    .description-container {
+      width: 80%;
+      margin: 0px auto;
     }
   }
 }
