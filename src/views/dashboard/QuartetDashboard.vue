@@ -3,7 +3,7 @@
     <a-row class="header-container">
       <a-col class="left" :lg="4" :md="0" :sm="0" :xs="0">
         <!-- <img width="100%" height="100%" src="https://xenabrowser.net/bdbd099a8d2ef9593481ec8369f88ab4.png" /> -->
-        <img width="100%" height="100%" :src="require('@/assets/images/qdp_logo.png')" />
+        <img width="100%" height="100%" :src="require('@/assets/images/qdp_large_logo.png')" />
       </a-col>
       <a-col class="right" :lg="20" :md="24" :sm="24" :xs="0">
         <span class="title" v-html="title"></span>
@@ -141,27 +141,27 @@ export default {
         {
           key: 'reference-datasets',
           label: 'Reference Datasets',
-          value: 4
+          value: 16
         },
         {
           key: 'platforms',
           label: 'Platforms',
-          value: 10
+          value: 26
         },
         {
           key: 'sites',
           label: 'Sites',
-          value: 1
+          value: 27
         },
         {
           key: 'libraries',
           label: 'Libraries',
-          value: 1
+          value: 1323
         },
         {
           key: 'files',
           label: 'Files',
-          value: 1
+          value: 2646
         }
       ],
       description:
