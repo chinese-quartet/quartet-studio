@@ -37,7 +37,7 @@ export const projectSettings = {
   websiteMiniLogo: require('@/assets/mini-logo.png'),
   websiteName: 'QUARTET',
   websiteId: 'quartet',
-  websiteDesc: 'The Quartet Project for the Quality Control of Omics Data',
+  websiteDesc: 'For the Quality Control of Omics Data',
   defaultCollection: 'quartet_genomics',
   collections: [
     {

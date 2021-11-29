@@ -8,7 +8,7 @@
         <div class="header">
           <router-link :to="{ name: 'welcome' }">
             <img :src="websiteLogo" class="logo" alt="logo" />
-            <span class="title">{{ websiteName }}</span>
+            <!-- <span class="title">{{ websiteName }}</span> -->
           </router-link>
         </div>
         <div class="desc">
@@ -101,8 +101,8 @@ export default {
       text-align: center;
 
       .header {
-        height: 44px;
-        line-height: 44px;
+        height: 64px;
+        line-height: 64px;
 
         .badge {
           position: absolute;
@@ -115,7 +115,7 @@ export default {
         }
 
         .logo {
-          height: 44px;
+          height: 84px;
           vertical-align: top;
           margin-right: 16px;
           border-style: none;
@@ -130,11 +130,12 @@ export default {
           top: 2px;
         }
       }
+
       .desc {
-        font-size: 14px;
+        font-size: 18px;
         color: rgba(0, 0, 0, 0.45);
-        margin-top: 12px;
-        margin-bottom: 40px;
+        margin-top: 32px;
+        margin-bottom: 20px;
       }
     }
 

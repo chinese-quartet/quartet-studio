@@ -236,7 +236,7 @@ export default {
     },
     globalFooter: {
       copyright: 'Copyright',
-      companyName: 'The Genius Medicine Consortium'
+      companyName: 'The Golden Standard of China Genome (GSCG) Consortium'
     }
   },
   // Layouts
@@ -246,7 +246,7 @@ export default {
       help: 'Help',
       feedback: 'Feedback',
       terms: 'Terms',
-      copyright: 'Copyright ©️2021 The Genius Medicine Consortium'
+      copyright: 'Copyright ©️2021 The Golden Standard of China Genome (GSCG) Consortium'
     },
     pageView: {
       search: 'Search',
