@@ -386,7 +386,7 @@ export default {
     padding: 1rem 16px;
 
     .description {
-      font-size: 0.9rem;
+      font-size: 1rem;
       margin: 0px;
       text-align: justify;
     }
