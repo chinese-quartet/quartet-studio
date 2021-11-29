@@ -1,12 +1,16 @@
 <template>
   <a-row class="search-page">
     <a-row class="header-container">
-      <a-col class="left" :lg="4" :md="0" :sm="0" :xs="0">
-        <!-- <img width="100%" height="100%" src="https://xenabrowser.net/bdbd099a8d2ef9593481ec8369f88ab4.png" /> -->
-        <img width="100%" height="100%" :src="require('@/assets/images/qdp_large_logo.png')" />
+      <a-col class="left" :lg="24" :md="24" :sm="24" :xs="24">
+        <a-col class="title" :lg="20" :md="24" :sm="24" :xs="24">
+          <h2>{{ title }}</h2>
+          <span>{{ summary }}</span>
+        </a-col>
+        <a-col class="logo" :lg="4" :md="0" :sm="0" :xs="0">
+          <img :src="require('@/assets/images/qdp_large_logo.png')" />
+        </a-col>
       </a-col>
-      <a-col class="right" :lg="20" :md="24" :sm="24" :xs="0">
-        <span class="title" v-html="title"></span>
+      <a-col class="right" :lg="24" :md="24" :sm="24" :xs="24">
         <p class="content" v-html="welcomeMsg"></p>
       </a-col>
     </a-row>
@@ -119,7 +123,8 @@ export default {
   name: 'Quartet',
   data() {
     return {
-      title: 'The Quartet Project: <br/> Quality Control and Data Integration of Multi-omics Profiling',
+      title: 'The Quartet Project',
+      summary: 'Quality Control and Data Integration of Multi-omics Profiling',
       welcomeMsg:
         '<span>Multi-omics (or molecular phenomics) profiling at the genomic, transcriptomic, proteomic, and metabolomic levels is the cornerstone of high-throughput technologies for discovering biomarkers for precision medicine. However, the lack of quality control procedures of multi-omics profiling during data generation and data analysis can lead to false findings, raising serious concerns about the reliability of multi-omics studies.</span><span>The Quartet Project provides publicly accessible multi-omics reference materials and practical tools to enhance the reproducibility and reliability of multi-omics results. Well-characterized multiomics reference materials and quality control metrics pertinent to precision medicine study purposes can be used to measure and mitigate technical variation, enabling more accurate cross-batch and cross-omics data integration in increasingly large-scale and longitudinal studies such as the International Human Phenome Project.</span>',
       statisticsData: [
@@ -185,6 +190,7 @@ export default {
   border-radius: @border-radius;
   height: 100%;
   width: 100%;
+  padding: 20px 50px;
   background-color: #fff;
   overflow: scroll;
 
@@ -200,12 +206,36 @@ export default {
     }
 
     .left {
-      margin-top: 70px;
       border-radius: @border-radius;
-      padding: 10px;
+      padding: 10px 20px 0px;
+      display: flex;
+      flex-direction: row;
+      align-content: space-between;
 
-      img {
-        border-radius: 5px;
+      .title {
+        h2 {
+          font-weight: bold;
+          font-size: 2.8rem;
+          text-align: left;
+          margin: 0px;
+        }
+
+        span {
+          font-size: 25px;
+          text-align: left;
+          width: 100%;
+          display: flex;
+        }
+      }
+
+      .logo {
+        text-align: end;
+
+        img {
+          width: 120px;
+          height: 120px;
+          border-radius: 5px;
+        }
       }
     }
 
@@ -213,14 +243,6 @@ export default {
       display: flex;
       flex-direction: column;
       padding: 10px 20px 0px;
-
-      .title {
-        font-size: 1.5rem;
-        padding: 0px 0px 10px;
-        text-align: center;
-        color: red;
-        font-weight: bold;
-      }
 
       .content {
         font-size: 1rem;
@@ -271,7 +293,7 @@ export default {
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        height: 80px;
+        height: 60px;
 
         .label {
           font-size: 1rem;
@@ -395,7 +417,7 @@ export default {
 @media (min-width: 992px) {
   .search-page {
     .description-container {
-      width: 80%;
+      width: 65%;
       margin: 0px auto;
     }
   }
