@@ -1,18 +1,43 @@
 <template>
   <a-row class="reference-datasets-container">
-    <a-list item-layout="vertical" size="large" :data-source="listData">
+    <a-list item-layout="vertical" size="large" :data-source="currentVersion">
       <a-list-item slot="renderItem" key="item.title" slot-scope="item, index">
         <template slot="actions">
-          <a-button type="primary" icon="cloud-download" @click="fetchHelp(item.markdown, item.title)"
-            >Download</a-button
-          >
+          <a-dropdown-button @click="fetchHelp(item.category, currentVersionKey)" trigger="hover">
+            Latest Version
+            <a-menu
+              slot="overlay"
+              @click="
+                (e) => {
+                  fetchHelp(item.category, e.key)
+                }
+              "
+            >
+              <a-menu-item v-for="versionKey in versionKeys" :key="versionKey"> {{ versionKey }} </a-menu-item>
+            </a-menu>
+          </a-dropdown-button>
+          <a-button style="padding: 0px 5px" type="link" icon="cloud-download" @click="redirectDevelopmentSite">
+            Developing Versions
+          </a-button>
+          <a-button style="padding: 0px 5px" type="link" icon="github" @click="redirectGithub"> Github Repo </a-button>
         </template>
-        <img slot="extra" width="400" alt="logo" :src="item.image" />
-        <a-list-item-meta :description="item.description">
-          <a slot="title" @click="fetchHelp(item.markdown, item.title)">{{ item.title }}</a>
+        <img slot="extra" width="400" alt="logo" :src="item.graphical_abstract" />
+        <a-list-item-meta :description="item.summary">
+          <a slot="title" @click="fetchHelp(item.category, currentVersionKey)">
+            {{ item.title }}
+            <a-tooltip>
+              <template slot="title">
+                We will release a stable version of the reference dataset every six months to a year, and will provide
+                all versions of the historical reference dataset, you can download the specified version via the
+                drop-down menu below. The development version of the reference dataset will be updated from time to
+                time, if you are interested in this, you can get it from the link below.
+              </template>
+              <a-icon type="question-circle" />
+            </a-tooltip>
+          </a>
           <a-avatar slot="avatar" :src="item.avatar" />
         </a-list-item-meta>
-        {{ item.content }}
+        {{ item.description }}
       </a-list-item>
     </a-list>
     <a-modal
@@ -31,9 +56,27 @@
 </template>
 
 <script>
+import filter from 'lodash.filter'
 import axios from 'axios'
 import VueMarkdown from 'vue-markdown'
 import Prism from 'prismjs'
+
+const REFERENCE_DATASET_URL = 'http://reference-dataset.chinese-quartet.org'
+const MANIFEST_URL = REFERENCE_DATASET_URL + '/stable/manifest.json'
+const DEVELOP_BRANCH = REFERENCE_DATASET_URL + '/index.html?prefix=develop/'
+const GITHUB = 'https://github.com/chinese-quartet'
+
+// Example:
+// {
+//   category: 'DNA',
+//   avatar: 'https://reference-dataset.chinese-quartet.org/images/genomics.png',
+//   title: 'Reference Datasets for DNA',
+//   summary: 'Reference datasets could be used as "ground truth" to evaluate the accuracy of DNA-seq experiments.',
+//   description:
+//     'The Quartet DNA reference datasets are provided as a variant call file (vcf) that contains the high-confidence SNVs, small indels (less than 50 bp), and structural variants (insertions and deletion over than 50 bp), as well as a tab-delimited "bed" file that describes the high-confidence bed regions, using methods described in the Quartet DNA manuscript. The v20210909 of DNA reference datasets covers approximately 87.8% of the GRCh38 assembly (https://gdc.cancer.gov/about-data/gdc-data-processing/gdc-reference-files). As sequencing technologies and analysis methods improve, the reference datasets will be updated periodically.',
+//   graphical_abstract: 'https://reference-dataset.chinese-quartet.org/images/dna-reference-datasets-overview.png',
+//   markdown: 'https://reference-dataset.chinese-quartet.org/stable/v20210909/DNA/README.md'
+// }
 
 export default {
   components: {
@@ -41,48 +84,10 @@ export default {
   },
   data() {
     return {
-      listData: [
-        {
-          image: require('@/assets/images/dna-reference-datasets-overview.png'),
-          title: 'Reference Datasets for DNA',
-          avatar: require('@/assets/images/genomics.png'),
-          description:
-            'Reference datasets could be used as "ground truth" to evaluate the accuracy of DNA-seq experiments.',
-          content:
-            'The Quartet DNA reference datasets are provided as a variant call file (vcf) that contains the high-confidence SNVs, small indels (less than 50 bp), and structural variants (insertions and deletion over than 50 bp), as well as a tab-delimited "bed" file that describes the high-confidence bed regions, using methods described in the Quartet DNA manuscript. The v20210909 of DNA reference datasets covers approximately 87.8% of the GRCh38 assembly (https://gdc.cancer.gov/about-data/gdc-data-processing/gdc-reference-files). As sequencing technologies and analysis methods improve, the reference datasets will be updated periodically.',
-          markdown: '/markdown/dna-reference-datasets.md'
-        },
-        {
-          image: require('@/assets/images/rna-reference-datasets-overview.png'),
-          title: 'Reference Datasets for RNA',
-          avatar: require('@/assets/images/transcriptomics.png'),
-          description:
-            'Reference datasets could be used as "ground truth" to evaluate the accuracy of RNA-seq experiments.',
-          content:
-            'Based on high-quality of multi-lab RNA-seq libraries, we have reached consensuses on the characterization of gene expression at relative level as reference datasets, and established performance metrics for proficiency test. We used expression profiles from 16 hiqh-quality RNA-seq batches to construct reference datasets. Of the 58,395 genes annotated in GRCh38.93, 10,067 (17.2%) for D6/D5, 11,560 (19.8 %) for F7/D5, 8,081 (13.8%) for F7/D6, 12,104 (20.7%) for M8/D5, 9,363 (16.0%) for M8/D6, and 10,401 (17.8%) for M8/F7 were determined as reference datasets. Moreover, the numbers of reference DEGs ranged from 1,617 to 3,044 for the six pairs of sample groups.',
-          markdown: '/markdown/rna-reference-datasets.md'
-        },
-        {
-          image: require('@/assets/images/protein-reference-datasets-overview.png'),
-          title: 'Reference Dataset for Proteomics',
-          avatar: require('@/assets/images/proteomics.png'),
-          description:
-            'Reference datasets could be used as "ground truth" to evaluate the accuracy of Proteomics experiments.',
-          content:
-            'The preliminary expression profile with 6,319 features (proteins mapped to gene symbols) and 72 replicates was merged from six batches of data (DDA-APT, DDA-FDU, DDA-NVG, DIA-APT, DIA-BGI, DIA-FDU), which were generated by two technologies (DDA and DIA) using six units of Quartet Protein Reference Materials.',
-          markdown: '/markdown/protein-reference-datasets.md'
-        },
-        {
-          image: require('@/assets/images/metabolite-reference-datasets-overview.png'),
-          title: 'Reference Dataset for Metabolomics',
-          avatar: require('@/assets/images/metabolomics.png'),
-          description:
-            'Reference datasets could be used as "ground truth" to evaluate the accuracy of Metabolomics experiments.',
-          content:
-            'A reference dataset was built with the following steps in the workflow. We first filter out low-quality metabolites with CV greater than 25% and the number of replicates less two in each batch. Subsequently, only metabolites that were jointly detected in at least two datasets were retained, and the ratio results of the six sample combinations in each batch of these metabolites were calculated. Taking the total CV <10% as the criterion for consensual results between datasets, we searched for metabolites agreed by at least 2 datasets in each sample combination and took the average ratio of the largest agreed datasets in these metabolites as the consensual relative reference dataset.',
-          markdown: '/markdown/metabolite-reference-datasets.md'
-        }
-      ],
+      currentVersion: [],
+      currentVersionKey: '',
+      versionKeys: [],
+      versions: {},
       helpVisible: false,
       helpMsg: '',
       helpTitle: ''
@@ -97,25 +102,84 @@ export default {
         Prism.highlightAll()
       })
     },
-    fetchHelp(markdown, title) {
-      this.helpTitle = title
+    getVersion(data, versionKey) {
+      const vs = filter(data, o => {
+        return o.version == versionKey
+      })
 
-      axios
-        .get(markdown)
-        .then(response => {
-          console.log('Fetch Help: ', response)
-          this.helpMsg = response.data
-        })
-        .catch(error => {
-          console.log('Fetch Help Error: ', error)
-          this.helpMsg = 'No Content.'
-        })
-        .finally(() => {
-          this.helpVisible = true
-        })
+      if (vs.length > 0) {
+        return vs[0]
+      } else {
+        return null
+      }
+    },
+    fetchHelp(category, versionKey) {
+      console.log('Fetch Help: ', category, versionKey)
+      const version = this.getVersion(this.versions[category], versionKey)
+
+      if (version) {
+        const markdown = version.markdown
+        this.helpTitle = version.title
+
+        axios
+          .get(markdown)
+          .then(response => {
+            console.log('Fetch Help: ', response)
+            this.helpMsg = response.data
+          })
+          .catch(error => {
+            console.log('Fetch Help Error: ', error)
+            this.helpMsg = 'No Content.'
+          })
+          .finally(() => {
+            this.helpVisible = true
+          })
+      }
+    },
+    redirect(url) {
+      window.open(url, '_blank')
+    },
+    redirectGithub() {
+      this.redirect(GITHUB)
+    },
+    redirectDevelopmentSite(e) {
+      this.redirect(DEVELOP_BRANCH)
+    },
+    makeVersions(data, versionKeys) {
+      const versions = {}
+      for (let version of versionKeys) {
+        const listData = data[version]
+        for (let item of listData) {
+          item['version'] = version
+          let temp = versions[item['category']]
+
+          if (temp) {
+            temp.push(item)
+          } else {
+            versions[item['category']] = [item]
+          }
+        }
+      }
+
+      return versions
+    },
+    fetchManifest(url) {
+      axios.get(url).then(response => {
+        const manifests = response.data
+        // DESC
+        this.versionKeys = Object.keys(manifests)
+          .sort()
+          .reverse()
+        // Get the latest version
+        this.currentVersionKey = this.versionKeys[0]
+        this.currentVersion = manifests[this.currentVersionKey]
+        this.versions = this.makeVersions(manifests, this.versionKeys)
+      })
     }
   },
-  created() {}
+  created() {
+    this.fetchManifest(MANIFEST_URL)
+  }
 }
 </script>
 

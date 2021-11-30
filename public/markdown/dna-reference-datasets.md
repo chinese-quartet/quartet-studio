@@ -5,38 +5,38 @@
 #### Download with Browser
 | Name                        | Link                                                                                                        |
 | --------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| LCL5.high.confidence.calls.vcf | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/LCL5.high.confidence.calls.vcf" target="_blank">Download</a> |
-| LCL6.high.confidence.calls.vcf | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/LCL6.high.confidence.calls.vcf" target="_blank">Download</a> |
-| LCL7.high.confidence.calls.vcf | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/LCL7.high.confidence.calls.vcf" target="_blank">Download</a> |
-| LCL8.high.confidence.calls.vcf | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/LCL8.high.confidence.calls.vcf" target="_blank">Download</a> |
-| Quartet.high.confidence.region.v202103.bed | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/Quartet.high.confidence.region.v202103.bed" target="_blank">Download</a> |
-| LCL5.high.confidence.sv.vcf | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/SV/LCL5.high.confidence.sv.vcf" target="_blank">Download</a> |
-| LCL6.high.confidence.sv.vcf | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/SV/LCL6.high.confidence.sv.vcf" target="_blank">Download</a> |
-| LCL7.high.confidence.sv.vcf | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/SV/LCL7.high.confidence.sv.vcf" target="_blank">Download</a> |
-| LCL8.high.confidence.sv.vcf | <a href="http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/SV/LCL8.high.confidence.sv.vcf" target="_blank">Download</a> |
+| LCL5.high.confidence.calls.vcf | <a href="http://reference-dataset.chinese-quartet.org/stable/v20210909/DNA/SNV/LCL5.high.confidence.calls.vcf" target="_blank">Download</a> |
+| LCL6.high.confidence.calls.vcf | <a href="http://reference-dataset.chinese-quartet.org/stable/v20210909/DNA/SNV/LCL6.high.confidence.calls.vcf" target="_blank">Download</a> |
+| LCL7.high.confidence.calls.vcf | <a href="http://reference-dataset.chinese-quartet.org/stable/v20210909/DNA/SNV/LCL7.high.confidence.calls.vcf" target="_blank">Download</a> |
+| LCL8.high.confidence.calls.vcf | <a href="http://reference-dataset.chinese-quartet.org/stable/v20210909/DNA/SNV/LCL8.high.confidence.calls.vcf" target="_blank">Download</a> |
+| Quartet.high.confidence.region.v202103.bed | <a href="http://reference-dataset.chinese-quartet.org/stable/v20210909/DNA/SNV/Quartet.high.confidence.region.v202103.bed" target="_blank">Download</a> |
+| LCL5.high.confidence.sv.vcf | <a href="http://reference-dataset.chinese-quartet.org/stable/v20210909/DNA/SV/LCL5.high.confidence.sv.vcf" target="_blank">Download</a> |
+| LCL6.high.confidence.sv.vcf | <a href="http://reference-dataset.chinese-quartet.org/stable/v20210909/DNA/SV/LCL6.high.confidence.sv.vcf" target="_blank">Download</a> |
+| LCL7.high.confidence.sv.vcf | <a href="http://reference-dataset.chinese-quartet.org/stable/v20210909/DNA/SV/LCL7.high.confidence.sv.vcf" target="_blank">Download</a> |
+| LCL8.high.confidence.sv.vcf | <a href="http://reference-dataset.chinese-quartet.org/stable/v20210909/DNA/SV/LCL8.high.confidence.sv.vcf" target="_blank">Download</a> |
 
 
 #### Download with wget
 
 ```text
 # SNV
-http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/SNV/LCL5.high.confidence.calls.vcf
-http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/SNV/LCL6.high.confidence.calls.vcf
-http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/SNV/LCL7.high.confidence.calls.vcf
-http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/SNV/LCL8.high.confidence.calls.vcf
-http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/SNV/Quartet.high.confidence.region.v202103.bed
+http://reference-dataset.chinese-quartet.org/stable/v20210909/DNA/SNV/LCL5.high.confidence.calls.vcf
+http://reference-dataset.chinese-quartet.org/stable/v20210909/DNA/SNV/LCL6.high.confidence.calls.vcf
+http://reference-dataset.chinese-quartet.org/stable/v20210909/DNA/SNV/LCL7.high.confidence.calls.vcf
+http://reference-dataset.chinese-quartet.org/stable/v20210909/DNA/SNV/LCL8.high.confidence.calls.vcf
+http://reference-dataset.chinese-quartet.org/stable/v20210909/DNA/SNV/Quartet.high.confidence.region.v202103.bed
 
 # SV
-http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/SV/LCL5.high.confidence.sv.vcf
-http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/SV/LCL6.high.confidence.sv.vcf
-http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/SV/LCL7.high.confidence.sv.vcf
-http://reference-datasets.oss-accelerate.aliyuncs.com/v20210909/DNA/SV/LCL8.high.confidence.sv.vcf
+http://reference-dataset.chinese-quartet.org/stable/v20210909/DNA/SV/LCL5.high.confidence.sv.vcf
+http://reference-dataset.chinese-quartet.org/stable/v20210909/DNA/SV/LCL6.high.confidence.sv.vcf
+http://reference-dataset.chinese-quartet.org/stable/v20210909/DNA/SV/LCL7.high.confidence.sv.vcf
+http://reference-dataset.chinese-quartet.org/stable/v20210909/DNA/SV/LCL8.high.confidence.sv.vcf
 ```
 
 ### Description
 The Quartet DNA reference datasets are provided as a variant call file (vcf) that contains the high-confidence SNVs, small indels (less than 50 bp), and structural variants (insertions and deletion over than 50 bp), as well as a tab-delimited "bed" file that describes the high-confidence bed regions, using methods described in the Quartet DNA manuscript. The v20210909 of DNA reference datasets covers approximately 87.8% of the GRCh38 assembly [GDC Reference Files](https://gdc.cancer.gov/about-data/gdc-data-processing/gdc-reference-files). As sequencing technologies and analysis methods improve, the reference datasets will be updated periodically. 
 
-<img src="../images/dna-reference-datasets-workflow.png" style="display: block; margin: 0 auto;" width="60%"/>
+<img src="http://reference-dataset.chinese-quartet.org/stable/images/dna-reference-datasets-workflow.png" style="display: block; margin: 0 auto;" width="60%"/>
 
 <p style="text-align: center;">Figure 1 Workflow for constructing Quartet DNA reference datasets.</p>
 
