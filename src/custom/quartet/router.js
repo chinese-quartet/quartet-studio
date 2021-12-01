@@ -188,6 +188,16 @@ export const asyncRouterMap = [
         meta: { title: 'Embeded Frame', icon: 'dot-chart', keepAlive: false }
       },
 
+      // Markdown Previewer
+      {
+        path: '/markdown-previewer',
+        name: 'markdown-previewer',
+        hidden: true,
+        component: () => import('@/views/iframe/MarkdownPreviewer'),
+        props: route => ({ url: route.query.url }),
+        meta: { title: 'Markdown Previewer', icon: 'markdown', keepAlive: false }
+      },
+
       // Request Materials
       {
         path: '/request-materials',

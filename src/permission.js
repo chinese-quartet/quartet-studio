@@ -18,6 +18,7 @@ const whiteList = [
   '/materials',
   '/request-materials',
   '/data/download',
+  '/markdown-previewer',
   '/seq-flow/app-store',
   '/reference-datasets/download',
   '/reference-datasets/visualization/quartet-dna-vis',
