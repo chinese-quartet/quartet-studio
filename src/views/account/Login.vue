@@ -52,12 +52,15 @@
       </a-tabs>
 
       <a-form-item>
-        <router-link class="register" :to="{ name: 'register' }" disabled>{{
-          $t('account.login.register')
-        }}</router-link>
-        <a @click="redirectFindBack" class="forge-password" style="float: right"
-          >{{ $t('account.login.forgetPassword') }}?</a
-        >
+        <!-- <router-link class="register" :to="{ name: 'register' }" disabled>
+          {{ $t('account.login.register') }}
+        </router-link> -->
+        <a @click="fetchHelp" class="register">
+          {{ $t('account.login.register') }}
+        </a>
+        <a @click="redirectFindBack" class="forge-password" style="float: right">
+          {{ $t('account.login.forgetPassword') }}?
+        </a>
       </a-form-item>
 
       <a-form-item style="margin-top: 24px">
@@ -72,17 +75,31 @@
         >
       </a-form-item>
     </a-form>
+    <a-modal
+      title="Help for register"
+      width="50%"
+      :visible="helpVisible"
+      :footer="null"
+      @cancel="closeHelp"
+    >
+      <vue-markdown :source="helpMsg" @rendered="update"></vue-markdown>
+    </a-modal>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 import qs from 'querystring'
 import { mapActions, mapGetters } from 'vuex'
 import { timeFix, initBaseURL } from '@/config/defaultSettings'
 import api from '@/api/index'
+import VueMarkdown from 'vue-markdown'
+import Prism from 'prismjs'
 
 export default {
-  components: {},
+  components: {
+    VueMarkdown
+  },
   data() {
     return {
       customActiveKey: 'tab1',
@@ -96,7 +113,9 @@ export default {
         loginBtn: false,
         // login type: 0 email, 1 username, 2 telephone
         loginType: 0
-      }
+      },
+      helpVisible: false,
+      helpMsg: 'No Content'
     }
   },
   computed: {
@@ -105,6 +124,26 @@ export default {
   created() {},
   methods: {
     ...mapActions(['Login', 'Logout']),
+    fetchHelp() {
+      axios
+        .get('/markdown/register-notice.md')
+        .then(response => {
+          console.log('Fetch Help: ', response)
+          this.helpMsg = response.data
+        })
+        .catch(error => {
+          console.log('Fetch Help Error: ', error)
+          this.helpMsg = 'No Content.'
+        })
+        .finally(() => {
+          this.helpVisible = true
+        })
+    },
+    update() {
+      this.$nextTick(() => {
+        Prism.highlightAll()
+      })
+    },
     // handler
     handleUsernameOrEmail(rule, value, callback) {
       const { state } = this
@@ -115,6 +154,9 @@ export default {
         state.loginType = 1
       }
       callback()
+    },
+    closeHelp() {
+      this.helpVisible = false
     },
     handleTabClick(key) {
       this.customActiveKey = key

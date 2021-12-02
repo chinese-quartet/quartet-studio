@@ -35,7 +35,7 @@
         <template slot="title">
           <span>{{ $t('components.tools.userMenu.documentation') }}</span>
         </template>
-        <a :href="helpEntrypoint" target="_blank" style="display: none">
+        <a :href="helpEntrypoint" target="_blank">
           <span class="action">
             <a-icon type="question-circle-o"></a-icon>
           </span>

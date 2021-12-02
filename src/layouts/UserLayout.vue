@@ -20,10 +20,10 @@
 
       <div class="footer">
         <div class="links">
-          <a :href="policyEntrypoint">{{ $t('layouts.userLayout.dataPolicies') }}</a>
-          <a :href="helpEntrypoint">{{ $t('layouts.userLayout.help') }}</a>
-          <a :href="feedbackEntrypoint">{{ $t('layouts.userLayout.feedback') }}</a>
-          <a href="_self">{{ $t('layouts.userLayout.terms') }}</a>
+          <a :href="policyEntrypoint" target="_blank">{{ $t('layouts.userLayout.dataPolicies') }}</a>
+          <a :href="helpEntrypoint" target="_blank">{{ $t('layouts.userLayout.help') }}</a>
+          <a :href="feedbackEntrypoint" target="_blank">{{ $t('layouts.userLayout.feedback') }}</a>
+          <!-- <a href="_self" target="_blank">{{ $t('layouts.userLayout.terms') }}</a> -->
         </div>
         <div class="copyright">{{ $t('layouts.userLayout.copyright') }}</div>
       </div>
