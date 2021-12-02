@@ -1,7 +1,12 @@
 <template>
   <div>
     <a-button class="help-btn" type="primary" shape="circle" icon="question" @click="toggleHelp" />
-    <form-builder :fields="fields" @action="onAction" @update="onUpdate"></form-builder>
+    <form-builder
+      :fields="fields"
+      @action="onAction"
+      @clear="clearCache"
+      @update="onUpdate"
+    ></form-builder>
     <a-drawer
       :title="helpTitle"
       class="help-viewer"
@@ -28,7 +33,7 @@ import Prism from 'prismjs'
 
 export default {
   name: 'Step2',
-  data () {
+  data() {
     return {
       fields: [],
       formMode: 'batch',
@@ -42,38 +47,45 @@ export default {
       getAppSchema: 'GetAppSchema',
       getHelpMsg: 'GetHelpMsg'
     }),
-    update () {
+    update() {
       this.$nextTick(() => {
         Prism.highlightAll()
       })
     },
-    toggleHelp () {
+    toggleHelp() {
       this.visible = !this.visible
     },
-    formatSchema (appName) {
+    clearCache() {
+      localStorage.removeItem('datains_APP_DATA')
+      this.$message.success('Clean the cache successfully.')
+      this.$router.go()
+    },
+    formatSchema(appName) {
       const cleanedAppName = appName.replace(/[\W_]+/g, ' ')
       const schemaName = v.camelCase(cleanedAppName)
       return schemaName
     },
-    loadAppSchema (appName, localData) {
+    loadAppSchema(appName, localData) {
       this.getAppSchema(appName).then(response => {
         this.fields = this.initSchema(response.fields, localData.appData)
         this.formMode = response.formMode
       })
     },
-    loadHelpMsg (appName) {
-      this.getHelpMsg(appName).then(response => {
-        this.helpMsg = response
-        // console.log('loadHelpMsg: ', response)
-      }).catch(error => {
-        this.helpMsg = 'No help document.'
-        console.log('loadHelpMsg Error: ', error)
-      })
+    loadHelpMsg(appName) {
+      this.getHelpMsg(appName)
+        .then(response => {
+          this.helpMsg = response
+          // console.log('loadHelpMsg: ', response)
+        })
+        .catch(error => {
+          this.helpMsg = 'No help document.'
+          console.log('loadHelpMsg Error: ', error)
+        })
     },
-    onUpdate (data) {
+    onUpdate(data) {
       console.log('FormBuilder: ', data)
     },
-    loadLocalData () {
+    loadLocalData() {
       const appData = JSON.parse(localStorage.getItem('datains_APP_DATA'))
       const projectData = JSON.parse(localStorage.getItem('datains_PROJECT_DATA'))
       if (projectData) {
@@ -85,15 +97,15 @@ export default {
         this.prevStep()
       }
     },
-    prevStep () {
+    prevStep() {
       this.$emit('prevStep')
     },
-    nextStep () {
+    nextStep() {
       this.$emit('nextStep')
     },
-    initSchema (appSchema, initData) {
+    initSchema(appSchema, initData) {
       for (const key in initData) {
-        const idx = appSchema.findIndex((element) => element.model === key)
+        const idx = appSchema.findIndex(element => element.model === key)
         if (idx < 0) {
           return appSchema
         } else if (appSchema[idx].config) {
@@ -104,7 +116,7 @@ export default {
       console.log('appSchema: ', appSchema, initData)
       return appSchema
     },
-    onAction (e) {
+    onAction(e) {
       if (e.type === 'cancel') {
         this.prevStep()
       } else if (e.type === 'submit') {
@@ -115,7 +127,7 @@ export default {
       }
     }
   },
-  created () {
+  created() {
     const localData = this.loadLocalData()
     const appName = localData.projectData.appName
     this.helpTitle = appName
@@ -156,7 +168,7 @@ pre {
 
 <style lang="less">
 blockquote {
-  border-left: 4px solid #CCC;
+  border-left: 4px solid #ccc;
   padding-left: 16px;
 }
 </style>

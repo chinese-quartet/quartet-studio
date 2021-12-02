@@ -344,7 +344,7 @@ export default {
         })
         .catch(error => {
           console.log('redirectToFS: ', error)
-          this.$message.error('Unknown Error.')
+          this.$message.error('The job has not yet started, please check back later.')
         })
     },
     onClickNode(path, data) {

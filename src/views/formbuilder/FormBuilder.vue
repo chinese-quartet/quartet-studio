@@ -110,6 +110,7 @@
             <!-- Actions -->
             <template v-if="field.tmplType === 'actions'">
               <div class="actions">
+                <a-button type="danger" @click="clearCache"> Reset </a-button>
                 <a-button
                   v-for="(i, idx) in field.buttons"
                   :key="idx"
@@ -117,8 +118,9 @@
                   :type="i.buttonType"
                   @click="onAction(i)"
                   class="form-btn"
-                  >{{ i.buttonLabel }}</a-button
                 >
+                  {{ i.buttonLabel }}
+                </a-button>
               </div>
             </template>
           </a-form-item>
@@ -173,7 +175,7 @@ export default {
       files: [],
       selected: [],
       options: {},
-      autoGenMode: true,
+      autoGenMode: true
     }
   },
   computed: {
@@ -194,6 +196,10 @@ export default {
     this.$forceUpdate()
   },
   methods: {
+    clearCache() {
+      this.clonedModel.resetFields()
+      this.$emit('clear')
+    },
     showComponent(fieldName, expectedValue) {
       if (fieldName && expectedValue) {
         if (this.clonedModel.getFieldValue(fieldName) === expectedValue) {

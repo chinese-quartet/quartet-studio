@@ -96,7 +96,7 @@
     <!-- actions -->
     <template slot="action">
       <a-button-group style="margin-right: 4px;">
-        <a-button @click="onShowReport(project)">{{ $t('workflow.workflowManagement.report') }}</a-button>
+        <a-button style="display: none;" @click="onShowReport(project)">{{ $t('workflow.workflowManagement.report') }}</a-button>
         <a-button disabled>{{ $t('workflow.workflowManagement.stop') }}</a-button>
         <a-button disabled>{{ $t('workflow.workflowManagement.restart') }}</a-button>
         <a-button type="primary" disabled>{{ $t('workflow.workflowManagement.archive') }}</a-button>

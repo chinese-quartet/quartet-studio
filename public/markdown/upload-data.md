@@ -15,4 +15,4 @@ After you checking your data, the Quartet team will receive an email notificatio
 
 ### Tools for uploading data
 
-[ossutil](https://www.yuque.com/quartet/tools/ossutil) or [OSS Browser](https://www.yuque.com/quartet/tools/ossbrowser)
+<a href="https://www.yuque.com/quartet/tools/ossutil" target="_blank">OSS Utility</a> or <a href="https://www.yuque.com/quartet/tools/ossbrowser"  target="_blank">OSS Browser</a>

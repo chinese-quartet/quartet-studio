@@ -69,7 +69,7 @@
         </a-select>
       </a-form-model-item>
       <a-form-model-item style="float: right;">
-        <a-button type="primary" style="margin-right: 10px;" @click="clearCache('projectForm')">
+        <a-button type="danger" style="margin-right: 10px;" @click="clearCache('projectForm')">
           {{ $t('workflow.stepForm.step1.clearCache') }}
         </a-button>
         <a-button type="primary" @click="nextStep('projectForm')">
@@ -77,14 +77,6 @@
         </a-button>
       </a-form-model-item>
     </a-form-model>
-    <a-divider />
-    <div class="step-form-style-desc">
-      <h3>Notice</h3>
-      <h4>Benchmark based on source data</h4>
-      <p>You need to choose a choppy app which can handle source data, such as fastq, bam etc.</p>
-      <h4>Benchmark based on result data</h4>
-      <p>You need to choose a choppy app which can handle result data, such as vcf, matrix table etc.</p>
-    </div>
   </div>
 </template>
 
@@ -178,7 +170,13 @@ export default {
       }
     },
     clearCache(formName) {
+      this.projectData = {
+        ...this.projectData,
+        projectName: '',
+        description: ''
+      }
       localStorage.removeItem('datains_PROJECT_DATA')
+      this.$message.success("Clean the cache successfully.")
       this.$refs[formName].resetFields();
     },
     nextStep (formName) {

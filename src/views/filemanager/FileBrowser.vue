@@ -11,7 +11,7 @@
             translateName(item)
           }}</a-select-option>
         </a-select>
-        <a-select :value="bucketName" style="width: 200px" @change="selectBucket">
+        <a-select :value="bucketName" style="width: 200px" @change="selectBucket" disabled>
           <a-select-option v-for="bucket in buckets" :key="bucket">{{ bucket }}</a-select-option>
         </a-select>
         <a-button @click="switchUploadPanel" v-if="standalone" disabled> <a-icon type="upload" />Upload </a-button>
@@ -21,7 +21,7 @@
         <a-button @click="refresh"> <a-icon type="cloud-sync" />Refresh </a-button>
       </a-col>
       <a-col slot="title" :lg="12" :md="12" :sm="24" :xs="24">
-        <a-select show-search :value="currentPath" @search="onSearch" style="width: calc(100% - 276px)">
+        <a-select :value="currentPath" @search="onSearch" style="width: calc(100% - 276px);">
           <a-select-option v-for="address in addressList" :key="address">
             <a-tooltip>
               <template slot="title">{{ address }}</template>
@@ -35,14 +35,15 @@
         <a-input-search
           placeholder="Enter a link or a prefix of file name"
           allowClear
-          style="width: 230px"
+          disabled
+          style="width: 230px;"
           @search="onSearch"
         />
       </a-col>
       <a-row class="control-header">
         <a-breadcrumb>
           <a-breadcrumb-item>
-            <a @click="redirectHome()">
+            <a @click="redirectHome()" disabled>
               <a-icon type="user" style="margin-right: 3px" />
               <span>Home</span>
             </a>
@@ -50,9 +51,9 @@
           <a-breadcrumb-item v-for="(item, index) in pathList" :key="index">
             <a-tooltip>
               <template slot="title">
-                <a @click="doCopy(concatPathList(pathList, index))">Copy Link</a>
+                <a :disabled="index < 1 ? true : false" @click="doCopy(concatPathList(pathList, index))">Copy Link</a>
               </template>
-              <a @click="redirectPath(item, index, pathList)">
+              <a :disabled="index < 1 ? true : false" @click="redirectPath(item, index, pathList)">
                 <span>{{ item }}</span>
               </a>
             </a-tooltip>
@@ -77,7 +78,7 @@
         <span slot="action" slot-scope="text, record" v-if="record.storageClass">
           <a style="margin-right: 10px" @click="switchDetailsPanel(record)">Details</a>
           <a-dropdown>
-            <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
+            <a class="ant-dropdown-link" disabled @click="(e) => e.preventDefault()">
               More
               <a-icon type="down" />
             </a>
@@ -638,9 +639,10 @@ export default {
                   this.$router.go(-1)
                 }
               } else {
+                this.$message.warning('Invalid path')
                 // Invalid path
-                this.bucketName = this.buckets[0]
-                this.redirectHome()
+                // this.bucketName = this.buckets[0]
+                // this.redirectHome()
               }
             }
           } else {
@@ -750,6 +752,7 @@ export default {
       // TODO: How to handle invalid link?
       console.log('onSearch: ', searchStr, this.parsePath(searchStr))
       if (this.isValidLink(searchStr)) {
+        // TODO: how to support link safely?
         // Search with oss://|s3:// link
         const [service, bucketName, prefix, fileName] = this.parsePath(searchStr)
         this.service = service

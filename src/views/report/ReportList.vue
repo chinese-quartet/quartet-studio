@@ -17,10 +17,25 @@
           @click="loadResult(record)"
           :disabled="record.status !== 'Finished'"
           icon="eye"
-          type="primary"
           style="margin-right: 5px"
         >
           Result
+        </a-button>
+        <a-button
+          @click="downloadFile(record)"
+          v-if="record.status == 'Finished'"
+          icon="download"
+          style="margin-right: 5px"
+        >
+          Download
+        </a-button>
+        <a-button
+          @click="loadLog(record)"
+          v-if="record.status !== 'Finished'"
+          icon="clock-circle"
+          style="margin-right: 5px"
+        >
+          Show Log
         </a-button>
       </span>
       <span slot="status" slot-scope="text, record" class="single-tag">
@@ -42,6 +57,9 @@
         </a-tag>
       </span>
     </a-table>
+    <a-modal v-model="logVisible" title="Log Container" :footer="null">
+      <a-row v-html="log" class="modal-log-container"></a-row>
+    </a-modal>
     <a-drawer
       class="report-uploader"
       title="New QC Report"
@@ -62,6 +80,8 @@ import { PageView } from '@/layouts'
 import Submitter from './Submitter'
 import filter from 'lodash.filter'
 import { GetTaskList } from './util'
+import { makeDownloadUrl } from '@/api/manage'
+import axios from 'axios'
 
 const columns = [
   {
@@ -77,13 +97,14 @@ const columns = [
     dataIndex: 'description',
     key: 'description',
     align: 'center',
-    visible: true
+    visible: false
   },
   {
     title: 'Report Type',
     dataIndex: 'reportType',
     key: 'reportType',
     align: 'center',
+    width: 200,
     visible: true
   },
   {
@@ -91,6 +112,7 @@ const columns = [
     dataIndex: 'startedAt',
     key: 'startedAt',
     align: 'center',
+    width: 150,
     visible: true
   },
   {
@@ -98,6 +120,7 @@ const columns = [
     dataIndex: 'finishedAt',
     key: 'finishedAt',
     align: 'center',
+    width: 150,
     visible: true
   },
   {
@@ -114,6 +137,7 @@ const columns = [
     key: 'operation',
     scopedSlots: { customRender: 'operation' },
     align: 'center',
+    width: 250,
     visible: true
   }
 ]
@@ -127,6 +151,8 @@ export default {
     return {
       columns,
       data: [],
+      logVisible: false,
+      log: '',
       reportLoading: false,
       submitPanelVisible: false,
       pagination: {
@@ -157,6 +183,58 @@ export default {
     }
   },
   methods: {
+    downloadFile(record) {
+      const key = record.response.report
+      const filename = record.name + '.html'
+      makeDownloadUrl('minio', 'tservice', {
+        key: key
+      })
+        .then(response => {
+          this.$message.info('Please hold on, downloading...')
+          axios.get(response.download_url).then(response => {
+            var element = document.createElement('a')
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(response.data))
+            element.setAttribute('target', '_blank')
+            element.setAttribute('download', filename)
+
+            element.style.display = 'none'
+            document.body.appendChild(element)
+
+            element.click()
+
+            document.body.removeChild(element)
+          })
+        })
+        .catch(error => {
+          console.log('Make Download Url Error: ', error)
+          this.$message.error('Not found the report.')
+        })
+    },
+    loadLog(record) {
+      const key = record.response.log
+
+      makeDownloadUrl('minio', 'tservice', {
+        key: key
+      })
+        .then(response => {
+          console.log('Make Download Url: ', key, response)
+
+          axios
+            .get(response.download_url)
+            .then(response => {
+              console.log('Report Log: ', response)
+              this.log = response.data.msg.replaceAll('\n', '<br/>')
+              this.logVisible = true
+            })
+            .catch(error => {
+              this.log = 'Not Found'
+            })
+        })
+        .catch(error => {
+          console.log('Make Download Url Error: ', error)
+          this.log = 'Not Found'
+        })
+    },
     loadResult(record) {
       this.$router.push({
         name: 'report-details',
@@ -314,5 +392,11 @@ export default {
   .ant-drawer-body {
     padding: 10px 10px 0px 0px;
   }
+}
+
+.modal-log-container {
+  max-width: 100%;
+  max-height: 300px;
+  overflow: scroll;
 }
 </style>

@@ -124,7 +124,7 @@ export default {
 
 <style lang="less" scoped>
 .content {
-  height: calc(100% - 104px);
+  // height: calc(100% - 104px);
   margin: 10px 10px 0;
 
   .page-header-index-wide {

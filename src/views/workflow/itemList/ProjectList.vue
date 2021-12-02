@@ -139,7 +139,7 @@
           <div slot="actions">
             <a @click="onShowWorkflowList(item.id, item.title)">{{ $t('workflow.itemList.projectList.view') }}</a>
             &nbsp;
-            <a @click="onShowReport(item.id)" :disabled="!item.id">{{ $t('workflow.itemList.projectList.report') }}</a>
+            <a style="display: none;" @click="onShowReport(item.id)" :disabled="!item.id">{{ $t('workflow.itemList.projectList.report') }}</a>
             &nbsp;
             <a-popover :title="$t('workflow.itemList.projectList.notice')" trigger="hover" placement="bottomRight">
               <span slot="content" style="margin-bottom: 10px; display: block">

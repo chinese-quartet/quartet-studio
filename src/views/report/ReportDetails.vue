@@ -23,7 +23,7 @@
         </div>
       </a-col>
       <a-col :xs="8" :sm="8">
-        <div class="text">Download Report</div>
+        <div class="text">Download</div>
         <div class="heading">
           <a-button
             type="primary"
@@ -33,19 +33,36 @@
           />
         </div>
       </a-col>
-      <a-col :xs="8" :sm="8" style="display: none">
-        <div class="text">Report Log</div>
+      <a-col :xs="8" :sm="8">
+        <div class="text">Show Log</div>
         <div class="heading">
-          <a-popover placement="left">
+          <a-popover placement="leftTop" trigger="click">
             <template slot="content">
               <a-row v-html="log" class="log-container"></a-row>
             </template>
-            <a-button type="primary" size="small" @click="loadLog(report.response.log)" icon="eye" />
+            <a-button type="primary" size="small" @click="loadLog(report)" icon="eye" />
           </a-popover>
         </div>
       </a-col>
     </a-row>
 
+    <a-row class="header-btn-group">
+      <a-popover v-model="logVisible" placement="leftTop" trigger="click">
+        <template slot="content">
+          <a-icon type="close-circle" style="float: right" theme="filled" slot="content" @click="hideLog" />
+          <a-row v-html="log" class="log-container"></a-row>
+        </template>
+        <a-button type="primary" @click="loadLog(report)" icon="eye">Show Log</a-button>
+      </a-popover>
+      <a-button
+        type="primary"
+        icon="download"
+        style="margin-left: 10px"
+        @click.native="downloadFile('multi-report.html', reportUrl)"
+      >
+        Download
+      </a-button>
+    </a-row>
     <embeded-frame :src="reportUrl" class="embeded-frame"></embeded-frame>
   </page-view>
 </template>
@@ -78,7 +95,8 @@ export default {
     return {
       report: {},
       log: '',
-      reportUrl: ''
+      reportUrl: '',
+      logVisible: false
     }
   },
   computed: {
@@ -87,6 +105,9 @@ export default {
     }
   },
   methods: {
+    hideLog() {
+      this.logVisible = false
+    },
     downloadFile(filename, link) {
       this.$message.info('Please hold on, downloading...')
       axios.get(link).then(response => {
@@ -103,8 +124,30 @@ export default {
         document.body.removeChild(element)
       })
     },
-    loadLog(logLink) {
-      this.log = ''
+    loadLog(report) {
+      const key = JSON.parse(report.response).log
+
+      makeDownloadUrl('minio', 'tservice', {
+        key: key
+      })
+        .then(response => {
+          console.log('Make Download Url: ', key, response)
+
+          axios
+            .get(response.download_url)
+            .then(response => {
+              console.log('Report Log: ', response)
+              this.log = response.data.msg.replaceAll('\n', '<br/>')
+              this.logVisible = true
+            })
+            .catch(error => {
+              this.log = 'Not Found'
+            })
+        })
+        .catch(error => {
+          console.log('Make Download Url Error: ', error)
+          this.log = 'Not Found'
+        })
     },
     backToProjectList(projectId) {
       this.$router.push({ name: 'project-management', params: { projectId: projectId } })
@@ -180,6 +223,13 @@ export default {
   .status-list {
     text-align: left;
   }
+}
+
+.header-btn-group {
+  position: absolute;
+  margin: 10px;
+  right: 20px;
+  z-index: 10;
 }
 </style>
 
