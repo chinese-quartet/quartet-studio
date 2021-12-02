@@ -16,5 +16,5 @@ The reason there is no "Register" button is that the general process is for user
 ### How to ask for help?
 
 <p style="text-align: justify;">
-To help you better use QDP, the Quartet team has prepared a discussion area where team members are ready to help you. If you have any questions, please access <a href="https://www.yuque.com/quartet/topics?language=en-us" target="_blank">the discussion website</a> and submit your questions.
+To help you better use QDP, the Quartet team has prepared a discussion area where team members are ready to help you. If you have any questions, please access the <a href="https://www.yuque.com/quartet/topics?language=en-us" target="_blank">讨论区</a> or <a href="https://github.com/chinese-quartet/docs.chinese-quartet.org/issues" target="_blank"> Issues</a> and submit your questions.
 </p>

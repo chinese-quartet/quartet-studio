@@ -22,7 +22,21 @@
         <div class="links">
           <a :href="policyEntrypoint" target="_blank">{{ $t('layouts.userLayout.dataPolicies') }}</a>
           <a :href="helpEntrypoint" target="_blank">{{ $t('layouts.userLayout.help') }}</a>
-          <a :href="feedbackEntrypoint" target="_blank">{{ $t('layouts.userLayout.feedback') }}</a>
+          <a-dropdown>
+            <a>{{ $t('layouts.userLayout.feedback') }}</a>
+            <a-menu slot="overlay">
+              <a-menu-item>
+                <a :href="feedbackEntrypoint.zh_CN" target="_blank">
+                  <span class="action"> 🇨🇳 讨论区 </span>
+                </a>
+              </a-menu-item>
+              <a-menu-item>
+                <a :href="feedbackEntrypoint.en_US" target="_blank">
+                  <span class="action"> 🇬🇧 Issues </span>
+                </a>
+              </a-menu-item>
+            </a-menu>
+          </a-dropdown>
           <!-- <a href="_self" target="_blank">{{ $t('layouts.userLayout.terms') }}</a> -->
         </div>
         <div class="copyright">{{ $t('layouts.userLayout.copyright') }}</div>

@@ -11,16 +11,22 @@
           </span>
         </a>
       </a-tooltip>
-      <a-tooltip placement="bottom">
-        <template slot="title">
-          <span>{{ $t('components.tools.userMenu.feedback') }}</span>
-        </template>
-        <a :href="feedbackEntrypoint" target="_blank">
-          <span class="action">
-            <a-icon type="message" />
-          </span>
-        </a>
-      </a-tooltip>
+      <a-dropdown>
+        <span class="action"><a-icon type="message" /></span>
+        <a-menu slot="overlay">
+          <a-menu-item>
+            <a :href="feedbackEntrypoint.zh_CN" target="_blank">
+              <span class="action"> 🇨🇳 讨论区 </span>
+            </a>
+          </a-menu-item>
+          <a-menu-item>
+            <a :href="feedbackEntrypoint.en_US" target="_blank">
+              <span class="action"> 🇬🇧 Issues </span>
+            </a>
+          </a-menu-item>
+        </a-menu>
+      </a-dropdown>
+
       <a-tooltip placement="bottom">
         <template slot="title">
           <span>{{ $t('components.tools.userMenu.policies') }}</span>
@@ -71,7 +77,7 @@
         </a-menu>
       </a-dropdown>
       <a href="javascript:;" class="action" @click="handleLogin" v-else>
-        <a-icon type="login" style="margin-right: 5px;" />
+        <a-icon type="login" style="margin-right: 5px" />
         <span>{{ $t('components.tools.userMenu.login') }}</span>
       </a>
       <app-store-icon class="action" />

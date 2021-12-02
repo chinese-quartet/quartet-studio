@@ -129,7 +129,10 @@ export const projectSettings = {
       ]
     }
   ],
-  feedbackEntrypoint: 'https://yuque.com/quartet/topics?language=en-us',
+  feedbackEntrypoint: {
+    en_US: 'https://github.com/chinese-quartet/docs.chinese-quartet.org/issues',
+    zh_CN: 'https://yuque.com/quartet/topics?language=en-us'
+  },
   policyEntrypoint: 'https://yuque.com/quartet/policies?language=en-us',
   helpEntrypoint: 'https://yuque.com/quartet/help?language=en-us',
   clientId: 'clinico-omics',
