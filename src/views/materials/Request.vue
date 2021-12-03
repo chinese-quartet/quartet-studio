@@ -25,10 +25,16 @@
                 <a-select-option value="Metabolite">Metabolite</a-select-option>
               </a-select>
             </a-form-item>
-            <a-form-item label="Sets">
+            <a-form-item>
+              <span slot="label">
+                Sets&nbsp;
+                <a-tooltip title="This refers to a set of four samples, D5, D6, F7, and M8. If you need a number of single samples or other combinations of samples, please note in the Additional Notes field.">
+                  <a-icon type="question-circle-o" />
+                </a-tooltip>
+              </span>
               <a-input-number
                 :min="1"
-                :max="10"
+                :max="100"
                 v-decorator="['tubes', { rules: [{ required: true, message: 'How many sets?' }] }]"
                 placeholder="How many sets you request?"
               />
