@@ -1,117 +1,123 @@
 <template>
-  <a-row class="search-page">
-    <a-row class="header-container">
-      <a-col class="left" :lg="24" :md="24" :sm="24" :xs="24">
-        <a-col class="title" :lg="20" :md="24" :sm="24" :xs="24">
-          <h2>{{ title }}<a-icon theme="filled" @click="playVideo" class="icon-twinkle" type="youtube" /></h2>
-          <span>{{ summary }}</span>
-        </a-col>
-        <a-col class="logo" :lg="4" :md="0" :sm="0" :xs="0">
-          <img :src="require('@/assets/images/qdp_large_logo.png')" />
-        </a-col>
-      </a-col>
-      <a-col class="right" :lg="24" :md="24" :sm="24" :xs="24">
-        <p class="content" v-html="welcomeMsg"></p>
-      </a-col>
-    </a-row>
-    <a-row class="description-container">
-      <a-col class="top">
-        <span class="title">Data Portal Summary</span>
-        <span class="description">Release v1.0 (October 18, 2021)</span>
-      </a-col>
-      <a-col class="bottom">
-        <a-col v-for="item in statisticsData" :key="item.key" :span="6">
-          <a-row class="item">
-            <span class="label">{{ item.label }}</span>
-            <span class="value">{{ item.value }}</span>
-          </a-row>
-        </a-col>
-      </a-col>
-    </a-row>
-    <a-row class="content-container" style="display: none">
-      <a-col class="left" :xl="8" :lg="8" :md="24" :sm="24">
-        <a-row style="height: 135px">
-          <span style="font-size: 1rem; font-weight: bold">News</span>
-          <a-col>
-            <a href="">Quartet Data Portal is now open to the public</a>
+  <a-row style="width: 100%; height: 100%">
+    <a-row class="search-page">
+      <a-row class="header-container">
+        <a-col class="left" :lg="24" :md="24" :sm="24" :xs="24">
+          <a-col class="title" :lg="20" :md="24" :sm="24" :xs="24">
+            <h2>{{ title }}<a-icon theme="filled" @click="playVideo" class="icon-twinkle" type="youtube" /></h2>
+            <span>{{ summary }}</span>
           </a-col>
-        </a-row>
-        <a-row>
-          <span style="font-size: 1rem; font-weight: bold">Get Started by Exploring:</span>
-          <a-input-search
-            placeholder="Search for a Project, Primary Site, Case"
-            @search="onSearch"
-            disabled
-            enterButton="Search"
-            size="large"
-            class="search-bar"
-          />
-          <a-row class="btn-group" :gutter="16">
+          <a-col class="logo" :lg="4" :md="0" :sm="0" :xs="0">
+            <img :src="require('@/assets/images/qdp_large_logo.png')" />
+          </a-col>
+        </a-col>
+        <a-col class="right" :lg="24" :md="24" :sm="24" :xs="24">
+          <p class="content" v-html="welcomeMsg"></p>
+        </a-col>
+      </a-row>
+      <a-row class="description-container">
+        <a-col class="top">
+          <span class="title">Data Portal Summary</span>
+          <span class="description">Release v1.0 (October 18, 2021)</span>
+        </a-col>
+        <a-col class="bottom">
+          <a-col v-for="item in statisticsData" :key="item.key" :span="6">
+            <a-row class="item">
+              <span class="label">{{ item.label }}</span>
+              <span class="value">{{ item.value }}</span>
+            </a-row>
+          </a-col>
+        </a-col>
+      </a-row>
+      <a-row class="content-container" style="display: none">
+        <a-col class="left" :xl="8" :lg="8" :md="24" :sm="24">
+          <a-row style="height: 135px">
+            <span style="font-size: 1rem; font-weight: bold">News</span>
             <a-col>
-              <a-tooltip placement="top" title="Request Reference Materials" :arrowPointAtCenter="true">
-                <router-link
-                  class="span-btn"
-                  aria-current="false"
-                  :to="{ name: 'materials' }"
-                  style="background-color: #ffc65d"
-                >
-                  <span class="span-icon"> <a-icon type="experiment" /> </span>&nbsp;
-                  <span style="vertical-align: middle">Reference Materials</span>
-                </router-link>
-              </a-tooltip>
-            </a-col>
-            <a-col>
-              <a-tooltip placement="top" title="Browser and Download Multiomics Data" :arrowPointAtCenter="true">
-                <router-link
-                  class="span-btn"
-                  aria-current="false"
-                  :to="{ name: 'data' }"
-                  style="background-color: #f16745"
-                >
-                  <span class="span-icon"> <a-icon type="deployment-unit" /> </span>&nbsp;
-                  <span style="vertical-align: middle">Multiomics Data</span>
-                </router-link>
-              </a-tooltip>
-            </a-col>
-            <a-col>
-              <a-tooltip placement="top" title="Launch QC Assessment using Custom DataSets" :arrowPointAtCenter="true">
-                <router-link
-                  class="span-btn"
-                  aria-current="false"
-                  :to="{ name: 'project-management' }"
-                  style="background-color: #7bc8a4"
-                >
-                  <span class="span-icon"> <a-icon type="hdd" /> </span>&nbsp;
-                  <span style="vertical-align: middle">Quality Assessment</span>
-                </router-link>
-              </a-tooltip>
-            </a-col>
-            <a-col>
-              <a-tooltip placement="top" title="Discover the Reference Datasets" :arrowPointAtCenter="true">
-                <router-link
-                  class="span-btn"
-                  aria-current="false"
-                  :to="{ name: 'download-reference-datasets' }"
-                  style="background-color: #4cc3d9"
-                >
-                  <span class="span-icon"> <a-icon type="dot-chart" /> </span>&nbsp;
-                  <span style="vertical-align: middle">Reference Datasets</span>
-                </router-link>
-              </a-tooltip>
+              <a href="">Quartet Data Portal is now open to the public</a>
             </a-col>
           </a-row>
-        </a-row>
-      </a-col>
-      <a-col class="right" :xl="16" :lg="16" :md="24" :sm="24">
-        <fact style="display: none" class="fact-container"></fact>
-        <img
-          style="width: 100%; margin: 0px 10px"
-          :src="require('@/assets/images/quality-platform-framework-v3.png')"
-        />
-      </a-col>
-    </a-row>
-    <a-row class="footer-container">
-      <p class="description" v-html="description"></p>
+          <a-row>
+            <span style="font-size: 1rem; font-weight: bold">Get Started by Exploring:</span>
+            <a-input-search
+              placeholder="Search for a Project, Primary Site, Case"
+              @search="onSearch"
+              disabled
+              enterButton="Search"
+              size="large"
+              class="search-bar"
+            />
+            <a-row class="btn-group" :gutter="16">
+              <a-col>
+                <a-tooltip placement="top" title="Request Reference Materials" :arrowPointAtCenter="true">
+                  <router-link
+                    class="span-btn"
+                    aria-current="false"
+                    :to="{ name: 'materials' }"
+                    style="background-color: #ffc65d"
+                  >
+                    <span class="span-icon"> <a-icon type="experiment" /> </span>&nbsp;
+                    <span style="vertical-align: middle">Reference Materials</span>
+                  </router-link>
+                </a-tooltip>
+              </a-col>
+              <a-col>
+                <a-tooltip placement="top" title="Browser and Download Multiomics Data" :arrowPointAtCenter="true">
+                  <router-link
+                    class="span-btn"
+                    aria-current="false"
+                    :to="{ name: 'data' }"
+                    style="background-color: #f16745"
+                  >
+                    <span class="span-icon"> <a-icon type="deployment-unit" /> </span>&nbsp;
+                    <span style="vertical-align: middle">Multiomics Data</span>
+                  </router-link>
+                </a-tooltip>
+              </a-col>
+              <a-col>
+                <a-tooltip
+                  placement="top"
+                  title="Launch QC Assessment using Custom DataSets"
+                  :arrowPointAtCenter="true"
+                >
+                  <router-link
+                    class="span-btn"
+                    aria-current="false"
+                    :to="{ name: 'project-management' }"
+                    style="background-color: #7bc8a4"
+                  >
+                    <span class="span-icon"> <a-icon type="hdd" /> </span>&nbsp;
+                    <span style="vertical-align: middle">Quality Assessment</span>
+                  </router-link>
+                </a-tooltip>
+              </a-col>
+              <a-col>
+                <a-tooltip placement="top" title="Discover the Reference Datasets" :arrowPointAtCenter="true">
+                  <router-link
+                    class="span-btn"
+                    aria-current="false"
+                    :to="{ name: 'download-reference-datasets' }"
+                    style="background-color: #4cc3d9"
+                  >
+                    <span class="span-icon"> <a-icon type="dot-chart" /> </span>&nbsp;
+                    <span style="vertical-align: middle">Reference Datasets</span>
+                  </router-link>
+                </a-tooltip>
+              </a-col>
+            </a-row>
+          </a-row>
+        </a-col>
+        <a-col class="right" :xl="16" :lg="16" :md="24" :sm="24">
+          <fact style="display: none" class="fact-container"></fact>
+          <img
+            style="width: 100%; margin: 0px 10px"
+            :src="require('@/assets/images/quality-platform-framework-v3.png')"
+          />
+        </a-col>
+      </a-row>
+      <a-row class="footer-container">
+        <p class="description" v-html="description"></p>
+      </a-row>
     </a-row>
     <div class="mask-window" @click="stopVideo" v-if="videoViewerVisible"></div>
     <video-viewer :data="video" v-if="videoViewerVisible"></video-viewer>

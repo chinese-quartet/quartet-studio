@@ -8,7 +8,7 @@
       <a-row class="content">
         <a-col class="left" :span="18">
           <a-spin v-if="loading" />
-          <a-row v-show="!loading" style="height: 360px; display: flex; justify-content: center; align-items: center">
+          <a-row v-show="!loading" class="video-container">
             <!-- TODO: Bilibili's api is low, how to fix it? -->
             <!-- <bilibili :videoId="videoId" v-if="currentKey === 'bilibili' && videoId"></bilibili> -->
             <youtube
@@ -100,6 +100,7 @@ export default {
 
 <style lang="less">
 .video-viewer {
+  border-radius: 5px;
   position: absolute;
   top: calc((100% - 400px) / 2 - 40px);
   z-index: 1000;
@@ -112,7 +113,7 @@ export default {
   }
 
   .ant-tabs-bar {
-    margin-bottom: 10px;
+    margin-bottom: 3px;
   }
 
   .content {
@@ -125,7 +126,15 @@ export default {
       justify-content: center;
       align-items: center;
 
-      height: 360px;
+      .video-container {
+        height: 360px;
+        overflow: hidden;
+      }
+
+      .video-container iframe {
+        height: 360px;
+        width: 640px;
+      }
     }
 
     .right {

@@ -18,6 +18,8 @@
     "@codekraft-studio/vue-animated": "^0.1.5",
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@handsontable/vue": "^4.1.1",
+    "@sentry/tracing": "^6.15.0",
+    "@sentry/vue": "^6.15.0",
     "ant-design-vue": "^1.6.2",
     "antd": "^4.3.4",
     "axios": "^0.19.0",
