@@ -129,6 +129,9 @@ export default {
       .video-container {
         height: 360px;
         overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       .video-container iframe {

@@ -120,7 +120,7 @@
       </a-row>
     </a-row>
     <div class="mask-window" @click="stopVideo" v-if="videoViewerVisible"></div>
-    <video-viewer :data="video" v-if="videoViewerVisible"></video-viewer>
+    <video-viewer :data="video" :key="videoKey" v-if="videoViewerVisible"></video-viewer>
   </a-row>
 </template>
 
@@ -180,6 +180,7 @@ export default {
       ],
       description:
         'The Quartet project is designed in Fudan University (Shanghai, China). The Quartet multi-omics reference materials and datasets are publicly available and accessible. The recipients of the Reference Materials are highly encouraged to share their data with Fudan University through the Quartet Data Portal in order for us to improve the reference datasets and to better serve the community.',
+      videoKey: '',
       videoViewerVisible: false,
       video: {
         youtube: [
@@ -204,6 +205,9 @@ export default {
     onSearch() {},
     playVideo() {
       this.videoViewerVisible = true
+      this.videoKey = Math.random()
+        .toString(36)
+        .slice(-8)
     },
     stopVideo() {
       this.videoViewerVisible = false
