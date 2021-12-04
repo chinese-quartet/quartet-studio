@@ -3,7 +3,7 @@
     <a-row class="header-container">
       <a-col class="left" :lg="24" :md="24" :sm="24" :xs="24">
         <a-col class="title" :lg="20" :md="24" :sm="24" :xs="24">
-          <h2>{{ title }}</h2>
+          <h2>{{ title }}<a-icon theme="filled" @click="playVideo" class="icon-twinkle" type="youtube" /></h2>
           <span>{{ summary }}</span>
         </a-col>
         <a-col class="logo" :lg="4" :md="0" :sm="0" :xs="0">
@@ -113,11 +113,14 @@
     <a-row class="footer-container">
       <p class="description" v-html="description"></p>
     </a-row>
+    <div class="mask-window" @click="stopVideo" v-if="videoViewerVisible"></div>
+    <video-viewer :data="video" v-if="videoViewerVisible"></video-viewer>
   </a-row>
 </template>
 
 <script>
 import Fact from '@/views/datasource/Fact'
+import VideoViewer from '@/views/video/VideoViewer'
 
 export default {
   name: 'Quartet',
@@ -170,15 +173,39 @@ export default {
         }
       ],
       description:
-        'The Quartet project is designed in Fudan University (Shanghai, China). The Quartet multi-omics reference materials and datasets are publicly available and accessible. The recipients of the Reference Materials are highly encouraged to share their data with Fudan University through the Quartet Data Portal in order for us to improve the reference datasets and to better serve the community.'
+        'The Quartet project is designed in Fudan University (Shanghai, China). The Quartet multi-omics reference materials and datasets are publicly available and accessible. The recipients of the Reference Materials are highly encouraged to share their data with Fudan University through the Quartet Data Portal in order for us to improve the reference datasets and to better serve the community.',
+      videoViewerVisible: false,
+      video: {
+        youtube: [
+          {
+            title: '1. General Introduction',
+            videoId: 'cDQydyuT_Ps'
+          },
+          {
+            title: '2. Request Materials and Register an Account',
+            videoId: 'GZa_UbSh_fA'
+          },
+          {
+            title: '3. Uploading and Analyzing your Data',
+            videoId: 'BV-uqufLAhw'
+          }
+        ]
+      }
     }
   },
   props: {},
   methods: {
-    onSearch() {}
+    onSearch() {},
+    playVideo() {
+      this.videoViewerVisible = true
+    },
+    stopVideo() {
+      this.videoViewerVisible = false
+    }
   },
   components: {
-    Fact
+    Fact,
+    VideoViewer
   }
 }
 </script>
@@ -421,5 +448,139 @@ export default {
       margin: 0px auto;
     }
   }
+}
+
+@keyframes heartAnimate {
+  0%,
+  100% {
+    transform: scale(1) rotate(0);
+  }
+
+  10%,
+  30% {
+    transform: scale(0.9) rotate(2deg);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: scale(1.1) rotate(-2deg);
+  }
+
+  50%,
+  70% {
+    transform: scale(1.1) rotate(2deg);
+  }
+}
+
+@-webkit-keyframes heartAnimate {
+  0%,
+  100% {
+    -webkit-transform: scale(1) rotate(0);
+  }
+
+  10%,
+  30% {
+    -webkit-transform: scale(0.9) rotate(2deg);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    -webkit-transform: scale(1.1) rotate(-2deg);
+  }
+
+  50%,
+  70% {
+    -webkit-transform: scale(1.1) rotate(2deg);
+  }
+}
+
+@-moz-keyframes heartAnimate {
+  0%,
+  100% {
+    -moz-transform: scale(1) rotate(0);
+  }
+
+  10%,
+  30% {
+    -moz-transform: scale(0.9) rotate(2deg);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    -moz-transform: scale(1.1) rotate(-2deg);
+  }
+
+  50%,
+  70% {
+    -moz-transform: scale(1.1) rotate(2deg);
+  }
+}
+
+@-o-keyframes heartAnimate {
+  0%,
+  100% {
+    -o-transform: scale(1) rotate(0);
+  }
+
+  10%,
+  30% {
+    -o-transform: scale(0.9) rotate(2deg);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    -o-transform: scale(1.1) rotate(-2deg);
+  }
+
+  50%,
+  70% {
+    -o-transform: scale(1.1) rotate(2deg);
+  }
+}
+
+@-ms-keyframes heartAnimate {
+  0%,
+  100% {
+    -ms-transform: scale(1) rotate(0);
+  }
+
+  10%,
+  30% {
+    -ms-transform: scale(0.9) rotate(2deg);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    -ms-transform: scale(1.1) rotate(-2deg);
+  }
+
+  50%,
+  70% {
+    -ms-transform: scale(1.1) rotate(2deg);
+  }
+}
+
+.icon-twinkle {
+  color: #ff8901;
+  vertical-align: super;
+  font-size: 2rem;
+  margin-left: 10px;
+  height: 25px;
+  margin-right: 5px;
+  -webkit-animation: heartAnimate 3s ease infinite;
+  -moz-animation: heartAnimate 3s ease infinite;
+  -o-animation: heartAnimate 3s ease infinite;
+  -ms-animation: heartAnimate 3s ease infinite;
+  animation: heartAnimate 3s ease infinite;
 }
 </style>
