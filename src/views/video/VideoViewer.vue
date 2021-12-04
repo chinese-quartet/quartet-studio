@@ -7,16 +7,27 @@
       </span>
       <a-row class="content">
         <a-col class="left" :span="18">
-          <bilibili :videoId="videoId" v-if="currentKey === 'bilibili' && videoId"></bilibili>
-          <youtube
-            :video-id="videoId"
-            v-if="currentKey === 'youtube' && videoId"
-            :fitParent="true"
-            ref="youtube"
-          ></youtube>
+          <a-spin v-if="loading" />
+          <a-row v-show="!loading" style="height: 360px; display: flex; justify-content: center; align-items: center">
+            <!-- TODO: Bilibili's api is low, how to fix it? -->
+            <!-- <bilibili :videoId="videoId" v-if="currentKey === 'bilibili' && videoId"></bilibili> -->
+            <youtube
+              :resize="true"
+              @ready="isReady"
+              @error="isError"
+              :video-id="videoId"
+              :player-vars="{ origin: 'http://chinese-quartet.org' }"
+              v-if="currentKey === 'youtube' && videoId && !errorMode"
+              :fitParent="true"
+              ref="youtube"
+            ></youtube>
+            <a v-if="errorMode" :href="'https://www.youtube.com/watch?v=' + videoId" target="_blank">
+              Load failed, open video in youtube
+            </a>
+          </a-row>
         </a-col>
         <a-col class="right" :span="6">
-          <a-list size="large" :data-source="videoList">
+          <a-list size="large" :data-source="videoList" style="overflow: scroll; height: 100%">
             <a-list-item @click="playVideo(item.videoId)" slot="renderItem" slot-scope="item, index">
               <span :class="{ highlight: item.videoId === videoId }">{{ item.title }}</span>
             </a-list-item>
@@ -52,14 +63,27 @@ export default {
     return {
       currentKey: '',
       videoId: null,
-      videoList: []
+      videoList: [],
+      loading: false,
+      errorMode: false
     }
   },
   methods: {
+    isError(e) {
+      console.log('Video Error: ', e)
+      this.loading = false
+      this.errorMode = true
+    },
+    isReady(e) {
+      console.log('Video Ready: ', e)
+      this.loading = false
+      this.errorMode = false
+    },
     getTitle(key) {
       return v.titleCase(key)
     },
     changeTabPane(key) {
+      this.loading = true
       this.currentKey = key
       this.videoList = this.data[key]
       this.videoId = this.videoList[0] ? this.videoList[0].videoId : null
@@ -77,10 +101,10 @@ export default {
 <style lang="less">
 .video-viewer {
   position: absolute;
-  top: 10px;
+  top: calc((100% - 400px) / 2 - 40px);
   z-index: 1000;
-  width: 80%;
-  left: 10%;
+  width: 853.75px;
+  left: calc((100% - 853.75px) / 2);
 
   .ant-tabs-content,
   .ant-tabs-bar {
@@ -97,6 +121,11 @@ export default {
 
     .left {
       overflow: scroll;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      height: 360px;
     }
 
     .right {
