@@ -7,71 +7,111 @@
       <a-row class="steps-content">
         <vue-markdown v-if="current === 0" :source="license" @rendered="update" class="markdown-viewer"></vue-markdown>
         <a-row v-if="current === 1">
-          <a-form style="margin: 0px 50px" :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 16 }">
-            <a-form-item label="Materials Type">
-              <a-select
-                v-decorator="[
-                  'materialsType',
-                  {
-                    initialValue: materialsType,
-                    rules: [{ required: true, message: 'Please select your request!' }],
-                  },
-                ]"
-                placeholder="Select a materials type"
-              >
-                <a-select-option value="DNA">DNA</a-select-option>
-                <a-select-option value="RNA">RNA</a-select-option>
-                <a-select-option value="Protein">Protein</a-select-option>
-                <a-select-option value="Metabolite">Metabolite</a-select-option>
-              </a-select>
-            </a-form-item>
-            <a-form-item>
-              <span slot="label">
-                Sets&nbsp;
-                <a-tooltip title="This refers to a set of four samples, D5, D6, F7, and M8. If you need a number of single samples or other combinations of samples, please note in the Additional Notes field.">
-                  <a-icon type="question-circle-o" />
-                </a-tooltip>
-              </span>
-              <a-input-number
-                :min="1"
-                :max="100"
-                v-decorator="['tubes', { rules: [{ required: true, message: 'How many sets?' }] }]"
-                placeholder="How many sets you request?"
-              />
-            </a-form-item>
-            <a-form-item label="Purpose">
-              <a-input
-                v-decorator="['purpose', { rules: [{ required: true, message: 'Purpose of materials request?' }] }]"
-                placeholder="Purpose of materials request?"
-              />
-            </a-form-item>
-            <a-form-item label="Requestor Title">
-              <a-input
-                v-decorator="['requestorTitle', { rules: [{ required: true, message: 'What\'s your title?' }] }]"
-                placeholder="What's your title?"
-              />
-            </a-form-item>
-            <a-form-item label="Requestor Name">
-              <a-input
-                v-decorator="['requestorName', { rules: [{ required: true, message: 'What\'s your name?' }] }]"
-                placeholder="What's your name?"
-              />
-            </a-form-item>
-            <a-form-item label="Requestor Email">
-              <a-input
-                v-decorator="['requestorEmail', { rules: [{ required: true, message: 'What\'s your email?' }] }]"
-                placeholder="What's your email?"
-              />
-            </a-form-item>
-            <a-form-item label="Organization">
-              <a-input
-                v-decorator="['organization', { rules: [{ required: true, message: 'What\'s your organization?' }] }]"
-                placeholder="What's your organization?"
-              />
-            </a-form-item>
-            <a-form-item label="Additional Notes">
-              <a-textarea v-decorator="['notes']" placeholder="Any notes" :auto-size="{ minRows: 3, maxRows: 5 }" />
-            </a-form-item>
+          <a-form class="info-form" :form="form" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }">
+            <a-col class="basic-info" :lg="12" :md="24" :sm="24" :xs="24">
+              <a-form-item label="Materials Type">
+                <a-select
+                  v-decorator="[
+                    'materialsType',
+                    {
+                      initialValue: materialsType,
+                      rules: [{ required: true, message: 'Please select your request!' }],
+                    },
+                  ]"
+                  placeholder="Select a materials type"
+                >
+                  <a-select-option value="DNA">DNA</a-select-option>
+                  <a-select-option value="RNA">RNA</a-select-option>
+                  <a-select-option value="Protein">Protein</a-select-option>
+                  <a-select-option value="Metabolite">Metabolite</a-select-option>
+                </a-select>
+              </a-form-item>
+              <a-form-item>
+                <span slot="label">
+                  Sets&nbsp;
+                  <a-tooltip
+                    title="This refers to a set of four samples, D5, D6, F7, and M8. If you need a number of single samples or other combinations of samples, please note in the Additional Notes field."
+                  >
+                    <a-icon type="question-circle-o" />
+                  </a-tooltip>
+                </span>
+                <a-input-number
+                  :min="1"
+                  :max="100"
+                  v-decorator="['tubes', { rules: [{ required: true, message: 'How many sets?' }] }]"
+                  placeholder="How many sets you request?"
+                />
+              </a-form-item>
+              <a-form-item label="Purpose">
+                <a-input
+                  v-decorator="['purpose', { rules: [{ required: true, message: 'Purpose of materials request?' }] }]"
+                  placeholder="Purpose of materials request?"
+                />
+              </a-form-item>
+              <a-form-item label="Requestor Title">
+                <a-input
+                  v-decorator="['requestorTitle', { rules: [{ required: true, message: 'What\'s your title?' }] }]"
+                  placeholder="What's your title?"
+                />
+              </a-form-item>
+              <a-form-item label="Requestor Name">
+                <a-input
+                  v-decorator="['requestorName', { rules: [{ required: true, message: 'What\'s your name?' }] }]"
+                  placeholder="What's your name?"
+                />
+              </a-form-item>
+              <a-form-item label="Requestor Email">
+                <a-input
+                  v-decorator="[
+                    'requestorEmail',
+                    {
+                      rules: [
+                        { required: true, message: 'What\'s your email?' },
+                        { type: 'email', message: 'It\'s not a valid email.' },
+                      ],
+                    },
+                  ]"
+                  placeholder="What's your email?"
+                />
+              </a-form-item>
+              <a-form-item label="Organization">
+                <a-input
+                  v-decorator="['organization', { rules: [{ required: true, message: 'What\'s your organization?' }] }]"
+                  placeholder="What's your organization?"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col class="additional-info" :lg="12" :md="24" :sm="24" :xs="24">
+              <a-form-item label="Recipients">
+                <a-input
+                  v-decorator="['recipients', { rules: [{ required: true, message: 'What\'s recipients name?' }] }]"
+                  placeholder="What's recipients name?"
+                />
+              </a-form-item>
+              <a-form-item label="Phone Number">
+                <a-input
+                  v-decorator="[
+                    'phoneNumber',
+                    {
+                      rules: [{ required: true, message: 'What\'s phone number of the recipients?' }],
+                    },
+                  ]"
+                  placeholder="What's phone number of the recipients?"
+                />
+              </a-form-item>
+              <a-form-item label="Delivery Address">
+                <a-input
+                  v-decorator="[
+                    'deliveryAddress',
+                    { rules: [{ required: true, message: 'What\'s delivery address?' }] },
+                  ]"
+                  placeholder="What's delivery address?"
+                />
+              </a-form-item>
+              <a-form-item label="Additional Notes">
+                <a-textarea v-decorator="['notes']" placeholder="Any notes" :auto-size="{ minRows: 3, maxRows: 5 }" />
+              </a-form-item>
+            </a-col>
           </a-form>
         </a-row>
         <a-row v-if="current === 2">
@@ -300,9 +340,16 @@ export default {
       border: 1px dashed #e9e9e9;
       border-radius: 6px;
       background-color: #fafafa;
-      height: 450px;
+      height: 475px;
       padding-top: 30px;
       overflow: scroll;
+
+      .info-form {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        padding-right: 20px;
+      }
 
       .notes {
         text-align: justify;
