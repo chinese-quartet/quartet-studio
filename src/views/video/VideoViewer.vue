@@ -35,6 +35,13 @@
         </a-col>
       </a-row>
     </a-tab-pane>
+    <a-icon
+      slot="tabBarExtraContent"
+      theme="filled"
+      style="margin-right: 10px; cursor: pointer"
+      @click="close"
+      type="close-circle"
+    />
   </a-tabs>
 </template>
 
@@ -69,6 +76,9 @@ export default {
     }
   },
   methods: {
+    close() {
+      this.$emit('close')
+    },
     isError(e) {
       console.log('Video Error: ', e)
       this.loading = false
@@ -84,6 +94,12 @@ export default {
     },
     changeTabPane(key) {
       this.loading = true
+      // When timeout, force failed
+      setTimeout(() => {
+        if (this.loading) {
+          this.isError()
+        }
+      }, 3000)
       this.currentKey = key
       this.videoList = this.data[key]
       this.videoId = this.videoList[0] ? this.videoList[0].videoId : null

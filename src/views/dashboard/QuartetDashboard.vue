@@ -120,7 +120,7 @@
       </a-row>
     </a-row>
     <div class="mask-window" @click="stopVideo" v-if="videoViewerVisible"></div>
-    <video-viewer :data="video" :key="videoKey" v-if="videoViewerVisible"></video-viewer>
+    <video-viewer @close="stopVideo" :data="video" :key="videoKey" v-if="videoViewerVisible"></video-viewer>
   </a-row>
 </template>
 
