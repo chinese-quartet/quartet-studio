@@ -223,7 +223,11 @@ export default {
             .get(response.download_url)
             .then(response => {
               console.log('Report Log: ', response)
-              this.log = response.data.msg.replaceAll('\n', '<br/>')
+              if (response.data.msg && response.data.msg.length > 0) {
+                this.log = response.data.msg.replaceAll('\n', '<br/>')
+              } else {
+                this.log = 'No logs have been generated yet, please check back later.'
+              }
               this.logVisible = true
             })
             .catch(error => {
