@@ -9,9 +9,15 @@
       :loading="reportLoading"
       :data-source="data"
       :pagination="pagination"
-      :scroll="{ y: 430 }"
+      :scroll="{ y: 430, x: 1000 }"
       rowKey="id"
     >
+      <span slot="logo" slot-scope="text, record">
+        <img width="30" height="30" v-if="text" :src="text" />
+      </span>
+      <span slot="text" slot-scope="text, record">
+        {{ text }}
+      </span>
       <span slot="operation" slot-scope="text, record">
         <a-button
           @click="loadResult(record)"
@@ -39,22 +45,21 @@
         </a-button>
       </span>
       <span slot="status" slot-scope="text, record" class="single-tag">
-        <a-progress
-          type="circle"
-          :showInfo="false"
-          :percent="record.percentage"
-          :width="45"
-          v-if="text === 'Started'"
+        <a-progress type="circle" :showInfo="true" :percent="record.percentage" :width="45" v-if="text === 'Started'" />
+        <a-icon
+          style="font-size: 20px"
+          type="check-circle"
+          theme="twoTone"
+          two-tone-color="#52c41a"
+          v-if="text === 'Finished'"
         />
-        <a-tag color="#87d068" v-if="text === 'Finished'">
-          {{ text }}
-        </a-tag>
-        <a-tag color="#f50" v-if="text === 'Failed'">
-          {{ text }}
-        </a-tag>
-        <a-tag color="#108ee9" v-if="false && text === 'Started'">
-          {{ text }}
-        </a-tag>
+        <a-icon
+          style="font-size: 20px"
+          type="exclamation-circle"
+          theme="twoTone"
+          two-tone-color="#f50"
+          v-if="text === 'Failed'"
+        />
       </span>
     </a-table>
     <a-modal v-model="logVisible" title="Log Container" :footer="null">
@@ -97,14 +102,33 @@ const columns = [
     dataIndex: 'description',
     key: 'description',
     align: 'center',
+    width: 150,
     visible: false
   },
   {
-    title: 'Report Type',
+    title: 'Category',
+    dataIndex: 'category',
+    key: 'category',
+    align: 'center',
+    width: 95,
+    scopedSlots: { customRender: 'logo' },
+    visible: true
+  },
+  {
+    title: 'Report Tool',
     dataIndex: 'reportType',
     key: 'reportType',
     align: 'center',
-    width: 200,
+    width: 180,
+    scopedSlots: { customRender: 'text' },
+    visible: true
+  },
+  {
+    title: 'Version',
+    dataIndex: 'version',
+    key: 'version',
+    align: 'center',
+    width: 90,
     visible: true
   },
   {
@@ -112,7 +136,7 @@ const columns = [
     dataIndex: 'startedAt',
     key: 'startedAt',
     align: 'center',
-    width: 150,
+    width: 160,
     visible: true
   },
   {
@@ -120,7 +144,7 @@ const columns = [
     dataIndex: 'finishedAt',
     key: 'finishedAt',
     align: 'center',
-    width: 150,
+    width: 160,
     visible: true
   },
   {
@@ -137,7 +161,8 @@ const columns = [
     key: 'operation',
     scopedSlots: { customRender: 'operation' },
     align: 'center',
-    width: 250,
+    width: 260,
+    fixed: 'right',
     visible: true
   }
 ]

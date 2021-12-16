@@ -9,6 +9,17 @@ export const formatDateTime = function (datetime) {
   }
 }
 
+const logoMap = {
+  'quartet-protqc-report': require('@/assets/images/proteomics.png'),
+  'quartet-rnaseq-report': require('@/assets/images/transcriptomics.png'),
+  'quartet-metqc-report': require('@/assets/images/metabolomics.png'),
+  'quartet-dnaseq-report': require('@/assets/images/genomics.png')
+}
+
+export const getLogo = function(reportType) {
+  return logoMap[reportType]
+}
+
 export const formatRecords = function (records) {
   const data = []
   records.forEach(record => {
@@ -18,6 +29,8 @@ export const formatRecords = function (records) {
       name: record.name,
       description: record.description,
       reportType: record.plugin_name,
+      category: getLogo(record.plugin_name),
+      version: record.plugin_version,
       startedAt: formatDateTime(record.started_time),
       finishedAt: formatDateTime(record.finished_time),
       status: record.status,
