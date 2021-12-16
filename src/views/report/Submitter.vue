@@ -262,9 +262,9 @@ export default {
           '<br />' +
           '<br />' +
           'Example Files: &nbsp;' +
-          '<a href="/examples/protqc/data_log2_example.csv">Data File</a>' +
+          '<a href="/examples/protqc/protqc_data_log2_example.csv">Data File</a>' +
           '&nbsp;&nbsp;' +
-          '<a href="/examples/protqc/metadata_example.csv">Metadata File</a>',
+          '<a href="/examples/protqc/protqc_metadata_example.csv">Metadata File</a>',
         metabolite:
           'The <b>data file</b> is the metabolite concentration result of metabolomics profiling. The required file format has samples in columns and two columns named "metabolites" and "HMDBID" including the names and HMDB IDs of metabolite compounds.&nbsp;' +
           '<br />' +
@@ -272,9 +272,9 @@ export default {
           '<br />' +
           '<br />' +
           'Example Files: &nbsp;' +
-          '<a href="/examples/metqc/data_example.csv">Data File</a>' +
+          '<a href="/examples/metqc/metqc_data_example.csv">Data File</a>' +
           '&nbsp;&nbsp;' +
-          '<a href="/examples/metqc/metadata_example.csv">Metadata File</a>',
+          '<a href="/examples/metqc/metqc_metadata_example.csv">Metadata File</a>',
       }
     }
   },
