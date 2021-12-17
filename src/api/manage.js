@@ -272,6 +272,13 @@ export function getWorkflow(workflowId) {
 }
 
 // TService
+export function getManifest() {
+  return axios({
+    url: api.tservice.manifest,
+    method: 'get'
+  })
+}
+
 export function getReport(reportId) {
   return axios({
     url: api.tservice.report + '/' + reportId,

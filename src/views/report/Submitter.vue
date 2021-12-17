@@ -13,7 +13,11 @@
             </span>
           </span>
         </a-alert>
-        <a-table :columns="columns" :data-source="data" :pagination="false" :row-selection="rowSelection" />
+        <a-table :columns="columns" :data-source="data" :pagination="false" :row-selection="rowSelection">
+          <span slot="logo" slot-scope="text, record">
+            <img width="30" height="30" v-if="text" :src="text" />
+          </span>
+        </a-table>
       </a-tab-pane>
       <a-tab-pane
         class="report-submitter__tabs__uploader"
@@ -79,20 +83,6 @@
         <a-form :form="form" layout="vertical" @submit="createReport">
           <a-row :gutter="24">
             <a-col :span="12">
-              <a-form-item label="Which Report?">
-                <a-input
-                  disabled
-                  v-decorator="[
-                    'report_tool',
-                    {
-                      initialValue: currentReport,
-                      rules: [{ required: true, message: 'Please input the report tool!' }],
-                    },
-                  ]"
-                />
-              </a-form-item>
-            </a-col>
-            <a-col :span="12">
               <a-form-item label="Report Name">
                 <a-input
                   v-decorator="[
@@ -102,6 +92,20 @@
                         { required: true, message: 'Please input the report name!' },
                         { min: 10, max: 64, message: 'Length should be 10 to 64' },
                       ],
+                    },
+                  ]"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="Which Report?">
+                <a-input
+                  disabled
+                  v-decorator="[
+                    'report_tool',
+                    {
+                      initialValue: currentReport,
+                      rules: [{ required: true, message: 'Please input the report tool!' }],
                     },
                   ]"
                 />
@@ -175,11 +179,18 @@ import axios from 'axios'
 import map from 'lodash.map'
 import filter from 'lodash.filter'
 import { mapActions } from 'vuex'
-import { submitReport } from '@/api/manage'
+import { submitReport, getManifest } from '@/api/manage'
+import { getLogo } from '@/views/report/util'
 import { v4 as uuidv4 } from 'uuid'
-import ProjectModeSubmitter from './ProjectModeSubmitter.vue'
+import ProjectModeSubmitter from './ProjectModeSubmitter'
 
 const columns = [
+  {
+    title: 'Category',
+    dataIndex: 'category',
+    key: 'category',
+    scopedSlots: { customRender: 'logo' },
+  },
   {
     title: 'Name',
     dataIndex: 'name',
@@ -194,6 +205,7 @@ const columns = [
     title: 'Version',
     dataIndex: 'version',
     width: '100px',
+    align: 'center',
     key: 'version'
   }
 ]
@@ -202,25 +214,31 @@ const data = [
   {
     name: 'WGS QC Report for Quartet',
     description: 'Quality control of germline variants calling results using a Chinese Quartet family.',
-    version: 'v0.1.2',
-    key: 'renluyao/quartet_dna_quality_control_wgs_big_pipeline-v0.1.2'
+    version: 'v0.1.0',
+    key: 'quartet-dnaseq-report',
+    category: getLogo('quartet-dnaseq-report'),
+    appKey: 'renluyao/quartet_dna_quality_control_wgs_big_pipeline-v0.1.2'
   },
   {
     name: 'RNA-Seq QC Report for Quartet',
     description: 'RNA Sequencing Quality Control Pipeline for Quartet.',
-    version: 'v0.1.2',
-    key: 'lizhihui/quartet-rnaseq-qc-v0.2.1'
+    version: 'v0.1.0',
+    appKey: 'lizhihui/quartet-rnaseq-qc-v0.2.1',
+    category: getLogo('quartet-rnaseq-report'),
+    key: 'quartet-rnaseq-report'
   },
   {
     name: 'Protqc Report for Quartet',
     description: 'Generate the QC Report for Quartet Proteomics data.',
-    version: 'v0.1.1',
+    version: 'v0.1.0',
+    category: getLogo('quartet-protqc-report'),
     key: 'quartet-protqc-report'
   },
   {
     name: 'Metqc Report for Quartet',
     description: 'Generate the QC Report for Quartet Metabolomics data.',
-    version: 'v0.1.1',
+    version: 'v0.1.0',
+    category: getLogo('quartet-metqc-report'),
     key: 'quartet-metqc-report'
   }
 ]
@@ -320,6 +338,26 @@ export default {
       makeUploadUrl: 'MakeUploadUrl',
       getObjectMeta: 'GetObjectMeta'
     }),
+    getToolManifest() {
+      getManifest()
+        .then(response => {
+          map(this.data, item => {
+            const matches = filter(response, o => {
+              return o.short_name === item.key
+            })
+
+            if (matches.length == 1) {
+              const matched = matches[0]
+              item['description'] = matched.description
+              item['version'] = matched.version
+              item['name'] = matched.name
+            }
+          })
+        })
+        .catch(error => {
+          console.log('Get Tool Manifest Error: ', error)
+        })
+    },
     getDescription(key, obj) {
       if (key === 'renluyao/quartet_dna_quality_control_wgs_big_pipeline-v0.1.2') {
         return this[obj]['dna']
@@ -349,10 +387,10 @@ export default {
       this.$emit('close')
     },
     createReport(e) {
-      this.loading = true
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
+          this.loading = true
           console.log('Received values of form: ', values)
           submitReport(values.report_tool, {
             name: values.name,
@@ -497,6 +535,9 @@ export default {
             })
         })
     }
+  },
+  created() {
+    this.getToolManifest()
   }
 }
 </script>

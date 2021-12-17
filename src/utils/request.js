@@ -25,6 +25,7 @@ const err = (error) => {
         message: 'Unauthorized',
         description: 'Authorization verification failed. You need to login if you want to access private resource.'
       })
+      window.home()
       // if (user) {
       //   store.dispatch('Logout').then(() => {
       //     setTimeout(() => {
