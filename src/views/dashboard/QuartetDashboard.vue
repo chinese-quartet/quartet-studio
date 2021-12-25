@@ -1,5 +1,14 @@
 <template>
   <a-row style="width: 100%; height: 100%">
+    <notice v-if="noticeVisible" @disable="disableNotice" @close="closeNotice" style="margin-bottom: 3px">
+      <span style="font-size: 18px; color: #fff; text-align: center; display: inherit;">
+        The Quartet Data Portal only supports access from modern browsers, such as 
+        <icon-font type="icon-chrome" /> Chrome,
+        <icon-font type="icon-Safari" /> Safari, 
+        <icon-font type="icon-firefox" /> Firefox or
+        <icon-font type="icon-Edge-01" /> Edge.
+      </span>
+    </notice>
     <a-row class="search-page">
       <a-row class="header-container">
         <a-col class="left" :lg="24" :md="24" :sm="24" :xs="24">
@@ -127,6 +136,8 @@
 <script>
 import Fact from '@/views/datasource/Fact'
 import VideoViewer from '@/views/video/VideoViewer'
+import Notice from '@/views/dashboard/Notice.vue'
+import IconFont from '@/components/IconFont'
 
 export default {
   name: 'Quartet',
@@ -197,11 +208,19 @@ export default {
             videoId: 'BV-uqufLAhw'
           }
         ]
-      }
+      },
+      noticeVisible: true
     }
   },
   props: {},
   methods: {
+    disableNotice() {
+      this.closeNotice()
+      localStorage.setItem('datains__noticeVisible', JSON.stringify(this.noticeVisible))
+    },
+    closeNotice() {
+      this.noticeVisible = false
+    },
     onSearch() {},
     playVideo() {
       this.videoViewerVisible = true
@@ -215,7 +234,14 @@ export default {
   },
   components: {
     Fact,
-    VideoViewer
+    VideoViewer,
+    Notice,
+    IconFont
+  },
+  created() {
+    const noticeVisible = JSON.parse(localStorage.getItem('datains__noticeVisible'))
+    console.log('Quartet Dashboard: ', noticeVisible, noticeVisible === undefined ? true : noticeVisible)
+    this.noticeVisible = noticeVisible === null ? true : noticeVisible
   }
 }
 </script>
