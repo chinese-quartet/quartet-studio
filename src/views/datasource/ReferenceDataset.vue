@@ -61,7 +61,7 @@ import axios from 'axios'
 import VueMarkdown from 'vue-markdown'
 import Prism from 'prismjs'
 
-const REFERENCE_DATASET_URL = 'http://reference-dataset.chinese-quartet.org'
+const REFERENCE_DATASET_URL = '//reference-dataset.chinese-quartet.org'
 const MANIFEST_URL = REFERENCE_DATASET_URL + '/stable/manifest.json'
 const DEVELOP_BRANCH = REFERENCE_DATASET_URL + '/index.html?prefix=develop/'
 const GITHUB = 'https://github.com/chinese-quartet'

@@ -205,23 +205,25 @@ export const projectSettings = {
 
 export function initBaseURL () {
   // const apiService = 'http://quartet-backend.3steps.cn'
-  const apiService = 'http://47.103.146.236'
-  console.log(`BASE_API_URL: ${apiService}`)
-  return apiService
+  if (location.protocol == 'https:') {
+    return 'https://service.3steps.cn'
+  } else {
+    return 'http://47.103.146.236'
+  }
 }
 
 export function getDnaHost () {
-  return `${initBaseURL()}:8080/quartet-dna-vis/`
+  return `${initBaseURL()}/quartet-dna-vis/`
 }
 
 export function getRnaHost () {
-  return `${initBaseURL()}:8080/quartet-rna-vis/`
+  return `${initBaseURL()}/quartet-rna-vis/`
 }
 
 export function getMetabolismHost () {
-  return `${initBaseURL()}:8080/quartet-metabolism-vis/`
+  return `${initBaseURL()}/quartet-metabolism-vis/`
 }
 
 export function getProteinHost () {
-  return `${initBaseURL()}:8080/quartet-protein-vis/`
+  return `${initBaseURL()}/quartet-protein-vis/`
 }

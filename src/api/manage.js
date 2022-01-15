@@ -53,7 +53,7 @@ export function getServiceApi(service) {
 // Materials Data
 export function getMaterialsSeqData() {
   return axios({
-    url: 'http://nordata-cdn.oss-cn-shanghai.aliyuncs.com/materials_seqdata.json',
+    url: '//nordata-cdn.oss-cn-shanghai.aliyuncs.com/materials_seqdata.json',
     method: 'get',
     params: {}
   })
@@ -61,7 +61,7 @@ export function getMaterialsSeqData() {
 
 export function getMaterialsMetadata() {
   return axios({
-    url: 'http://nordata-cdn.oss-cn-shanghai.aliyuncs.com/materials_metadata.json',
+    url: '//nordata-cdn.oss-cn-shanghai.aliyuncs.com/materials_metadata.json',
     method: 'get',
     params: {}
   })
@@ -69,7 +69,7 @@ export function getMaterialsMetadata() {
 
 export function getMaterialsDIN() {
   return axios({
-    url: 'http://nordata-cdn.oss-cn-shanghai.aliyuncs.com/materials_din.json',
+    url: '//nordata-cdn.oss-cn-shanghai.aliyuncs.com/materials_din.json',
     method: 'get',
     params: {}
   })
@@ -77,7 +77,7 @@ export function getMaterialsDIN() {
 
 export function getMaterialsRIN() {
   return axios({
-    url: 'http://nordata-cdn.oss-cn-shanghai.aliyuncs.com/materials_rin.json',
+    url: '//nordata-cdn.oss-cn-shanghai.aliyuncs.com/materials_rin.json',
     method: 'get',
     params: {}
   })
@@ -85,7 +85,7 @@ export function getMaterialsRIN() {
 
 export function getMaterialsTemperature() {
   return axios({
-    url: 'http://nordata-cdn.oss-cn-shanghai.aliyuncs.com/materials_temperature.json',
+    url: '//nordata-cdn.oss-cn-shanghai.aliyuncs.com/materials_temperature.json',
     method: 'get',
     params: {}
   })

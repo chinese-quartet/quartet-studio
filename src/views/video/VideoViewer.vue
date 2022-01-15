@@ -16,7 +16,7 @@
               @ready="isReady"
               @error="isError"
               :video-id="videoId"
-              :player-vars="{ origin: 'http://chinese-quartet.org' }"
+              :player-vars="{ origin: '//chinese-quartet.org' }"
               v-if="currentKey === 'youtube' && videoId && !errorMode"
               :fitParent="true"
               ref="youtube"

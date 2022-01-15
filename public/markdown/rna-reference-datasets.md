@@ -5,22 +5,22 @@
 #### Download with Browser
 | Name                        | Link                                                                                                        |
 | --------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| D6_D5_ReferenceDatasets.csv | <a href="http://reference-dataset.chinese-quartet.org/stable/v20210909/RNA/D6_D5_ReferenceDatasets.csv" target="_blank">Download</a> |
-| F7_D5_ReferenceDatasets.csv | <a href="http://reference-dataset.chinese-quartet.org/stable/v20210909/RNA/F7_D5_ReferenceDatasets.csv" target="_blank">Download</a> |
-| F7_D6_ReferenceDatasets.csv | <a href="http://reference-dataset.chinese-quartet.org/stable/v20210909/RNA/F7_D6_ReferenceDatasets.csv" target="_blank">Download</a> |
-| M8_D5_ReferenceDatasets.csv | <a href="http://reference-dataset.chinese-quartet.org/stable/v20210909/RNA/M8_D5_ReferenceDatasets.csv" target="_blank">Download</a> |
-| M8_D6_ReferenceDatasets.csv | <a href="http://reference-dataset.chinese-quartet.org/stable/v20210909/RNA/M8_D6_ReferenceDatasets.csv" target="_blank">Download</a> |
-| M8_F7_ReferenceDatasets.csv | <a href="http://reference-dataset.chinese-quartet.org/stable/v20210909/RNA/M8_F7_ReferenceDatasets.csv" target="_blank">Download</a> |
+| D6_D5_ReferenceDatasets.csv | <a href="//reference-dataset.chinese-quartet.org/stable/v20210909/RNA/D6_D5_ReferenceDatasets.csv" target="_blank">Download</a> |
+| F7_D5_ReferenceDatasets.csv | <a href="//reference-dataset.chinese-quartet.org/stable/v20210909/RNA/F7_D5_ReferenceDatasets.csv" target="_blank">Download</a> |
+| F7_D6_ReferenceDatasets.csv | <a href="//reference-dataset.chinese-quartet.org/stable/v20210909/RNA/F7_D6_ReferenceDatasets.csv" target="_blank">Download</a> |
+| M8_D5_ReferenceDatasets.csv | <a href="//reference-dataset.chinese-quartet.org/stable/v20210909/RNA/M8_D5_ReferenceDatasets.csv" target="_blank">Download</a> |
+| M8_D6_ReferenceDatasets.csv | <a href="//reference-dataset.chinese-quartet.org/stable/v20210909/RNA/M8_D6_ReferenceDatasets.csv" target="_blank">Download</a> |
+| M8_F7_ReferenceDatasets.csv | <a href="//reference-dataset.chinese-quartet.org/stable/v20210909/RNA/M8_F7_ReferenceDatasets.csv" target="_blank">Download</a> |
 
 #### Download with wget
 
 ```text
-http://reference-dataset.chinese-quartet.org/stable/v20210909/RNA/D6_D5_ReferenceDatasets.csv
-http://reference-dataset.chinese-quartet.org/stable/v20210909/RNA/F7_D5_ReferenceDatasets.csv
-http://reference-dataset.chinese-quartet.org/stable/v20210909/RNA/F7_D6_ReferenceDatasets.csv
-http://reference-dataset.chinese-quartet.org/stable/v20210909/RNA/M8_D5_ReferenceDatasets.csv
-http://reference-dataset.chinese-quartet.org/stable/v20210909/RNA/M8_D6_ReferenceDatasets.csv
-http://reference-dataset.chinese-quartet.org/stable/v20210909/RNA/M8_F7_ReferenceDatasets.csv
+//reference-dataset.chinese-quartet.org/stable/v20210909/RNA/D6_D5_ReferenceDatasets.csv
+//reference-dataset.chinese-quartet.org/stable/v20210909/RNA/F7_D5_ReferenceDatasets.csv
+//reference-dataset.chinese-quartet.org/stable/v20210909/RNA/F7_D6_ReferenceDatasets.csv
+//reference-dataset.chinese-quartet.org/stable/v20210909/RNA/M8_D5_ReferenceDatasets.csv
+//reference-dataset.chinese-quartet.org/stable/v20210909/RNA/M8_D6_ReferenceDatasets.csv
+//reference-dataset.chinese-quartet.org/stable/v20210909/RNA/M8_F7_ReferenceDatasets.csv
 ```
 
 
@@ -29,7 +29,7 @@ Based on high-quality of multi-lab RNA-seq libraries, we have reached consensuse
        
 We used expression profiles from 16 hiqh-quality RNA-seq batches to construct reference datasets (Figure 1). Of the 58,395 genes annotated in GRCh38.93, 10,067 (17.2%) for D6/D5, 11,560 (19.8 %) for F7/D5, 8,081 (13.8%) for F7/D6, 12,104 (20.7%) for M8/D5, 9,363 (16.0%) for M8/D6, and 10,401 (17.8%) for M8/F7 were determined as reference datasets. Moreover, the numbers of reference DEGs ranged from 1,617 to 3,044 for the six pairs of sample groups. 
 
-<img src="http://reference-dataset.chinese-quartet.org/images/rna-reference-datasets-overview.png" style="display: block; margin: 0 auto;" width="60%"/>
+<img src="//reference-dataset.chinese-quartet.org/images/rna-reference-datasets-overview.png" style="display: block; margin: 0 auto;" width="60%"/>
 
 <p style="text-align: center;">Figure 1 Workflow for constructing Quartet RNA reference datasets.</p>
 
