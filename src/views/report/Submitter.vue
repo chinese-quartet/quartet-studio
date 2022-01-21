@@ -17,6 +17,11 @@
           <span slot="logo" slot-scope="text, record">
             <img width="30" height="30" v-if="text" :src="text" />
           </span>
+          <span slot="github" slot-scope="text, record" v-if="record.github">
+            <a :href="record.github" target="_blank">
+              <a-icon type="github" />
+            </a>
+          </span>
         </a-table>
       </a-tab-pane>
       <a-tab-pane
@@ -207,7 +212,15 @@ const columns = [
     width: '100px',
     align: 'center',
     key: 'version'
-  }
+  },
+  {
+    title: 'Github',
+    dataIndex: 'github',
+    key: 'github',
+    width: '80px',
+    align: 'center',
+    scopedSlots: { customRender: 'github' }
+  },
 ]
 
 const data = [
@@ -232,6 +245,7 @@ const data = [
     description: 'Generate the QC Report for Quartet Proteomics data.',
     version: 'v0.1.0',
     category: getLogo('quartet-protqc-report'),
+    github: 'https://github.com/chinese-quartet/quartet-protqc-report.git',
     key: 'quartet-protqc-report'
   },
   {
@@ -239,6 +253,7 @@ const data = [
     description: 'Generate the QC Report for Quartet Metabolomics data.',
     version: 'v0.1.0',
     category: getLogo('quartet-metqc-report'),
+    github: 'https://github.com/chinese-quartet/quartet-metqc-report.git',
     key: 'quartet-metqc-report'
   }
 ]
