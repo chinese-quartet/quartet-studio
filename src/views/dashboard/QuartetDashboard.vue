@@ -38,7 +38,7 @@
           </a-col>
         </a-col>
       </a-row>
-      <a-row class="content-container" style="display: none">
+      <!-- <a-row class="content-container" style="display: none">
         <a-col class="left" :xl="8" :lg="8" :md="24" :sm="24">
           <a-row style="height: 135px">
             <span style="font-size: 1rem; font-weight: bold">News</span>
@@ -123,7 +123,7 @@
             :src="require('@/assets/images/quality-platform-framework-v3.png')"
           />
         </a-col>
-      </a-row>
+      </a-row> -->
       <a-row class="footer-container">
         <p class="description" v-html="description"></p>
       </a-row>
