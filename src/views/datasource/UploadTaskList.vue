@@ -194,16 +194,18 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters(['userInfo', 'kebab_nickname'])
+  },
   methods: {
     downloadAsJSON,
-    ...mapGetters(['userInfo']),
     onRefreshToken(record) {
       this.spinning = true
       this.tokenVisible = true
       this.$http
         .post(uploadingTaskEndpoints.getTokenApi(record.id), {
           name: record.name,
-          manager: record.manager,
+          manager: this.kebab_nickname,
           email: record.email,
           data_type: record.dataType
         })
@@ -257,7 +259,7 @@ export default {
         .put(uploadingTaskEndpoints.getStatusApi(record.id), {
           name: record.name,
           email: record.email,
-          manager: record.manager,
+          manager: this.kebab_nickname,
           data_type: record.dataType,
           description: record.description,
           status: 'Finished'

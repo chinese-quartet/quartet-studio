@@ -1,8 +1,42 @@
-import { getInfo, login, logout } from '@/api/login'
-import { welcome } from '@/config/defaultSettings'
-import { checkToken, validateEmail } from '@/utils/util'
-import { userInfo } from '@/utils/permissions'
+import {
+  getInfo,
+  login,
+  logout
+} from '@/api/login'
+
+import {
+  welcome
+} from '@/config/defaultSettings'
+
+import {
+  tokenIsExpired,
+  validateEmail,
+} from '@/utils/util'
+
+import {
+  userInfo
+} from '@/utils/defaultUser'
+
 import v from 'voca'
+
+export const checkToken = (tokenJSON) => {
+  if (tokenJSON) {
+    const tokenIsValid = !tokenIsExpired(tokenJSON.access_token)
+    if (tokenIsValid) {
+      return tokenJSON
+    }
+  } else {
+    tokenJSON = JSON.parse(localStorage.getItem('CLINICO_OMICS_AUTH'))
+    if (tokenJSON) {
+      const tokenIsValid = !tokenIsExpired(tokenJSON.access_token)
+      if (tokenIsValid) {
+        return tokenJSON
+      }
+    }
+  }
+
+  return null
+}
 
 const user = {
   state: {
@@ -14,16 +48,26 @@ const user = {
     avatar: '',
     roles: [],
     info: {},
+    token: undefined,
     isAuthenticated: false
   },
 
   mutations: {
-    SET_NAME: (state, { name, welcome }) => {
+    SET_NAME: (state, {
+      name,
+      welcome,
+      kebab_name
+    }) => {
       state.name = name
       state.welcome = welcome
-      state.kebab_name = v.kebabCase(name)
+      state.kebab_name = kebab_name
     },
-    SET_EMAIL: (state, { email }) => {
+    SET_TOKEN(state, token) {
+      state.token = token
+    },
+    SET_EMAIL: (state, {
+      email
+    }) => {
       state.email = email
     },
     SET_LAST_NAME: (state, lastname) => {
@@ -44,9 +88,13 @@ const user = {
   },
 
   actions: {
-    CheckToken({ commit }) {
+    CheckToken({
+      commit,
+      state
+    }) {
       return new Promise(resolve => {
-        const authJSON = checkToken()
+        const authJSON = checkToken(state.token)
+        console.log('Check Token: ', authJSON)
         if (authJSON) {
           commit('SET_STATE', true)
         } else {
@@ -57,7 +105,9 @@ const user = {
       })
     },
     // 获取用户信息
-    GetInfo({ commit }, isAnonymous) {
+    GetInfo({
+      commit
+    }, isAnonymous) {
       return new Promise((resolve, reject) => {
         getInfo(isAnonymous)
           .then(response => {
@@ -66,31 +116,22 @@ const user = {
             userInfo.email = response.email
             userInfo.groups = response.groups
 
-            console.log('GetInfo: ', isAnonymous, response, userInfo, userInfo.name)
-
-            if (userInfo.role && userInfo.role.permissions.length > 0) {
-              const role = userInfo.role
-
-              role.permissions.map(per => {
-                if (per.actionEntitySet != null && per.actionEntitySet.length > 0) {
-                  const action = per.actionEntitySet.map(action => {
-                    return action.action
-                  })
-                  per.actionList = action
-                }
-              })
-
-              role.permissionList = role.permissions.map(permission => {
-                return permission.permissionId
-              })
-              commit('SET_ROLES', userInfo.role)
-              commit('SET_INFO', userInfo)
-            } else {
-              reject(new Error('getInfo: roles must be a non-null array !'))
+            let kebab_name = response.preferred_username ? response.preferred_username : ""
+            if (!validateEmail(kebab_name)) {
+              kebab_name = v.kebabCase(kebab_name)
             }
 
-            commit('SET_NAME', { name: userInfo.name, welcome: welcome() })
-            commit('SET_EMAIL', { email: userInfo.email })
+            console.log('GetInfo: ', isAnonymous, response, userInfo, userInfo.name)
+            commit('SET_INFO', userInfo)
+
+            commit('SET_NAME', {
+              name: userInfo.name,
+              welcome: welcome(),
+              kebab_name: kebab_name
+            })
+            commit('SET_EMAIL', {
+              email: userInfo.email
+            })
             commit('SET_LAST_NAME', userInfo.name.split(' ').pop())
             commit('SET_AVATAR', userInfo.avatar)
 
@@ -101,7 +142,9 @@ const user = {
           })
       })
     },
-    Login({ commit }, payload) {
+    Login({
+      commit
+    }, payload) {
       return new Promise((resolve, reject) => {
         const authJSON = checkToken()
         if (authJSON) {
@@ -110,6 +153,7 @@ const user = {
         } else {
           login(payload)
             .then(response => {
+              commit('SET_TOKEN', response)
               console.log('login ', response)
               localStorage.setItem('CLINICO_OMICS_AUTH', JSON.stringify(response))
               commit('SET_STATE', true)
@@ -121,8 +165,12 @@ const user = {
         }
       })
     },
-    Logout({ dispatch }) {
+    Logout({
+      dispatch,
+      commit
+    }) {
       return new Promise((resolve, reject) => {
+        commit('SET_TOKEN', undefined)
         for (var i in localStorage) {
           if (i == new RegExp('kc-callback', 'gi')) {
             console.log('Remove kc-callback: ', i, localStorage.getItem(i))

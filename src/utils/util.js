@@ -73,17 +73,24 @@ export const tokenIsExpired = token => {
   return false
 }
 
-export const checkToken = () => {
-  // Token可能过期
-  const authJSON = JSON.parse(localStorage.getItem('CLINICO_OMICS_AUTH'))
-  if (authJSON) {
-    const tokenIsValid = !tokenIsExpired(authJSON.access_token)
-    if (tokenIsValid) {
-      return authJSON
-    }
+export const needRefreshToken = token => {
+  const tokenExpiryTime = tokenExp(token)
+  if (tokenExpiryTime) {
+    return tokenExpiryTime - new Date().getTime() < 60000
   }
+  return false
+}
 
-  console.log('Check Token: ', authJSON)
-
+export const getRefreshToken = () => {
+  const token = localStorage.getItem('CLINICO_OMICS_AUTH')
+  if (token) {
+    let tokenJSON = JSON.parse(token)
+    return tokenJSON.refresh_token
+  }
   return null
+}
+
+export const validateEmail = function(email) {
+  var re = /\S+@\S+\.\S+/
+  return re.test(email)
 }

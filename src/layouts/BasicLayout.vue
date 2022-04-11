@@ -92,7 +92,7 @@ export default {
   computed: {
     ...mapState({
       // 动态主路由
-      mainMenu: state => state.permission.addRouters,
+      mainMenu: state => state.addRouters,
       footer: state => state.app.footer
     }),
     contentPaddingLeft () {

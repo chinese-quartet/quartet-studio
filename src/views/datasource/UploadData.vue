@@ -195,7 +195,7 @@ export default {
   computed: {
     ...mapGetters(['nickname', 'email', 'kebab_nickname']),
     manager() {
-      return this.nickname
+      return this.kebab_nickname
     },
     refreshToken() {
       if (this.refresh) {
@@ -253,7 +253,7 @@ export default {
         .post(uploadingTaskEndpoints.taskApi, {
           name: record.name,
           email: record.email,
-          manager: record.manager,
+          manager: this.manager,
           data_type: record.data_type,
           description: record.description
         })

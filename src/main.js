@@ -10,9 +10,6 @@ import { VueAxios } from './utils/request'
 import * as Sentry from "@sentry/vue";
 import { Integrations } from "@sentry/tracing";
 
-// mock
-// import './mock'
-
 import bootstrap from './core/bootstrap'
 // Lazy
 // import './core/lazy_use'
