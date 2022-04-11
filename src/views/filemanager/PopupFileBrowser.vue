@@ -79,7 +79,7 @@ export default {
   },
   computed: {
     defaultActiveKey() {
-      return 'dataset'
+      return 'file-browser'
     }
   },
   watch: {

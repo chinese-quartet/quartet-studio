@@ -246,7 +246,7 @@ export default {
       help: 'Help',
       feedback: 'Feedback',
       terms: 'Terms',
-      copyright: 'Copyright ©️2021 The Golden Standard of China Genome (GSCG) Consortium'
+      copyright: 'Copyright ©️2016-' + new Date().getFullYear() + ' The Golden Standard of China Genome (GSCG) Consortium'
     },
     pageView: {
       search: 'Search',

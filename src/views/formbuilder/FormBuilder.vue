@@ -179,12 +179,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['email']),
+    ...mapGetters(['kebab_nickname']),
     defaultPath() {
-      return `oss://quartet-data-portal/data/${this.email}/`
+      return `oss://quartet-data-portal/data/${this.kebab_nickname}/`
     },
     strictedPrefix() {
-      return `oss://quartet-data-portal/data/${this.email}`
+      return `oss://quartet-data-portal/data/${this.kebab_nickname}`
     }
   },
   created() {

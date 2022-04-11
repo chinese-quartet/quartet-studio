@@ -23,7 +23,6 @@ const app = {
     helpEntrypoint: config.helpEntrypoint,
     appListConfig: config.appListConfig,
     clientId: config.clientId,
-    clientSecret: config.clientSecret,
     theme: '',
     layout: '',
     contentWidth: '',
@@ -34,7 +33,6 @@ const app = {
     color: null,
     weak: false,
     multiTab: true,
-    footer: config.footerConfig,
     tourMode: false,
   },
   mutations: {

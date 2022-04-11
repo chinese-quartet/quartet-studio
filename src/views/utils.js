@@ -10,6 +10,11 @@ export const formatTitle = function(self, title) {
   }
 }
 
+export const validateEmail = function(email) {
+  var re = /\S+@\S+\.\S+/
+  return re.test(email)
+}
+
 export const downloadAsJSON = function(data, elementId) {
   var dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data))
   var dlAnchorElem = document.getElementById(elementId)

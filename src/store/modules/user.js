@@ -1,12 +1,13 @@
 import { getInfo, login, logout } from '@/api/login'
 import { welcome } from '@/config/defaultSettings'
-import { checkToken } from '@/utils/util'
+import { checkToken, validateEmail } from '@/utils/util'
 import { userInfo } from '@/utils/permissions'
 import v from 'voca'
 
 const user = {
   state: {
     name: '',
+    kebab_name: '',
     email: '',
     lastname: '',
     welcome: '',
@@ -20,6 +21,7 @@ const user = {
     SET_NAME: (state, { name, welcome }) => {
       state.name = name
       state.welcome = welcome
+      state.kebab_name = v.kebabCase(name)
     },
     SET_EMAIL: (state, { email }) => {
       state.email = email

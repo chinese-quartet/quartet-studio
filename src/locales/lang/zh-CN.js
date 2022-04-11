@@ -223,7 +223,7 @@ export default {
       help: '帮助',
       feedback: '反馈',
       terms: '条款',
-      copyright: '版权所有 ©️2021 智汇医圈联盟'
+      copyright: '版权所有 ©️2016-' + new Date().getFullYear() + ' GSCG联盟'
     },
     pageView: {
       search: '搜索',

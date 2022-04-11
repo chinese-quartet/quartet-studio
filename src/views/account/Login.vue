@@ -119,7 +119,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['nickname', 'clientId', 'clientSecret'])
+    ...mapGetters(['nickname', 'clientId'])
   },
   created() {},
   methods: {
@@ -173,11 +173,9 @@ export default {
       const validateFieldsKey = ['username', 'password']
       validateFields(validateFieldsKey, { force: true }, (err, values) => {
         if (!err) {
-          console.log('Login Form: ', values, this.clientId, this.clientSecret)
+          console.log('Login Form: ', values, this.clientId)
           const loginParams = {
             client_id: this.clientId,
-            client_secret: this.clientSecret,
-            scope: 'openid',
             grant_type: 'password',
             ...values
           }

@@ -49,7 +49,6 @@
 
       <!-- layout footer -->
       <a-layout-footer>
-        <global-footer :metadata="footer.metadata" :links="footer.links" />
       </a-layout-footer>
 
       <!-- Setting Drawer (show in development mode) -->

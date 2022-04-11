@@ -203,6 +203,7 @@ export default {
       this.$http
         .post(uploadingTaskEndpoints.getTokenApi(record.id), {
           name: record.name,
+          manager: record.manager,
           email: record.email,
           data_type: record.dataType
         })

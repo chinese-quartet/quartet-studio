@@ -10,7 +10,7 @@ We will receive the notification email after you submit a request for the refere
 ### Why can't you register a Quartet Data Portal account by yourself?
 
 <p style="text-align: justify;">
-The reason there is no "Register" button is that the general process is for users to apply for reference materials as a guest first. This is to facilitate the confirmation of the applicant's information as well as to build a trust and consensus between the two parties, and at all times applicants should avoid uploading and analyzing non-Quartet data on our platform.
+The reason there is no "Register" button is that the general process is for users to apply for reference materials as a guest first (If you already have the reference materials, you can skip this step and email the Quartet team directly to request an account, <b>email: quartet@fudan.edu.cn</b>). This is to facilitate the confirmation of the applicant's information as well as to build a trust and consensus between the two parties, and at all times applicants should avoid uploading and analyzing non-Quartet data on our platform.
 </p>
 
 ### How to ask for help?
