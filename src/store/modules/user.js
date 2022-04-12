@@ -114,7 +114,8 @@ const user = {
             userInfo.name = response.name ? response.name : response.preferred_username
             userInfo.username = v.titleCase(userInfo.name)
             userInfo.email = response.email
-            userInfo.groups = response.groups
+            // Keycloak may be not return groups in response, so we need to check it
+            userInfo.groups = response.groups ? response.groups : []
 
             let kebab_name = response.preferred_username ? response.preferred_username : ""
             if (!validateEmail(kebab_name)) {

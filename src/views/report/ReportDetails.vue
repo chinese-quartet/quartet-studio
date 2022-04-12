@@ -186,6 +186,7 @@ export default {
   },
   mounted() {},
   created() {
+    this.$message.info("The report file size is large, please wait a moment.", 5)
     console.log('Request Report: ', this.reportId)
     this.searchReport(this.reportId)
   }
