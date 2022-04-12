@@ -61,7 +61,7 @@ import axios from 'axios'
 import VueMarkdown from 'vue-markdown'
 import Prism from 'prismjs'
 
-const REFERENCE_DATASET_URL = '//reference-dataset.chinese-quartet.org'
+const REFERENCE_DATASET_URL = '//reference-datasets.chinese-quartet.org'
 const MANIFEST_URL = REFERENCE_DATASET_URL + '/stable/manifest.json'
 const DEVELOP_BRANCH = REFERENCE_DATASET_URL + '/index.html?prefix=develop/'
 const GITHUB = 'https://github.com/chinese-quartet'
@@ -69,13 +69,13 @@ const GITHUB = 'https://github.com/chinese-quartet'
 // Example:
 // {
 //   category: 'DNA',
-//   avatar: 'https://reference-dataset.chinese-quartet.org/images/genomics.png',
+//   avatar: 'https://reference-datasets.chinese-quartet.org/images/genomics.png',
 //   title: 'Reference Datasets for DNA',
 //   summary: 'Reference datasets could be used as "ground truth" to evaluate the accuracy of DNA-seq experiments.',
 //   description:
 //     'The Quartet DNA reference datasets are provided as a variant call file (vcf) that contains the high-confidence SNVs, small indels (less than 50 bp), and structural variants (insertions and deletion over than 50 bp), as well as a tab-delimited "bed" file that describes the high-confidence bed regions, using methods described in the Quartet DNA manuscript. The v20210909 of DNA reference datasets covers approximately 87.8% of the GRCh38 assembly (https://gdc.cancer.gov/about-data/gdc-data-processing/gdc-reference-files). As sequencing technologies and analysis methods improve, the reference datasets will be updated periodically.',
-//   graphical_abstract: 'https://reference-dataset.chinese-quartet.org/images/dna-reference-datasets-overview.png',
-//   markdown: 'https://reference-dataset.chinese-quartet.org/stable/v20210909/DNA/README.md'
+//   graphical_abstract: 'https://reference-datasets.chinese-quartet.org/images/dna-reference-datasets-overview.png',
+//   markdown: 'https://reference-datasets.chinese-quartet.org/stable/v20210909/DNA/README.md'
 // }
 
 export default {
