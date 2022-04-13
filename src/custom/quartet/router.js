@@ -490,20 +490,6 @@ export const constantRouterMap = [{
     component: () => import( /* webpackChunkName: "fail" */ '@/views/exception/404')
   },
 
-  {
-    path: '/welcome',
-    name: 'welcome',
-    beforeEnter() {
-      // location.href = 'http://chinese-quartet.org'
-    },
-    meta: {
-      title: 'Welcome',
-      isPublic: true,
-      keepAlive: false,
-      target: '_blank'
-    }
-  },
-
   // User
   {
     path: '/user',

@@ -1,6 +1,6 @@
 <template>
   <div class="logo">
-    <router-link :to="{ name: 'welcome' }">
+    <router-link :to="{ name: 'dashboard' }">
       <img :src="logo" style="width: 80%; height: 80%" alt="logo" />
       <h1 v-if="showTitle">{{ title }}</h1>
     </router-link>

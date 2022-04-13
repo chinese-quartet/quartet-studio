@@ -20,7 +20,6 @@ NProgress.configure({
 
 const whiteList = [
   '/404',
-  '/welcome',
   // Menu
   '/',
   '/dashboard',

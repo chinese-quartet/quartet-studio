@@ -205,7 +205,7 @@ export default {
       this.isLoginError = false
     },
     redirectFindBack() {
-      window.location.href = initBaseURL() + api.ForgePassword
+      window.location.href = api.ForgePassword
     },
     loginSuccess(res) {
       console.log(res)

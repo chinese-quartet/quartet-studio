@@ -6,7 +6,7 @@
     <div class="container">
       <div class="top">
         <div class="header">
-          <router-link :to="{ name: 'welcome' }">
+          <router-link :to="{ name: 'dashboard' }">
             <img :src="websiteLogo" class="logo" alt="logo" />
             <!-- <span class="title">{{ websiteName }}</span> -->
           </router-link>
