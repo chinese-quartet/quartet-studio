@@ -3,7 +3,7 @@
     <a-list item-layout="vertical" size="large" :data-source="currentVersion">
       <a-list-item slot="renderItem" key="item.title" slot-scope="item, index">
         <template slot="actions">
-          <a-dropdown-button @click="fetchHelp(item.category, currentVersionKey)" trigger="hover">
+          <a-dropdown-button @click="fetchHelp(item.category, currentVersionKey)">
             Latest Version
             <a-menu
               slot="overlay"

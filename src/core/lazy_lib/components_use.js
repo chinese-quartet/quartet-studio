@@ -49,8 +49,6 @@ import {
   notification
 } from 'ant-design-vue'
 
-import VueCropper from 'vue-cropper'
-
 Vue.use(LocaleProvider)
 Vue.use(Layout)
 Vue.use(Input)
@@ -88,7 +86,6 @@ Vue.use(Upload)
 Vue.use(Progress)
 Vue.use(Skeleton)
 Vue.use(Popconfirm)
-Vue.use(VueCropper)
 Vue.use(BackTop)
 Vue.use(notification)
 
@@ -104,3 +101,26 @@ Vue.prototype.$info = Modal.info
 Vue.prototype.$success = Modal.success
 Vue.prototype.$error = Modal.error
 Vue.prototype.$warning = Modal.warning
+
+// Customed components
+import VueCropper from 'vue-cropper'
+Vue.use(VueCropper)
+
+// ext library
+import VueAnimated from '@codekraft-studio/vue-animated'
+Vue.use(VueAnimated)
+
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
+VueClipboard.config.autoSetContainer = true
+
+import VueDragResize from 'vue-drag-resize'
+Vue.component('vue-drag-resize', VueDragResize)
+
+import fullscreen from 'vue-fullscreen'
+Vue.use(fullscreen)
+
+import Viser from 'viser-vue'
+Vue.use(Viser)
+
+Vue.use(require('vue-shortkey'))

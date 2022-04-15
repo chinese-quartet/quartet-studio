@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "publish-code": "vue-cli-service build && ossutilmac64 cp -r -u ./dist/ oss://chinese-quartet-frontend/ -c ~/.ossutilconfig-tgmc -e oss-ap-southeast-1.aliyuncs.com",
+    "publish-test-code": "vue-cli-service build && ossutilmac64 cp -r -u ./dist/ oss://test-chinese-quartet-frontend/ -c ~/.ossutilconfig-tgmc -e oss-ap-southeast-1.aliyuncs.com",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build:preview": "vue-cli-service build --mode preview",
@@ -25,13 +26,6 @@
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
     "core-js": "2.6.9",
-    "cornerstone": "^0.1.1",
-    "cornerstone-core": "^2.3.0",
-    "cornerstone-math": "^0.1.9",
-    "cornerstone-tools": "^5.1.2",
-    "cornerstone-wado-image-loader": "^3.3.0",
-    "cornerstone-web-image-loader": "^2.1.1",
-    "dicom-parser": "^1.8.7",
     "echarts": "^5.0.0",
     "element-resize-detector": "^1.2.1",
     "enquire.js": "^2.1.6",
@@ -72,14 +66,9 @@
     "mockjs2": "^1.0.5",
     "moment": "^2.24.0",
     "nprogress": "^0.2.0",
-    "openseadragon": "^2.4.2",
-    "papa": "^0.0.0",
-    "papaparse": "^5.3.0",
-    "plotly.js-dist": "^1.54.6",
     "prismjs": "^1.20.0",
     "querystring": "^0.2.0",
     "uuid": "^7.0.2",
-    "v-viewer": "^1.6.4",
     "viser-vue": "^2.4.6",
     "voca": "^1.4.0",
     "vue": "^2.6.10",
@@ -118,6 +107,7 @@
     "babel-jest": "^23.6.0",
     "babel-plugin-import": "^1.11.0",
     "babel-plugin-prismjs": "^2.0.1",
+    "compression-webpack-plugin": "6",
     "eslint": "^5.8.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-html": "^5.0.0",
@@ -201,9 +191,5 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 10"
-  ],
-  "collective": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/ant-design-pro-vue"
-  }
+  ]
 }

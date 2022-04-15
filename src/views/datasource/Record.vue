@@ -32,9 +32,6 @@
       </a-col>
     </a-row>
     <a-collapse v-model="activeKey">
-      <a-collapse-panel key="file-viewer" :header="formatTitle(viewerType)">
-        <file-viewer :instanceId="instanceId" :viewerType="viewerType" :baseUrl="baseUrl"></file-viewer>
-      </a-collapse-panel>
       <a-collapse-panel key="clinical-data" header="Clinical Data">
         <data-portal v-if="instanceId" :minHeight="520" :id="instanceId + '-clinical-data'" :subpath="'/patient/clinicalData?' + parameters"></data-portal>
         <a-empty v-else />
@@ -53,14 +50,12 @@
 
 <script>
 import v from 'voca'
-import FileViewer from '@/components/FileViewer'
 import { mapActions, mapGetters } from 'vuex'
 import { initBaseURL } from '@/config/defaultSettings'
 import DataPortal from '@/views/iframe/DataPortal'
 
 export default {
   components: {
-    FileViewer,
     DataPortal
   },
   props: {
@@ -79,7 +74,7 @@ export default {
       baseUrl: '', // http://10.157.72.54/pathology or http://10.157.72.54/dicom
       viewerType: '', // PATHOLOGY or DICOM
       record: {},
-      activeKey: ['file-viewer', 'omics-data', 'clinical-data', 'pathways']
+      activeKey: ['omics-data', 'clinical-data', 'pathways']
     }
   },
   computed: {
@@ -161,11 +156,6 @@ export default {
   margin: 0px 80px;
   min-height: 300px;
   border-radius: 5px;
-
-  .file-viewer {
-    height: 550px;
-    width: 100%;
-  }
 
   .info {
     display: flex;

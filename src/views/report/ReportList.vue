@@ -368,11 +368,6 @@ export default {
     padding: 12px;
   }
 
-  .file-viewer {
-    height: 450px;
-    width: 100%;
-  }
-
   .empty-container {
     display: flex;
     justify-content: center;
@@ -401,18 +396,6 @@ export default {
 
     .ant-btn:hover {
       border-color: #fff;
-    }
-  }
-
-  .report-image-viewer {
-    width: 100%;
-    height: 100%;
-
-    .heatmap {
-      position: absolute;
-      width: 200px;
-      right: 5px;
-      bottom: 5px;
     }
   }
 }

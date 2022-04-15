@@ -14,8 +14,6 @@ import VueClipboard from 'vue-clipboard2'
 import VueDragResize from 'vue-drag-resize'
 import fullscreen from 'vue-fullscreen'
 
-// import '@/components/use'
-
 VueClipboard.config.autoSetContainer = true
 
 Vue.use(Antd)

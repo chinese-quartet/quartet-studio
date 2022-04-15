@@ -12,10 +12,10 @@ import { Integrations } from "@sentry/tracing";
 
 import bootstrap from './core/bootstrap'
 // Lazy
-// import './core/lazy_use'
+import './core/lazy_use'
 
 // Non Lazy
-import './core/use'
+// import './core/use'
 import './permission' // permission control
 import './utils/filter' // global filter
 import i18n from './locales'

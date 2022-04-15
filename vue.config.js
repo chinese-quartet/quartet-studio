@@ -4,7 +4,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 const createThemeColorReplacerPlugin = require('./config/plugin.config')
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
@@ -17,23 +17,27 @@ const vueConfig = {
     plugins: [
       // Ignore all locale files of moment.js
       new webpack.IgnorePlugin({
-        resourceRegExp: /^\.\/locale$/, 
+        resourceRegExp: /^\.\/locale$/,
         contextRegExp: /moment$/
-      })
+      }),
       // new BundleAnalyzerPlugin(),
     ],
     optimization: {
-      minimize: false,
+      minimize: true,
       minimizer: [
         new TerserPlugin({
           terserOptions: {
             ecma: undefined,
             warnings: false,
             parse: {},
-            compress: { drop_console: true },
+            compress: {
+              drop_console: true
+            },
             mangle: true, // Note `mangle.properties` is `false` by default.
             module: false,
-            output: { comments: false },
+            output: {
+              comments: false
+            },
             toplevel: false,
             nameCache: null,
             ie8: false,
@@ -45,21 +49,19 @@ const vueConfig = {
       ],
       splitChunks: {
         cacheGroups: {
-          common: {
-            name: 'chunk-common',
-            chunks: 'initial',
-            minChunks: 2,
-            maxInitialRequests: 5,
-            minSize: 0,
-            priority: 1,
+          g2: {
+            name: 'chunk-g2',
+            test: /[\\/]node_modules[\\/]@antv/,
+            chunks: 'all',
+            priority: 6,
             reuseExistingChunk: true,
             enforce: true
           },
-          vendors: {
-            name: 'chunk-vendors',
-            test: /[\\/]node_modules[\\/]/,
-            chunks: 'initial',
-            priority: 2,
+          pdf: {
+            name: 'chunk-pdf',
+            test: /[\\/]node_modules[\\/]pdfjs-dist/,
+            chunks: 'all',
+            priority: 6,
             reuseExistingChunk: true,
             enforce: true
           },
@@ -70,7 +72,7 @@ const vueConfig = {
             priority: 6,
             reuseExistingChunk: true,
             enforce: true
-          }
+          },
         }
       }
     }
@@ -107,7 +109,8 @@ const vueConfig = {
         },
         javascriptEnabled: true
       }
-    }
+    },
+    extract: true,
   },
 
   devServer: {
@@ -127,7 +130,8 @@ const vueConfig = {
     app: {
       entry: 'src/main.js',
       template: 'public/index.html',
-      filename: 'index.html'
+      filename: 'index.html',
+      chunks: ['app', 'chunk-g2', 'chunk-pdf', 'chunk-handsontable']
     }
   },
 
