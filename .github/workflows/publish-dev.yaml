@@ -42,12 +42,16 @@ jobs:
           echo "Publish Quartet Studio ${{ steps.config.outputs.version }} Successfully."
 
       - name: Dingtalk Robot Message
-        uses: fifsky/dingtalk-action@master
+        uses: leafney/dingtalk-action@v1
+        env:
+          DINGTALK_ACCESS_TOKEN: ${{ secrets.DINGTALK_ACCESS_TOKEN }}
         with:
-          url: ${{ secrets.DINGTALK_WEBHOOK }}
-          type: markdown
-          content: |
-            # Quartet Studio ${{ steps.config.outputs.version }} 构建 & 发布
-            @Quartet Team Quartet Data Portal已更新
+          msgtype: markdown
+          notify_when: 'success'
+          title: 发布成功
+          text: |
+            **<font color=#00FF00 size=4>发布成功</font>**
+
+            ### Quartet Data Portal ${{ steps.config.outputs.version }} 已更新
             > 可通过 http://dev.chinese-quartet.org 链接访问
-          at: Quartet Team
+          at: yjcyxky
