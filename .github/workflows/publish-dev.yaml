@@ -1,12 +1,12 @@
 on:
   push:
-    tags:
-      - v*
+    branches:
+      - dev
 
 jobs:
   test-publish-docker:
     runs-on: ubuntu-latest
-    name: Publish datains-frontend to aliyun oss.
+    name: Publish quartet-studio to aliyun oss.
     steps:
       - name: Configure environment
         id: config
@@ -27,19 +27,19 @@ jobs:
         with:
           cmd: build
 
-      - name: Publish datains-frontend to aliyun oss
+      - name: Publish quartet-studio to aliyun oss
         id: ossutil
         uses: go-choppy/ossutil-github-action@master
         with:
-          ossArgs: 'cp -r -u ./dist/ oss://datains-frontend/'
+          ossArgs: 'cp -r -u ./dist/ oss://test-chinese-quartet-frontend/'
           accessKey: ${{ secrets.ALIYUN_ACCESS_KEY }}
           accessSecret: ${{ secrets.ALIYUN_ACCESS_SECRET }}
-          endpoint: oss-cn-shanghai.aliyuncs.com
+          endpoint: oss-ap-southeast-1.aliyuncs.com
 
       - name: Output command
         run: |
           echo "${{ steps.ossutil.outputs.command }}"
-          echo "Publish Datains Frontend ${{ steps.config.outputs.version }} Successfully."
+          echo "Publish Quartet Studio ${{ steps.config.outputs.version }} Successfully."
 
       - name: Dingtalk Robot Message
         uses: fifsky/dingtalk-action@master
@@ -47,7 +47,7 @@ jobs:
           url: ${{ secrets.DINGTALK_WEBHOOK }}
           type: markdown
           content: |
-            # Datains Frontend ${{ steps.config.outputs.version }} 构建 & 发布
-            @Choppy Team 主人，我已将您刚更新在Github上的Datains Frontend代码发布到公网了，您可随时访问
-            > Choppy Team：可通过 http://datains.3steps.cn 链接访问
-          at: Choppy Team
+            # Quartet Studio ${{ steps.config.outputs.version }} 构建 & 发布
+            @Quartet Team Quartet Data Portal已更新
+            > 可通过 http://dev.chinese-quartet.org 链接访问
+          at: Quartet Team
