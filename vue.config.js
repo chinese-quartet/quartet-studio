@@ -23,7 +23,7 @@ const vueConfig = {
       // new BundleAnalyzerPlugin(),
     ],
     optimization: {
-      minimize: true,
+      minimize: isProd ? true : false,
       minimizer: [
         new TerserPlugin({
           terserOptions: {

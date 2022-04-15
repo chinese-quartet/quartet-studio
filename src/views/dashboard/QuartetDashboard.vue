@@ -9,6 +9,11 @@
         <icon-font type="icon-Edge-01" /> Edge.
       </span>
     </notice>
+    <notice style="margin-bottom: 3px" :hideClose="true" :hideDisable="true">
+      <span style="font-size: 18px; color: #fff; text-align: center; display: inherit;">
+        We're announcing the release of our new documentation service >>> <a href="https://docs.chinese-quartet.org">https://docs.chinese-quartet.org</a> <<<
+      </span>
+    </notice>
     <a-row class="search-page">
       <a-row class="header-container">
         <a-col class="left" :lg="24" :md="24" :sm="24" :xs="24">

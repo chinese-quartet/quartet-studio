@@ -1,7 +1,7 @@
 <template>
   <a-row class="notice" style="background-color: #d6d6d6">
-    <a-icon type="close-circle" @click="close" />
-    <a-icon type="eye-invisible" @click="disable" />
+    <a-icon type="close-circle" @click="close" v-if="!hideClose"/>
+    <a-icon type="eye-invisible" @click="disable" v-if="!hideDisable"/>
     <p>
       <slot>{{ defaultMessage }}</slot>
     </p>
@@ -13,6 +13,16 @@ export default {
   data() {
     return {
       defaultMessage: 'Please add notice message'
+    }
+  },
+  props: {
+    hideClose: {
+      type: Boolean,
+      default: false
+    },
+    hideDisable: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
