@@ -11,6 +11,17 @@
           </span>
         </a>
       </a-tooltip>
+      <a-tooltip placement="bottom">
+        <template slot="title">
+          <span>{{ $t('components.tools.userMenu.documentation') }}</span>
+        </template>
+        <a :href="helpEntrypoint" target="_blank">
+          <span class="action">
+            <a-icon type="question-circle-o"></a-icon>
+            {{ $t('components.tools.userMenu.documentation') }}
+          </span>
+        </a>
+      </a-tooltip>
       <a-dropdown>
         <span class="action"><a-icon type="message" /></span>
         <a-menu slot="overlay">
@@ -34,16 +45,6 @@
         <a :href="policyEntrypoint" target="_blank" style="display: none">
           <span class="action">
             <a-icon type="safety-certificate" />
-          </span>
-        </a>
-      </a-tooltip>
-      <a-tooltip placement="bottom">
-        <template slot="title">
-          <span>{{ $t('components.tools.userMenu.documentation') }}</span>
-        </template>
-        <a :href="helpEntrypoint" target="_blank">
-          <span class="action">
-            <a-icon type="question-circle-o"></a-icon>
           </span>
         </a>
       </a-tooltip>

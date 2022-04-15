@@ -227,7 +227,7 @@ export default {
         tour: 'Tour',
         feedback: 'Feedback',
         policies: 'Policies',
-        documentation: 'Documentation',
+        documentation: 'Docs',
         userCenter: 'User Center',
         settings: 'Settings',
         logout: 'Logout',

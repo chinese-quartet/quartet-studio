@@ -131,10 +131,10 @@ export const projectSettings = {
   ],
   feedbackEntrypoint: {
     en_US: 'https://github.com/chinese-quartet/docs.chinese-quartet.org/issues',
-    zh_CN: 'https://yuque.com/quartet/topics?language=en-us'
+    zh_CN: 'https://yuque.com/quartet/topics?language=zh-cn'
   },
   policyEntrypoint: 'https://yuque.com/quartet/policies?language=en-us',
-  helpEntrypoint: 'https://yuque.com/quartet/help?language=en-us',
+  helpEntrypoint: 'https://docs.chinese-quartet.org',
   clientId: 'kong-oidc',
   appListConfig: [
     {
