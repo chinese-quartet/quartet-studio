@@ -71,7 +71,7 @@
             <span v-html="getDescription(currentReport, 'description')"></span>
           </span>
         </a-alert>
-        <project-mode-submitter @close="reset" :appKey="currentReport"></project-mode-submitter>
+        <project-mode-submitter @close="reset" :appKey="currentAppKey"></project-mode-submitter>
       </a-tab-pane>
       <a-tab-pane
         v-if="reportMode"
@@ -227,9 +227,10 @@ const data = [
   {
     name: 'WGS QC Report for Quartet',
     description: 'Quality control of germline variants calling results using a Chinese Quartet family.',
-    version: 'v0.1.0',
+    version: 'v0.1.3',
     key: 'quartet-dnaseq-report',
     category: getLogo('quartet-dnaseq-report'),
+    github: 'https://github.com/chinese-quartet/quartet-dseqc-report.git',
     appKey: 'renluyao/quartet_dna_quality_control_wgs_big_pipeline-v0.1.2'
   },
   {
@@ -238,6 +239,7 @@ const data = [
     version: 'v0.1.0',
     appKey: 'lizhihui/quartet-rnaseq-qc-v0.2.1',
     category: getLogo('quartet-rnaseq-report'),
+    github: 'https://github.com/chinese-quartet/quartet-rseqc-report.git',
     key: 'quartet-rnaseq-report'
   },
   {
@@ -267,6 +269,7 @@ export default {
       columns,
       data,
       currentReport: 'Please select the report tool in STEP 1!',
+      currentAppKey: '',
       rowSelection: {
         type: 'radio',
         onChange: (selectedRowKeys, selectedRows) => {
@@ -275,6 +278,7 @@ export default {
         onSelect: (record, selected, selectedRows) => {
           console.log('onSelect: ', record, selected, selectedRows)
           this.currentReport = record.key
+          this.currentAppKey = record.appKey
         }
       },
       fileList: [],
@@ -374,9 +378,9 @@ export default {
         })
     },
     getDescription(key, obj) {
-      if (key === 'renluyao/quartet_dna_quality_control_wgs_big_pipeline-v0.1.2') {
+      if (key === 'renluyao/quartet_dna_quality_control_wgs_big_pipeline-v0.1.2' || key === 'quartet-dnaseq-report') {
         return this[obj]['dna']
-      } else if (key === 'lizhihui/quartet-rnaseq-qc-v0.2.1') {
+      } else if (key === 'lizhihui/quartet-rnaseq-qc-v0.2.1' || key === 'quartet-rnaseq-report') {
         return this[obj]['rna']
       } else if (key === 'quartet-protqc-report') {
         return this[obj]['protein']

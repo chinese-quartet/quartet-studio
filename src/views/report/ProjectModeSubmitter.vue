@@ -1,6 +1,6 @@
 <template>
   <a-row class="project-mode-submitter">
-    <a-select style="width: 100%" placeholder="Please select an finished project." @change="selectProject">
+    <a-select style="width: 100%" allowClear placeholder="Please select an finished project." @change="selectProject">
       <a-select-option v-for="project in finishedProjects" :key="project.id">
         {{ project.project_name }}
       </a-select-option>
@@ -9,7 +9,7 @@
       layout="inline"
       class="form-container"
       :form="form"
-      v-if="libraries.length > 0 && reportTool === 'quartet-rnaseq-report'"
+      v-if="libraries.length > 0 && reportTool === 'quartet-rseqc-report'"
     >
       <a-row :gutter="16" v-for="(library, index) in libraries" :key="library">
         <a-col :span="9">
@@ -64,7 +64,7 @@
     </a-form>
     <a-empty
       class="empty-container"
-      v-else-if="libraries.length === 0 && this.reportTool === 'quartet-rnaseq-report'"
+      v-else-if="libraries.length === 0 && this.reportTool === 'quartet-rseqc-report'"
     ></a-empty>
     <vue-json-pretty class="json-viewer" :data="reportMetadata" v-else></vue-json-pretty>
     <a-row class="btn-group">
@@ -115,9 +115,9 @@ export default {
   computed: {
     reportTool() {
       if (this.appKey === 'renluyao/quartet_dna_quality_control_wgs_big_pipeline-v0.1.2') {
-        return 'quartet-dnaseq-report'
+        return 'quartet-dseqc-report'
       } else if (this.appKey === 'lizhihui/quartet-rnaseq-qc-v0.2.1') {
-        return 'quartet-rnaseq-report'
+        return 'quartet-rseqc-report'
       }
     }
   },
@@ -177,7 +177,7 @@ export default {
             description: result.description
           }
 
-          if (result.samples && this.reportTool === 'quartet-rnaseq-report') {
+          if (result.samples && this.reportTool === 'quartet-rseqc-report') {
             this.libraries = this.genSamples(result.samples)
             if (this.libraries.length > 0) {
               this.submitBtnActive = true
@@ -185,6 +185,8 @@ export default {
               this.submitBtnActive = false
               this.$message.warning('Something is wrong, please retry later.')
             }
+          } else {
+            this.submitBtnActive = true
           }
         })
         .catch(error => {
@@ -224,7 +226,7 @@ export default {
         filepath: this.reportMetadata.filepath
       }
 
-      if (this.reportTool === 'quartet-rnaseq-report') {
+      if (this.reportTool === 'quartet-rseqc-report') {
         this.form.validateFields((err, values) => {
           console.log('Received values of form: ', values)
 
@@ -237,10 +239,12 @@ export default {
           this.submit(parameters)
         })
       } else {
+        console.log('Check and Submit: ', parameters)
         this.submit(parameters)
       }
     },
     submit(parameters) {
+      this.loading = true
       submitReport(this.reportTool, parameters)
         .then(response => {
           console.log('ProjectModeSubmitter Submit: ', response)

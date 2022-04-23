@@ -11,7 +11,6 @@
       :data-source="data"
       :columns="filteredColumns"
       :scroll="{y: scrollHeight}"
-      :pagination="false"
     >
       <div
         slot="filterDropdown"

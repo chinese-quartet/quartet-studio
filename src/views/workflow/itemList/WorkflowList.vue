@@ -291,18 +291,22 @@ export default {
         if (Array.isArray(outputs[o])) {
           let output = splitKey(o)
           outputs[o].forEach(path => {
-            output['path'] = path
-            output['fileName'] = getFileName(path)
-            output['fileType'] = getFileType(path)
-            workflowOutputs.push(JSON.parse(JSON.stringify(output)))
+            if (path) {
+              output['path'] = path
+              output['fileName'] = getFileName(path)
+              output['fileType'] = getFileType(path)
+              workflowOutputs.push(JSON.parse(JSON.stringify(output)))
+            }
           })
         } else {
           let output = splitKey(o)
           let path = outputs[o]
-          output['path'] = path
-          output['fileName'] = getFileName(path)
-          output['fileType'] = getFileType(path)
-          workflowOutputs.push(output)
+          if (path) {
+            output['path'] = path
+            output['fileName'] = getFileName(path)
+            output['fileType'] = getFileType(path)
+            workflowOutputs.push(output)
+          }
         }
       })
 
@@ -317,6 +321,7 @@ export default {
             if (outputs) {
               this.workflowRoot = workflowOutput + '/'
               this.workflowResults = this.formatWorkflowOutputs(outputs)
+              console.log('workflowResults: ', this.workflowResults)
               this.resultsActive = true
             } else if (workflowOutput) {
               this.$router.push({
