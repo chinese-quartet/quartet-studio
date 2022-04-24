@@ -110,7 +110,7 @@ export default {
       document.getElementById('specification-container').scrollIntoView({ behavior: 'smooth' })
     },
     redirectHelp() {
-      window.open('https://www.yuque.com/quartet/help?language=en-us', '__blank')
+      window.open('https://docs.chinese-quartet.org/getting_started/introduction/', '__blank')
     }
   },
   created() {}

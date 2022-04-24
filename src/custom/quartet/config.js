@@ -140,22 +140,27 @@ export const projectSettings = {
     {
       name: 'Home',
       icon: 'home',
-      link: 'http://chinese-quartet.org'
+      link: 'https://chinese-quartet.org'
     },
     {
       name: 'Documentation',
       icon: 'file-markdown',
-      link: 'https://yuque.com/quartet/help'
+      link: 'https://docs.chinese-quartet.org/'
     },
     {
       name: 'Fast File Transfer',
       icon: 'thunderbolt',
-      link: 'https://www.yuque.com/quartet/tools/ossutil'
+      link: 'https://docs.chinese-quartet.org/tools/ossutil/'
     },
     {
       name: 'File Browser',
       icon: 'global',
-      link: 'https://www.yuque.com/quartet/tools/ossbrowser'
+      link: 'https://docs.chinese-quartet.org/tools/ossbrowser/'
+    },
+    {
+      name: 'GitHub Repos',
+      icon: 'github',
+      link: 'https://github.com/chinese-quartet'
     }
   ],
   localTools: []

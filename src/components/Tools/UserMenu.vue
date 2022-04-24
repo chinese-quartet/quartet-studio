@@ -18,7 +18,7 @@
         <a :href="helpEntrypoint" target="_blank">
           <span class="action">
             <a-icon type="question-circle-o"></a-icon>
-            {{ $t('components.tools.userMenu.documentation') }}
+            <!-- {{ $t('components.tools.userMenu.documentation') }} -->
           </span>
         </a>
       </a-tooltip>
