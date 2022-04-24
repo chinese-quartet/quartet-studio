@@ -158,7 +158,7 @@ import { initTServiceHost } from '@/config/defaultSettings'
 
 const tserviceHost = initTServiceHost()
 const uploadingTaskEndpoints = {
-  taskApi: `${tserviceHost}/api/tool/omics-datasets`
+  taskApi: `${tserviceHost}/api/tool/omics-dataset`
 }
 
 export default {
