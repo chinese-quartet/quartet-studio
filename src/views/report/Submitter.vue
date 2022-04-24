@@ -194,7 +194,7 @@ const columns = [
     title: 'Category',
     dataIndex: 'category',
     key: 'category',
-    scopedSlots: { customRender: 'logo' },
+    scopedSlots: { customRender: 'logo' }
   },
   {
     title: 'Name',
@@ -220,7 +220,7 @@ const columns = [
     width: '80px',
     align: 'center',
     scopedSlots: { customRender: 'github' }
-  },
+  }
 ]
 
 const data = [
@@ -360,8 +360,8 @@ export default {
     getToolManifest() {
       getManifest()
         .then(response => {
-          map(this.data, item => {
-            const matches = filter(response, o => {
+          this.data.forEach(item => {
+            const matches = filter(response.data, o => {
               return o.short_name === item.key
             })
 
@@ -372,6 +372,8 @@ export default {
               item['name'] = matched.name
             }
           })
+          
+          console.log("Report Schema: ", this.data)
         })
         .catch(error => {
           console.log('Get Tool Manifest Error: ', error)
