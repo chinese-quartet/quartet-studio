@@ -18,8 +18,9 @@ export function initSeqFlowHost() {
 
 // TService
 export function initTServiceHost() {
-  let tServiceHost = localStorage.getItem('tServiceHost')
-  tServiceHost = tServiceHost || `${initBaseURL()}/tservice`
+  // let tServiceHost = localStorage.getItem('tServiceHost')
+  // tServiceHost = tServiceHost || `${initBaseURL()}/tservice`
+  const tServiceHost = `${initBaseURL()}/quartet-service`
   console.log(`TSERVICE_HOST: ${tServiceHost}`)
 
   return tServiceHost

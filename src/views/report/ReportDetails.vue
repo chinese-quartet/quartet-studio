@@ -125,7 +125,7 @@ export default {
       })
     },
     loadLog(report) {
-      const key = JSON.parse(report.response).log
+      const key = report.response.log
 
       makeDownloadUrl('minio', 'tservice', {
         key: key
@@ -165,7 +165,7 @@ export default {
         console.log('Report Record: ', data)
 
         if (this.report.response) {
-          const key = JSON.parse(this.report.response).report
+          const key = this.report.response.report
 
           makeDownloadUrl('minio', 'tservice', {
             key: key

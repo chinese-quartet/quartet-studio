@@ -228,8 +228,8 @@ const data = [
     name: 'WGS QC Report for Quartet',
     description: 'Quality control of germline variants calling results using a Chinese Quartet family.',
     version: 'v0.1.3',
-    key: 'quartet-dnaseq-report',
-    category: getLogo('quartet-dnaseq-report'),
+    key: 'quartet-dseqc-report',
+    category: getLogo('quartet-dseqc-report'),
     github: 'https://github.com/chinese-quartet/quartet-dseqc-report.git',
     appKey: 'renluyao/quartet_dna_quality_control_wgs_big_pipeline-v0.1.2'
   },
@@ -238,9 +238,9 @@ const data = [
     description: 'RNA Sequencing Quality Control Pipeline for Quartet.',
     version: 'v0.1.0',
     appKey: 'lizhihui/quartet-rnaseq-qc-v0.2.1',
-    category: getLogo('quartet-rnaseq-report'),
+    category: getLogo('quartet-rseqc-report'),
     github: 'https://github.com/chinese-quartet/quartet-rseqc-report.git',
-    key: 'quartet-rnaseq-report'
+    key: 'quartet-rseqc-report'
   },
   {
     name: 'Protqc Report for Quartet',
@@ -378,9 +378,9 @@ export default {
         })
     },
     getDescription(key, obj) {
-      if (key === 'renluyao/quartet_dna_quality_control_wgs_big_pipeline-v0.1.2' || key === 'quartet-dnaseq-report') {
+      if (key === 'renluyao/quartet_dna_quality_control_wgs_big_pipeline-v0.1.2' || key === 'quartet-dseqc-report') {
         return this[obj]['dna']
-      } else if (key === 'lizhihui/quartet-rnaseq-qc-v0.2.1' || key === 'quartet-rnaseq-report') {
+      } else if (key === 'lizhihui/quartet-rnaseq-qc-v0.2.1' || key === 'quartet-rseqc-report') {
         return this[obj]['rna']
       } else if (key === 'quartet-protqc-report') {
         return this[obj]['protein']

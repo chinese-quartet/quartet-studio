@@ -142,10 +142,10 @@ import VueJsonPretty from 'vue-json-pretty'
 const tserviceHost = initTServiceHost()
 const uploadingTaskEndpoints = {
   getTokenApi: id => {
-    return `${tserviceHost}/api/omics-datasets/${id}/refresh-token`
+    return `${tserviceHost}/api/tool/omics-datasets/${id}/refresh-token`
   },
   getStatusApi: id => {
-    return `${tserviceHost}/api/omics-datasets/${id}`
+    return `${tserviceHost}/api/tool/omics-datasets/${id}`
   },
   taskListApi: `${tserviceHost}/api/tasks`
 }

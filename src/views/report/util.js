@@ -1,5 +1,6 @@
 import moment from 'moment'
 import { getReportList, getReport } from '@/api/manage'
+import map from 'lodash.map'
 
 export const formatDateTime = function (datetime) {
   if (datetime) {
@@ -11,9 +12,9 @@ export const formatDateTime = function (datetime) {
 
 const logoMap = {
   'quartet-protqc-report': require('@/assets/images/proteomics.png'),
-  'quartet-rnaseq-report': require('@/assets/images/transcriptomics.png'),
+  'quartet-rseqc-report': require('@/assets/images/transcriptomics.png'),
   'quartet-metqc-report': require('@/assets/images/metabolomics.png'),
-  'quartet-dnaseq-report': require('@/assets/images/genomics.png')
+  'quartet-dseqc-report': require('@/assets/images/genomics.png')
 }
 
 export const getLogo = function(reportType) {
@@ -23,7 +24,6 @@ export const getLogo = function(reportType) {
 export const formatRecords = function (records) {
   const data = []
   records.forEach(record => {
-    console.log('Format Records: ', record)
     const newRecord = {
       payload: record.payload,
       name: record.name,
@@ -36,12 +36,16 @@ export const formatRecords = function (records) {
       status: record.status,
       id: record.id,
       percentage: record.percentage,
-      response: record.response
+      response: {
+        report: record.response.report.replaceAll('minio://tservice/', ''),
+        log: record.response.log.replaceAll('minio://tservice/', '')
+      }
     }
 
     data.push(newRecord)
   })
 
+  console.log('Format Records: ', data)
   return data
 }
 
