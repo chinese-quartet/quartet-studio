@@ -1,30 +1,64 @@
 <template>
   <a-row style="width: 100%; height: 100%">
     <notice v-if="noticeVisible" @disable="disableNotice" @close="closeNotice" style="margin-bottom: 3px">
-      <span style="font-size: 18px; color: #fff; text-align: center; display: inherit;">
-        The Quartet Data Portal only supports access from modern browsers, such as 
-        <icon-font type="icon-chrome" /> Chrome,
-        <icon-font type="icon-Safari" /> Safari, 
-        <icon-font type="icon-firefox" /> Firefox or
-        <icon-font type="icon-Edge-01" /> Edge.
+      <span style="font-size: 18px; color: #fff; text-align: center; display: inherit">
+        The Quartet Data Portal only supports access from modern browsers, such as
+        <icon-font type="icon-chrome" /> Chrome, <icon-font type="icon-Safari" /> Safari,
+        <icon-font type="icon-firefox" /> Firefox or <icon-font type="icon-Edge-01" /> Edge.
       </span>
     </notice>
     <notice style="margin-bottom: 3px" :hideClose="true" :hideDisable="true">
-      <span style="font-size: 18px; color: #fff; text-align: center; display: inherit;">
-        We're announcing the release of our new documentation service >>> <a href="https://docs.chinese-quartet.org">https://docs.chinese-quartet.org</a> <<<
+      <span style="font-size: 18px; color: #fff; text-align: center; display: inherit">
+        We're announcing the release of our new documentation service >>>
+        <a href="https://docs.chinese-quartet.org">https://docs.chinese-quartet.org</a> <<<
       </span>
     </notice>
     <a-row class="search-page">
       <a-row class="header-container">
         <a-col class="left" :lg="24" :md="24" :sm="24" :xs="24">
           <a-col class="title" :lg="20" :md="24" :sm="24" :xs="24">
-            <h2>{{ title }}<a-icon theme="filled" @click="playVideo" class="icon-twinkle" type="youtube" /></h2>
+            <h2>
+              {{ title }}
+              <a-icon theme="filled" @click="playVideo" class="icon-twinkle" type="youtube" />
+            </h2>
             <span>{{ summary }}</span>
           </a-col>
           <a-col class="logo" :lg="4" :md="0" :sm="0" :xs="0">
             <img :src="require('@/assets/images/qdp_large_logo.png')" />
           </a-col>
         </a-col>
+        <a-row class="button-group">
+          <a-button
+            class="request-button"
+            @click="
+              () => {
+                this.$router.push({ name: 'materials' })
+              }
+            "
+          >
+            Request Reference Materials
+          </a-button>
+          <a-button
+            class="request-button"
+            @click="
+              () => {
+                this.$router.push({ name: 'download-genomics-data' })
+              }
+            "
+          >
+            Download MultiOmics Data
+          </a-button>
+          <a-button
+            class="request-button"
+            @click="
+              () => {
+                this.$router.push({ name: 'appstore' })
+              }
+            "
+          >
+            Analyze Your Omics Data
+          </a-button>
+        </a-row>
         <a-col class="right" :lg="24" :md="24" :sm="24" :xs="24">
           <p class="content" v-html="welcomeMsg"></p>
         </a-col>
@@ -266,7 +300,7 @@ export default {
     height: fit-content;
     border-radius: @border-radius;
     color: rgb(78, 78, 78);
-    text-align: center;
+    // text-align: center;
 
     .date {
       font-size: 1rem;
@@ -305,6 +339,17 @@ export default {
           border-radius: 5px;
         }
       }
+    }
+
+    .button-group {
+      margin-left: 20px;
+    }
+
+    .request-button {
+      font-size: 16px;
+      margin-right: 10px;
+      background-color: #ffffff;
+      color: #1890ff;
     }
 
     .right {
