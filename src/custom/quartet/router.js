@@ -58,26 +58,71 @@ export const asyncRouterMap = [{
           keepAlive: false
         },
         children: [{
-            path: '/data/upload',
-            name: 'upload-data',
-            hidden: false,
-            component: () => import('@/views/datasource/UploadData'),
-            meta: {
-              title: 'Upload Your Data',
-              icon: 'upload',
-              keepAlive: false
-            }
-          },
-          {
             path: '/data/download',
             name: 'download-data',
-            hidden: false,
+            hidden: true,
             component: () => import('@/views/datasource/FilterPanel'),
             meta: {
               title: 'Browse & Download',
               icon: 'download',
               keepAlive: false
             }
+          },
+          {
+            path: '/data/download/quartet-genomics',
+            name: 'download-genomics-data',
+            hidden: false,
+            component: () => import('@/views/datasource/FilterPanel'),
+            meta: {
+              title: 'Genomics Data',
+              icon: 'download',
+              keepAlive: false
+            },
+            props: route => ({
+              whichCollection: 'quartet_genomics'
+            }),
+          },
+          {
+            path: '/data/download/quartet-transcriptomics',
+            name: 'download-transcriptomics-data',
+            hidden: false,
+            component: () => import('@/views/datasource/FilterPanel'),
+            meta: {
+              title: 'Transcriptomics Data',
+              icon: 'download',
+              keepAlive: false
+            },
+            props: route => ({
+              whichCollection: 'quartet_transcriptomics'
+            }),
+          },
+          {
+            path: '/data/download/quartet-proteomics',
+            name: 'download-proteomics-data',
+            hidden: false,
+            component: () => import('@/views/datasource/FilterPanel'),
+            meta: {
+              title: 'Proteomics Data',
+              icon: 'download',
+              keepAlive: false
+            },
+            props: route => ({
+              whichCollection: 'quartet_proteomics'
+            }),
+          },
+          {
+            path: '/data/download/quartet-metabolomics',
+            name: 'download-metabolomics-data',
+            hidden: false,
+            component: () => import('@/views/datasource/FilterPanel'),
+            meta: {
+              title: 'Metabolomics Data',
+              icon: 'download',
+              keepAlive: false
+            },
+            props: route => ({
+              whichCollection: 'quartet_metabolomics'
+            }),
           },
           {
             path: '/data/qc-job-submit/:pageNo([1-9]\\d*)?',
@@ -122,6 +167,17 @@ export const asyncRouterMap = [{
           keepAlive: false
         },
         children: [{
+            path: '/data/upload',
+            name: 'upload-data',
+            hidden: false,
+            component: () => import('@/views/datasource/UploadData'),
+            meta: {
+              title: 'Upload Your Data',
+              icon: 'upload',
+              keepAlive: false
+            }
+          },
+          {
             path: '/seq-flow/app-store',
             name: 'appstore',
             hidden: false,

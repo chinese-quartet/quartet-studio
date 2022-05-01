@@ -86,7 +86,12 @@
         <a-tab-pane tab="Search Advanced" key="2" disabled></a-tab-pane>
         <a-row slot="tabBarExtraContent">
           <img class="btn-twinkle" :src="require('@/assets/images/arrow-right.png')" />
-          <a-select :defaultValue="defaultCollection" style="width: 190px; margin-right: 5px" @change="loadProject">
+          <a-select
+            :defaultValue="defaultCollection"
+            :value="currentCollection || defaultCollection"
+            style="width: 190px; margin-right: 5px"
+            @change="loadProject"
+          >
             <a-select-option :value="collection.key" v-for="collection in collections" :key="collection.key">
               {{ collection.name }}
             </a-select-option>
@@ -148,7 +153,14 @@
       </a-card>
       <a-empty class="field-list" v-else />
     </a-modal>
-    <a-modal title="Help for Multiomics Data" width="60%" class="help-markdown" :visible="helpVisible" :footer="null" @cancel="closeHelp">
+    <a-modal
+      title="Help for Multiomics Data"
+      width="60%"
+      class="help-markdown"
+      :visible="helpVisible"
+      :footer="null"
+      @cancel="closeHelp"
+    >
       <a-row style="display: flex; justify-content: flex-end; margin-top: -20px; margin-right: -20px">
         <a-checkbox :checked="helpChecked" @change="changeHelpCheckbox"> Don't show again </a-checkbox>
       </a-row>
@@ -170,6 +182,7 @@ import sortBy from 'lodash.sortby'
 import orderBy from 'lodash.orderby'
 import VueMarkdown from 'vue-markdown'
 import Prism from 'prismjs'
+import findIndex from 'lodash.findindex'
 
 export default {
   name: 'FilterPanel',
@@ -190,10 +203,17 @@ export default {
       reverseOrder: false,
       helpMsg: '',
       helpChecked: false,
-      helpVisible: true
+      helpVisible: true,
+      currentCollection: null
     }
   },
-  props: {},
+  props: {
+    whichCollection: {
+      type: String,
+      default: null,
+      required: false
+    }
+  },
   computed: {
     ...mapGetters({
       collections: 'collections',
@@ -254,6 +274,9 @@ export default {
     }
   },
   watch: {
+    whichCollection() {
+      this.initProject()
+    },
     defaultCollection() {
       this.getFieldsList(this.fetchCounts)
     }
@@ -262,6 +285,19 @@ export default {
     ...mapActions({
       countCollections: 'CountCollections'
     }),
+    initProject() {
+      console.log('whichCollection', this.whichCollection)
+      if (
+        this.whichCollection &&
+        findIndex(this.collections, item => {
+          return item.key === this.whichCollection
+        }) > -1
+      ) {
+        this.loadProject(this.whichCollection)
+      } else {
+        this.loadProject(this.defaultCollection)
+      }
+    },
     fetchHelp() {
       axios
         .get('/markdown/multiomics-data.md')
@@ -291,6 +327,7 @@ export default {
       this.helpVisible = false
     },
     loadProject(name) {
+      this.currentCollection = name
       this.$store.commit('SET_COLLECTION', name)
       // Reset
       this.$store.commit('RESET_QUERY_MAP')
@@ -415,6 +452,7 @@ export default {
     }
   },
   created() {
+    this.initProject()
     this.getFieldsList(this.fetchCounts)
 
     const notShownHelp = JSON.parse(localStorage.getItem('datains__data__notShownHelp'))

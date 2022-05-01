@@ -3,7 +3,7 @@
     <a-row :gutter="24" style="margin: 0px 0px 10px">
       <a-card :loading="loading" title="Reference Materials">
         <p style="margin-bottom: 10px; text-align: justify" v-html="description"></p>
-        <fact :factData="factData" @select-item="selectPDF"></fact>
+        <fact :factData="factData" @select-item="selectPDF" @download-item="downloadPDF"></fact>
         <a-button icon="question-circle" slot="extra" @click="redirectHelp">Help</a-button>
       </a-card>
     </a-row>
@@ -108,6 +108,10 @@ export default {
     selectPDF(pdfKey) {
       this.currentTab = pdfKey
       document.getElementById('specification-container').scrollIntoView({ behavior: 'smooth' })
+    },
+    downloadPDF(pdfKey) {
+      let url = this.materialsDetails.find(item => item.key === pdfKey).pdfUrl
+      url && window.open(url)
     },
     redirectHelp() {
       window.open('https://docs.chinese-quartet.org/getting_started/introduction/', '__blank')

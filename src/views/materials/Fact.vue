@@ -4,14 +4,20 @@
       <div @click="selectItem(item.key)" class="fact-item">
         <!-- <h4 class="fact-item-title">{{ item.name }}</h4> -->
         <img width="100%" height="100%" :src="require(`@/assets/images/${item.key}-materials-pack.png`)" />
-        <a-button size="small" class="request-btn" type="primary" @click.stop="requestMaterials(item.name)">
-          Request
+        <a-button
+          size="small"
+          class="request-btn"
+          :class="'request-btn-' + item.key"
+          @click.stop="requestMaterials(item.name)"
+        >
+          Request {{ item.name }} Materials
         </a-button>
+        <a style="margin: 5px 0px;" @click.stop="downloadItem(item.key)"> &gt;&gt;&gt; Download the Specification &lt;&lt;&lt; </a>
         <div class="fact-info">
           <img
             width="100%"
             height="100%"
-            style="border-bottom: 1px solid #d6d6d6"
+            style="border-bottom: 1px solid #d6d6d6; border-top: 1px solid #d6d6d6;"
             :src="require(`@/assets/images/${item.key}-materials.png`)"
           />
           <p v-html="item.specification" style="margin-bottom: 0px"></p>
@@ -37,6 +43,9 @@ export default {
   methods: {
     selectItem(itemKey) {
       this.$emit('select-item', itemKey)
+    },
+    downloadItem(itemKey) {
+      this.$emit('download-item', itemKey)
     },
     requestMaterials(materialsType) {
       this.$router.push({
@@ -64,18 +73,37 @@ export default {
   border: 1px solid #d6d6d6;
 
   .request-btn {
-    position: absolute;
-    top: 10px;
-    left: 20px;
-    font-size: 10px;
-    font-weight: 500;
-    background-color: #ffffff;
-    color: #5f5f5f;
-    border-color: #d7d7d7;
+    height: unset;
+    margin-top: 5px;
+    font-size: 1rem;
+    color: #ffffff;
+    // background-color: #ffffff;
+    // border-color: #1890ff;
+  }
+
+  .request-btn-dna {
+    // background-color: #34ccff;
+    background-color: #c3a5b1;
+  }
+
+  .request-btn-rna {
+    // background-color: #00cc66;
+    background-color: #cec5b8;
+  }
+
+  .request-btn-protein {
+    // background-color: #ffc000;
+    background-color: #babbbf;
+  }
+
+  .request-btn-metabolite {
+    // background-color: #fe5150;
+    background-color: #b9bfb5;
   }
 
   .request-btn:hover {
-    color: #1890ff;
+    color: #ffffff;
+    background-color: #1890ff;
     border-color: #1890ff;
   }
 

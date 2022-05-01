@@ -3,8 +3,10 @@
     <a-list item-layout="vertical" size="large" :data-source="currentVersion">
       <a-list-item slot="renderItem" key="item.title" slot-scope="item, index">
         <template slot="actions">
-          <a-dropdown-button @click="fetchHelp(item.category, currentVersionKey)">
-            Latest Version
+          <a-dropdown trigger="click">
+            <a @click.prevent>
+              <a-icon type="cloud-download"></a-icon> Stable Versions
+            </a>
             <a-menu
               slot="overlay"
               @click="
@@ -15,9 +17,9 @@
             >
               <a-menu-item v-for="versionKey in versionKeys" :key="versionKey"> {{ versionKey }} </a-menu-item>
             </a-menu>
-          </a-dropdown-button>
+          </a-dropdown>
           <a-button style="padding: 0px 5px" type="link" icon="cloud-download" @click="redirectDevelopmentSite">
-            Developing Versions
+            Development Versions
           </a-button>
           <a-button style="padding: 0px 5px" type="link" icon="github" @click="redirectGithub"> Github Repo </a-button>
         </template>
