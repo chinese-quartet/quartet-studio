@@ -2,6 +2,30 @@
   <a-locale-provider :locale="locale">
     <div id="app">
       <router-view />
+      <a-tooltip placement="leftTop" title="GitHub" trigger="hover">
+        <a-button shape="circle" class="github-button" @click="openLink('https://github.com/chinese-quartet')">
+          <a-icon type="github"></a-icon>
+        </a-button>
+      </a-tooltip>
+      <a-tooltip placement="leftTop" title="Email to us" trigger="hover">
+        <a-button shape="circle" class="mail-button" @click="openLink('mailto:quartet@fudan.edu.cn')">
+          <a-icon type="mail"></a-icon>
+        </a-button>
+      </a-tooltip>
+      <a-tooltip placement="leftTop" title="Issues" trigger="hover">
+        <a-button
+          shape="circle"
+          class="message-button"
+          @click="openLink('https://github.com/chinese-quartet/docs.chinese-quartet.org/issues')"
+        >
+          <a-icon type="message"></a-icon>
+        </a-button>
+      </a-tooltip>
+      <a-tooltip placement="leftTop" title="Docs" trigger="hover">
+        <a-button shape="circle" class="help-button" @click="openLink('https://docs.chinese-quartet.org')">
+          <a-icon type="question"></a-icon>
+        </a-button>
+      </a-tooltip>
     </div>
   </a-locale-provider>
 </template>
@@ -24,6 +48,9 @@ export default {
     return {}
   },
   methods: {
+    openLink(link) {
+      window.open(link, '_blank')
+    },
     listen(shepherd) {
       ['close', 'cancel'].forEach(event =>
         shepherd.on(event, () => {
@@ -184,6 +211,8 @@ export default {
 @import '~shepherd.js/dist/css/shepherd.css';
 @import url('./assets/css/markdown.less');
 
+@base-bottom: 100px;
+
 #app {
   height: 100%;
 
@@ -193,5 +222,35 @@ export default {
     z-index: 9999;
     border-radius: 5px;
   }
+
+  .help-button,
+  .mail-button,
+  .message-button,
+  .github-button {
+    display: block;
+    position: fixed;
+    right: 15px;
+    z-index: 10;
+  }
+
+  .help-button {
+    bottom: @base-bottom;
+  }
+
+  .message-button {
+    bottom: @base-bottom + 40px;
+  }
+
+  .mail-button {
+    bottom: @base-bottom + 80px;
+  }
+
+  .github-button {
+    bottom: @base-bottom + 120px;
+  }
+}
+
+.setting-drawer-index-handle {
+  display: none !important;
 }
 </style>

@@ -3,7 +3,7 @@
     <a-list item-layout="vertical" size="large" :data-source="currentVersion">
       <a-list-item slot="renderItem" key="item.title" slot-scope="item, index">
         <template slot="actions">
-          <a-dropdown trigger="click">
+          <a-dropdown :trigger="['click']">
             <a @click.prevent>
               <a-icon type="cloud-download"></a-icon> Stable Versions
             </a>
