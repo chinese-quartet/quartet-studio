@@ -1,7 +1,9 @@
 <template>
   <page-view :title="getTitle()" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
     <template slot="action">
-      <a-button type="primary" style="margin-right: 5px" @click="onCreateModels('single')">New QC Report</a-button>
+      <a-button type="primary" v-if="pluginName" style="margin-right: 5px" @click="onCreateModels('single')">
+        New QC Report
+      </a-button>
     </template>
     <a-table
       class="report-container"
@@ -298,7 +300,7 @@ export default {
       let params = {
         page: page,
         page_size: pageSize,
-        plugin_type: 'ReportPlugin',
+        plugin_type: 'ReportPlugin'
       }
 
       if (this.pluginName) {

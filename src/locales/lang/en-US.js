@@ -31,6 +31,7 @@ export default {
       dataType: 'Data Type',
       uploadPath: 'Uploading Path',
       refreshToken: 'New Token',
+      viewFiles: 'View All Files',
       check: 'Check',
       accessKey: 'Access Key'
     }

@@ -167,23 +167,12 @@ export const asyncRouterMap = [{
           keepAlive: false
         },
         children: [{
-            path: '/data/upload',
-            name: 'upload-data',
-            hidden: false,
-            component: () => import('@/views/datasource/UploadData'),
-            meta: {
-              title: 'Upload Your Raw Data',
-              icon: 'upload',
-              keepAlive: false
-            }
-          },
-          {
             path: '/seq-flow/app-store',
             name: 'appstore',
             hidden: false,
             component: () => import('@/views/appstore/FilterPanel'),
             meta: {
-              title: 'All Pipelines',
+              title: 'QC Apps',
               icon: 'appstore',
               keepAlive: false
             }
@@ -202,7 +191,7 @@ export const asyncRouterMap = [{
           {
             path: '/seq-flow/dnaseq-quality-assessment-management',
             name: 'dnaseq-project-management',
-            hidden: false,
+            hidden: true,
             component: RouteView,
             meta: {
               title: 'DNA-Seq Data',
@@ -211,7 +200,7 @@ export const asyncRouterMap = [{
             },
             children: [{
                 path: '/seq-flow/dnaseq-quality-assessment-pipeline',
-                name: 'dnaseq-pipeline',
+                name: 'quartet_dna_quality_control_wgs_big_pipeline',
                 hidden: false,
                 component: () => import('@/views/workflow/ProjectManagement'),
                 meta: {
@@ -226,7 +215,7 @@ export const asyncRouterMap = [{
               },
               {
                 path: '/seq-flow/dseqc-report-management',
-                name: 'dseqc-report-management',
+                name: 'quartet-dseqc-report',
                 hidden: false,
                 component: () => import('@/views/report/ReportList'),
                 meta: {
@@ -244,7 +233,7 @@ export const asyncRouterMap = [{
             path: '/seq-flow/rnaseq-quality-assessment-management',
             name: 'rnaseq-project-management',
             component: RouteView,
-            hidden: false,
+            hidden: true,
             meta: {
               title: 'RNA-Seq Data',
               icon: 'file-done',
@@ -252,7 +241,7 @@ export const asyncRouterMap = [{
             },
             children: [{
                 path: '/seq-flow/rnaseq-quality-assessment-pipeline',
-                name: 'rnaseq-pipeline',
+                name: 'quartet-rnaseq-qc',
                 hidden: false,
                 component: () => import('@/views/workflow/ProjectManagement'),
                 meta: {
@@ -266,7 +255,7 @@ export const asyncRouterMap = [{
               },
               {
                 path: '/seq-flow/rseqc-report-management',
-                name: 'rseqc-report-management',
+                name: 'quartet-rseqc-report',
                 hidden: false,
                 component: () => import('@/views/report/ReportList'),
                 meta: {
@@ -282,8 +271,8 @@ export const asyncRouterMap = [{
           },
           {
             path: '/seq-flow/protqc-report-management',
-            name: 'protqc-report-management',
-            hidden: false,
+            name: 'quartetprotqc-report',
+            hidden: true,
             component: () => import('@/views/report/ReportList'),
             meta: {
               title: 'Proteomics Data',
@@ -296,8 +285,8 @@ export const asyncRouterMap = [{
           },
           {
             path: '/seq-flow/metqc-report-management',
-            name: 'metqc-report-management',
-            hidden: false,
+            name: 'quartet-metqc-report',
+            hidden: true,
             component: () => import('@/views/report/ReportList'),
             meta: {
               title: 'Metabolomics Data',
@@ -311,11 +300,22 @@ export const asyncRouterMap = [{
           {
             path: '/seq-flow/qc-report-management',
             name: 'report-management',
-            hidden: true,
+            hidden: false,
             component: () => import('@/views/report/ReportList'),
             meta: {
-              title: 'QC Report',
+              title: 'QC Report History',
               icon: 'file-text',
+              keepAlive: false
+            }
+          },
+          {
+            path: '/data/upload',
+            name: 'upload-data',
+            hidden: false,
+            component: () => import('@/views/datasource/UploadData'),
+            meta: {
+              title: 'Uploaded Raw Data',
+              icon: 'upload',
               keepAlive: false
             }
           },

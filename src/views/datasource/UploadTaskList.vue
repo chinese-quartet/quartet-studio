@@ -24,7 +24,7 @@
         <a-list-item :key="index" v-for="(item, index) in data">
           <a-col :lg="4" :md="6" :sm="24" :xs="24">
             <a-list-item-meta>
-              <div slot="description">{{ item.dataType }}</div>
+              <a-tag slot="description">{{ item.dataType }}</a-tag>
               <a-popover slot="avatar" placement="right">
                 <template slot="content">
                   <a-descriptions
@@ -58,7 +58,10 @@
           </a-col>
           <a-col class="list-content" :lg="16" :md="14" :sm="24" :xs="24" :gutter="16">
             <a-col class="list-content-item" :span="14">
-              <span class="title">{{ $t('datasource.uploadTaskList.uploadPath') }}</span>
+              <span class="title">
+                {{ $t('datasource.uploadTaskList.uploadPath') }}
+                <a-icon type="eye" @click="redirectToFS(item.uploadPath)"></a-icon>
+              </span>
               <a-tooltip>
                 <template slot="title">
                   <span style="cursor: pointer" @click="doCopy(item.uploadPath)">Copy Uploading Path</span>
@@ -87,6 +90,9 @@
             </a-col>
           </a-col>
           <div slot="actions">
+            <!-- <a-button @click="redirectToFS(item.uploadPath)" v-if="item.percentage === 100" style="margin-right: 5px">
+              {{ $t('datasource.uploadTaskList.viewFiles') }}
+            </a-button> -->
             <a-popconfirm
               title="Do you confirm to create a new token?"
               ok-text="Yes"
@@ -104,7 +110,7 @@
                 NOTE: The Quartet team will get an email notification, <br />
                 and then make your data online after reviewing your data.
               </span>
-              <a-button :disabled="item.percentage === 100" type="primary">
+              <a-button :disabled="item.percentage === 100" type="primary" icon="check">
                 {{ $t('datasource.uploadTaskList.check') }}
               </a-button>
             </a-popconfirm>
@@ -129,6 +135,18 @@
       </a-button>
       <a id="tokenTag" v-show="false"></a>
     </a-modal>
+    <div class="box" v-if="fileManagerActive" @click.stop="hideFileBrowser">
+      <a-row class="file-manager-container">
+        <file-browser
+          :standalone="false"
+          :height="500"
+          filterType="/"
+          :allowMultiSelection="false"
+          :path="defaultPath"
+          :strictedPrefix="strictedPrefix"
+        ></file-browser>
+      </a-row>
+    </div>
   </div>
 </template>
 
@@ -153,7 +171,8 @@ const uploadingTaskEndpoints = {
 export default {
   name: 'UploadTaskList',
   components: {
-    VueJsonPretty
+    VueJsonPretty,
+    FileBrowser: () => import('@/views/filemanager/FileBrowser')
   },
   data() {
     return {
@@ -191,14 +210,23 @@ export default {
         region: 'oss-cn-shanghai',
         durationHours: 12,
         expiration: moment('2021-09-14T02:18:33Z').toLocaleString()
-      }
+      },
+      defaultPath: '',
+      fileManagerActive: false
     }
   },
   computed: {
-    ...mapGetters(['userInfo', 'kebab_nickname'])
+    ...mapGetters(['userInfo', 'kebab_nickname']),
+    strictedPrefix() {
+      return `oss://quartet-data-portal/data/${this.kebab_nickname}`
+    }
   },
   methods: {
     downloadAsJSON,
+    viewDataFiles() {
+      this.defaultPath = this.strictedPrefix + '/'
+      this.fileManagerActive = true
+    },
     onRefreshToken(record) {
       this.spinning = true
       this.tokenVisible = true
@@ -236,6 +264,18 @@ export default {
         stsToken: '',
         authorizedCode: '',
         uploadPath: ''
+      }
+    },
+    redirectToFS(path) {
+      this.fileManagerActive = true
+      this.defaultPath = path
+    },
+    hideFileBrowser(e) {
+      if (e.target !== e.currentTarget) {
+        return
+      } else {
+        this.fileManagerActive = false
+        this.defaultPath = ''
       }
     },
     formatDateTime(datetime) {
@@ -484,6 +524,36 @@ export default {
 
   .logo:hover {
     cursor: pointer;
+  }
+
+  .box {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 10;
+
+    .file-manager-container {
+      top: 35%;
+      position: absolute;
+      width: 1000px;
+      left: 50%;
+      margin-top: -150px;
+      margin-left: -500px;
+      z-index: 1000;
+
+      .file-list {
+        border: 1px solid #d3d3d3;
+        border-radius: 5px;
+      }
+
+      .ant-btn-group {
+        margin-top: 5px;
+        float: right;
+      }
+    }
   }
 }
 </style>

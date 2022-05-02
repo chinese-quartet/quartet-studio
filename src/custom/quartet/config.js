@@ -162,8 +162,7 @@ export const projectSettings = {
       icon: 'github',
       link: 'https://github.com/chinese-quartet'
     }
-  ],
-  localTools: []
+  ]
 }
 
 export function initBaseURL () {

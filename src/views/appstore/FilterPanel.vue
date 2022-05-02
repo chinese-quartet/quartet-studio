@@ -1,60 +1,31 @@
 <template>
   <!--eslint-disable-->
-  <a-row class="filter-panel" :gutter="16">
-    <a-col
-      class="left"
-      :xl="{ span: expanded ? 0 : 6 }"
-      :lg="{ span: expanded ? 0 : 6 }"
-      :md="{ span: expanded ? 0 : 24 }"
-      :sm="{ span: expanded ? 0 : 24 }"
-      :xs="{ span: expanded ? 0 : 24 }"
+  <a-row class="filter-panel">
+    <a-tabs class="content" defaultActiveKey="dnaseq">
+      <a-tab-pane tab="DNA-Seq" key="dnaseq">
+        <app-list :appList="dnaSeqApp"></app-list>
+      </a-tab-pane>
+      <a-tab-pane tab="RNA-Seq" key="rnaseq">
+        <app-list :appList="rnaSeqApp"></app-list>
+      </a-tab-pane>
+      <a-tab-pane tab="Proteomics" key="proteomics">
+        <app-list :appList="proteomicsApp"></app-list>
+      </a-tab-pane>
+      <a-tab-pane tab="Metabolomics" key="metabolomics">
+        <app-list :appList="metabolomicsApp"></app-list>
+      </a-tab-pane>
+      <a-button icon="question-circle" slot="tabBarExtraContent" @click="fetchHelp" style="margin-right: 5px">
+        Help
+      </a-button>
+    </a-tabs>
+    <a-modal
+      title="Help for Pipelines"
+      width="60%"
+      class="help-markdown"
+      :visible="helpVisible"
+      :footer="null"
+      @cancel="closeHelp"
     >
-      <a-tabs default-active-key="1">
-        <a-tab-pane key="1" tab="Filter">
-          <a-row style="display: flex; justify-content: center; margin: 10px 10px">
-            <a-input-search
-              allowClear
-              data-v-step="appstore-filter-panel-search"
-              placeholder="Enter Search Text"
-              style="margin-bottom: 5px"
-              @change="filterFieldsList"
-            />
-          </a-row>
-          <a-collapse :activeKey="activeFilterList">
-            <a-collapse-panel :header="toTitleCase(field.name)" :key="field.name" v-for="field in filteredFieldsList">
-              <filter-list
-                :checkboxMode="false"
-                :dataSource="field.data"
-                @select-filter="filterItems(field.key, $event)"
-              ></filter-list>
-            </a-collapse-panel>
-          </a-collapse>
-        </a-tab-pane>
-      </a-tabs>
-    </a-col>
-    <a-col
-      class="right"
-      :class="{ expanded: expanded }"
-      :xl="{ span: expanded ? 24 : 18 }"
-      :lg="{ span: expanded ? 24 : 18 }"
-      :md="24"
-      :sm="24"
-      :xs="24"
-    >
-      <a-tabs defaultActiveKey="1" :activeKey="currentTab" @change="onChangeTab">
-        <a-tab-pane tab="Pipelines" key="app">
-          <app-list :appList="filteredApps" :key="localAppMode"></app-list>
-        </a-tab-pane>
-        <a-button icon="question-circle" slot="tabBarExtraContent" @click="fetchHelp" style="margin-right: 5px;"> Help </a-button>
-        <a-button slot="tabBarExtraContent" @click="expandPanel" type="primary" v-if="!expanded">
-          Hide Filter Panel<a-icon type="fullscreen" />
-        </a-button>
-        <a-button slot="tabBarExtraContent" @click="expandPanel" type="primary" v-else>
-          Show Filter Panel<a-icon type="fullscreen-exit" />
-        </a-button>
-      </a-tabs>
-    </a-col>
-    <a-modal title="Help for Pipelines" width="60%" class="help-markdown" :visible="helpVisible" :footer="null" @cancel="closeHelp">
       <a-row style="display: flex; justify-content: flex-end; margin-top: -20px; margin-right: -20px">
         <a-checkbox :checked="helpChecked" @change="changeHelpCheckbox"> Don't show again </a-checkbox>
       </a-row>
@@ -71,49 +42,44 @@ import { mapActions } from 'vuex'
 import { FilterList } from '@/components'
 import AppList from '@/views/appstore/AppList'
 import orderBy from 'lodash.orderby'
-import map from 'lodash.map'
-import groupBy from 'lodash.groupby'
 import filter from 'lodash.filter'
 import axios from 'axios'
 import VueMarkdown from 'vue-markdown'
 import Prism from 'prismjs'
+
+const apps = {
+  dnaseq: ['upload-data', 'quartet_dna_quality_control_wgs_big_pipeline', 'quartet-dseqc-report'],
+  rnaseq: ['upload-data', 'quartet-rnaseq-qc', 'quartet-rseqc-report'],
+  proteomics: ['quartet-protqc-report'],
+  metabolomics: ['quartet-metqc-report']
+}
 
 export default {
   name: 'FilterPanel',
   components: {
     FilterList,
     AppList,
-    VueMarkdown,
+    VueMarkdown
   },
   data() {
     return {
-      loading: true,
       appList: [],
-      fieldsList: [
+      localTools: [
         {
-          name: 'Category',
-          shortName: 'category',
-          key: 'category',
-          data: []
-        },
-        {
-          name: 'Author',
-          shortName: 'author',
-          key: 'author',
-          data: []
-        },
-        {
-          name: 'Name',
-          shortName: 'title',
-          key: 'title',
-          data: []
+          id: 'de24a560a1178a5e59085b5b70ef2e35',
+          title: 'Upload Your Data',
+          shortName: 'upload-data',
+          appName: 'upload-your-data-latest',
+          version: 'latest',
+          home: '',
+          hidden: 'false',
+          author: 'Jingcheng Yang',
+          description: 'Upload your data to the data repo',
+          icons: null,
+          category: 'LocalTool',
+          source: ''
         }
       ],
-      filterValue: '',
-      currentTab: 'app',
-      localAppMode: false,
-      localApps: [],
-      expanded: true,
       helpChecked: false,
       helpVisible: false,
       helpMsg: ''
@@ -121,37 +87,17 @@ export default {
   },
   props: {},
   computed: {
-    activeFilterList() {
-      const active = []
-      for (const field of this.fieldsList) {
-        active.push(field.name)
-      }
-      return active
+    dnaSeqApp() {
+      return filter(this.appList, app => apps.dnaseq.includes(app.shortName))
     },
-    filteredFieldsList() {
-      if (this.filterValue.length > 0) {
-        return map(this.fieldsList, fieldRecord => {
-          console.log('filteredFieldsList: ', fieldRecord, this.filterValue)
-          const newFieldRecord = {}
-          newFieldRecord['name'] = fieldRecord.name
-          newFieldRecord['shortName'] = fieldRecord.shortName
-          newFieldRecord['key'] = fieldRecord.key
-          newFieldRecord['data'] = filter(fieldRecord.data, record => {
-            return record.name.match(this.filterValue)
-          })
-
-          return newFieldRecord
-        })
-      } else {
-        return this.fieldsList
-      }
+    rnaSeqApp() {
+      return filter(this.appList, app => apps.rnaseq.includes(app.shortName))
     },
-    filteredApps() {
-      if (this.localAppMode) {
-        return orderBy(this.localApps, 'title', 'aes')
-      } else {
-        return orderBy(this.appList, 'title', 'aes')
-      }
+    proteomicsApp() {
+      return filter(this.appList, app => apps.proteomics.includes(app.shortName))
+    },
+    metabolomicsApp() {
+      return filter(this.appList, app => apps.metabolomics.includes(app.shortName))
     }
   },
   mounted() {
@@ -159,8 +105,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      getAppList: 'GetAppList',
-      getAppManifest: 'GetAppManifest'
+      getAppManifest: 'GetAppManifest',
+      getToolManifest: 'GetToolManifest'
     }),
     changeHelpCheckbox(e) {
       console.log('Change Help Checkbox: ', e)
@@ -185,89 +131,21 @@ export default {
           this.helpVisible = true
         })
     },
-    expandPanel() {
-      this.expanded = !this.expanded
-    },
-    onChangeTab(activeKey) {
-      this.currentTab = activeKey
-
-      if (activeKey === 'app') {
-        // this.getList()
-        this.generateFieldsList(this.appList)
-      }
-    },
-    generateFieldsList(appList) {
-      this.fieldsList.forEach(element => {
-        if (element.key === 'category') {
-          element.data = Object.entries(
-            groupBy(appList, app => {
-              return app.category
-            })
-          ).map(([key, value]) => {
-            return {
-              name: key,
-              key: key,
-              count: value.length
-            }
-          })
-        } else if (element.key === 'title') {
-          element.data = Object.entries(
-            groupBy(appList, app => {
-              return app.title
-            })
-          ).map(([key, value]) => {
-            return {
-              name: key,
-              key: key,
-              count: value.length
-            }
-          })
-        } else if (element.key === 'author') {
-          element.data = Object.entries(
-            groupBy(appList, app => {
-              return app.author
-            })
-          ).map(([key, value]) => {
-            return {
-              name: key,
-              key: key,
-              count: value.length
-            }
-          })
-        }
-      })
-    },
-    filterFieldsList(e) {
-      this.filterValue = e.target.value
-    },
-    toTitleCase(str) {
-      return str.replace(/\w\S*/g, function(txt) {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-      })
-    },
-    filterItems(key, e) {
-      if (this.currentTab === 'app') {
-        this.localAppMode = true
-        this.localApps = filter(this.appList, record => {
-          return record[key] === e.key
-        })
-      }
-
-      console.log(key, e, this.localApps)
-    },
     getList() {
-      this.getAppManifest().then(res => {
-        console.log('res', res)
-        this.appList = res.data
-        this.generateFieldsList(this.appList)
-        this.loading = false
-      })
+      Promise.all([this.getAppManifest(), this.getToolManifest()])
+        .then(response => {
+          this.appList = this.localTools.concat(response[0], response[1])
+          console.log('App List: ', this.appList)
+        })
+        .catch(error => {
+          console.log('Get List Error: ', error)
+        })
     },
     update() {
       this.$nextTick(() => {
         Prism.highlightAll()
       })
-    },
+    }
   },
   created() {
     const notShownHelp = JSON.parse(localStorage.getItem('datains__data__notShownAssessmentHelp'))
@@ -281,56 +159,12 @@ export default {
 }
 </script>
 
-<style lang="less">
-.filter-panel {
-  .left {
-    .ant-tabs {
-      .ant-tabs-bar {
-        margin: 0px;
-      }
-
-      .ant-tabs-content {
-        height: calc(100% - 60px);
-        overflow: scroll;
-      }
-    }
-  }
-}
-</style>
-
 <style lang="less" scoped>
 .filter-panel {
   margin-right: 0px !important;
   height: 100%;
 
-  .left {
-    height: 100%;
-
-    .ant-tabs {
-      height: 100%;
-      background-color: #fff;
-      border: 1px solid #d9d9d9;
-      border-radius: 5px;
-
-      .ant-collapse {
-        border: 0px;
-        border-top: 1px solid #d9d9d9;
-        border-radius: 0px;
-
-        .ant-collapse-item:last-child,
-        .ant-collapse > .ant-collapse-item:last-child > .ant-collapse-header {
-          border-radius: 0px;
-        }
-      }
-    }
-  }
-
-  .expanded {
-    margin-left: 8px;
-    width: calc(100% - 8px);
-  }
-
-  .right {
+  .content {
     padding-bottom: 20px;
     border-radius: 4px;
     border: 1px solid #d9d9d9;

@@ -4,11 +4,11 @@ import {
   getInstalledAppList,
   getAppSchema,
   getHelpMsg,
+  getManifest
 } from '@/api/manage'
 import orderBy from 'lodash.orderby'
-import { config } from '@/config/defaultSettings'
 
-const formatRecords = function(records) {
+const formatRecords = function (records) {
   const newRecords = []
   for (const record of records) {
     newRecords.push({
@@ -27,7 +27,7 @@ const formatRecords = function(records) {
   return newRecords
 }
 
-const formatInstalledApps = function(installedApps) {
+const formatInstalledApps = function (installedApps) {
   const newRecords = []
 
   for (const record of installedApps) {
@@ -40,7 +40,7 @@ const formatInstalledApps = function(installedApps) {
   return orderBy(newRecords, 'name', 'desc')
 }
 
-const formatManifest = function(manifest) {
+const formatManifest = function (manifest) {
   const newRecords = []
 
   for (const record of manifest) {
@@ -79,17 +79,15 @@ const app = {
   },
 
   actions: {
-    GetAppList({ commit }, parameter) {
+    GetAppList({
+      commit
+    }, parameter) {
       return new Promise((resolve, reject) => {
         getAppList(parameter)
           .then(response => {
             console.log('GetAppList: ', parameter, response)
 
             let apps = response.data
-
-            if (config.localTools) {
-              apps = apps.concat(config.localTools)
-            }
 
             const data = {
               perPage: response['per_page'],
@@ -106,22 +104,24 @@ const app = {
           })
       })
     },
-    GetAppManifest({ commit }, parameter) {
+    GetToolManifest() {
+      return new Promise((resolve, reject) => {
+        getManifest()
+          .then(response => {
+            resolve(formatManifest(response.data))
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
+    GetAppManifest({
+      commit
+    }, parameter) {
       return new Promise((resolve, reject) => {
         getAppManifest(parameter)
           .then(response => {
-            console.log('GetAppManifest: ', parameter, response)
-
-            let apps = response.data
-            if (config.localTools) {
-              apps = apps.concat(config.localTools)
-              console.log('Local Tools: ', apps)
-            }
-
-            const data = {
-              total: response['total'] + config.localTools.length,
-              data: formatManifest(apps)
-            }
+            let data = formatManifest(response.data)
 
             console.log('Format Manifest: ', data)
             resolve(data)
@@ -131,7 +131,9 @@ const app = {
           })
       })
     },
-    GetInstalledAppList({ commit }, parameter) {
+    GetInstalledAppList({
+      commit
+    }, parameter) {
       return new Promise((resolve, reject) => {
         getInstalledAppList(parameter)
           .then(response => {
@@ -152,7 +154,9 @@ const app = {
           })
       })
     },
-    GetAppSchema({ commit }, appName) {
+    GetAppSchema({
+      commit
+    }, appName) {
       return new Promise((resolve, reject) => {
         getAppSchema(appName)
           .then(response => {
@@ -165,7 +169,9 @@ const app = {
           })
       })
     },
-    GetHelpMsg({ commit }, appName) {
+    GetHelpMsg({
+      commit
+    }, appName) {
       return new Promise((resolve, reject) => {
         getHelpMsg(appName)
           .then(response => {

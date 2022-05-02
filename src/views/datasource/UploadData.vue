@@ -2,10 +2,15 @@
   <page-view :title="getTitle()" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
     <template slot="action">
       <a-button icon="question-circle" style="margin-right: 10px" @click="showHelp">Help</a-button>
+      <a-button icon="eye" style="margin-right: 10px" @click="viewData">View Your Data</a-button>
       <a-button type="primary" @click="onCreateDataSet">Register & Upload Your Data</a-button>
     </template>
 
-    <upload-task-list :id="refreshToken" :key="forceUpdateKey"></upload-task-list>
+    <upload-task-list
+      ref="uploadTaskList"
+      :id="refreshToken"
+      :key="forceUpdateKey"
+    ></upload-task-list>
     <a-modal
       title="Help for Uploading Omics Data"
       width="60%"
@@ -208,6 +213,9 @@ export default {
     }
   },
   methods: {
+    viewData() {
+      this.$refs.uploadTaskList && this.$refs.uploadTaskList.viewDataFiles()
+    },
     validateEmail(email) {
       var re = /\S+@\S+\.\S+/
       return re.test(email)

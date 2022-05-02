@@ -4,13 +4,9 @@
       <a-card hoverable class="card">
         <!-- <img :alt="app.title" :src="app.cover" slot="cover"/> -->
         <template class="ant-card-actions" slot="actions">
-          <a-icon type="eye" @click="onView(app)" />
-          <a-popover trigger="click">
-            <a slot="title" :href="app.home" target="_blank">{{ app.appName }}</a>
-            <p slot="content">{{ app.description }}</p>
-            <a-icon type="info-circle" />
-          </a-popover>
-          <a-icon type="share-alt" />
+          <a-button @click="onView(app)"> <a-icon type="eye" /> Run </a-button>
+          <a-button @click="openLink(app)"> <a-icon type="question-circle" /> Help </a-button>
+          <a-button disabled> <a-icon type="share-alt" /> Share </a-button>
         </template>
         <a-card-meta :title="app.title" class="card-meta">
           <p slot="description">
@@ -18,7 +14,7 @@
             <span>{{ app.description }}</span>
           </p>
           <!-- <a-avatar slot="avatar" :src="app.icon" /> -->
-          <a-avatar slot="avatar" style="backgroundColor: #87d068">
+          <a-avatar slot="avatar" style="background-color: #87d068">
             {{ app.title[0].toUpperCase() }}
           </a-avatar>
         </a-card-meta>
@@ -39,21 +35,35 @@ export default {
   },
   methods: {
     formatAppVersion(app) {
-      return app.appName.split('-').pop()
+      if (app.appName) {
+        return app.appName.split('-').pop()
+      } else {
+        return app.version ? app.version : 'latest'
+      }
     },
-    formatDescription(app) {
-      return "[" + app.appName.split('-').pop() + "] " + app.description
+    openLink(app) {
+      // TODO: Redirect to the specified help page
+      window.open('https://docs.chinese-quartet.org/getting_started/introduction/', '_blank')
     },
     onView(app) {
-      if (app.repoUrl && app.repoUrl.match(/^http[s]?:.*/)) {
-        window.open(app.repoUrl, '_blank')
-      } else {
+      if (app.category === 'LocalTool') {
         this.$router.push({
-          name: 'create-project',
-          query: {
-            appId: app.id
-          }
+          name: app.shortName
         })
+      } else if (app.category === 'Report') {
+        this.$router.push({
+          name: app.shortName
+        })
+      } else if (app.category === 'Pipeline') {
+        this.$router.push({
+          name: app.shortName
+        })
+        // this.$router.push({
+        //   name: 'create-project',
+        //   query: {
+        //     appId: app.id
+        //   }
+        // })
       }
     }
   }

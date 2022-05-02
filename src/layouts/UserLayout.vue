@@ -1,6 +1,6 @@
 <template>
   <div id="userLayout" :class="['user-layout-wrapper', device]">
-    <a-row class="lang-panel">
+    <a-row class="lang-panel" v-if="false">
       <lang-select />
     </a-row>
     <div class="container">
@@ -25,7 +25,8 @@
           <a-dropdown>
             <a>{{ $t('layouts.userLayout.feedback') }}</a>
             <a-menu slot="overlay">
-              <a-menu-item>
+              <!-- No zh_CN  -->
+              <a-menu-item v-if="false">
                 <a :href="feedbackEntrypoint.zh_CN" target="_blank">
                   <span class="action"> 🇨🇳 讨论区 </span>
                 </a>
