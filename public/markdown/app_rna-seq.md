@@ -1,0 +1,2 @@
+### RNA-Seq
+For RNA-seq, the quality assessment is started from FASTQ files and can be divided into three parts: pre-alignment, post-alignment, and gene-expression profiles. The quality of pre-alignment is assessed by FastQC and FastQ Screen, while post-alignment is assessed by Qualimap, while the quality control of gene expression profiles is based on the Quartet reference datasets and the internal information of each batch itself. MultiQC was used for compiling QC results together. 

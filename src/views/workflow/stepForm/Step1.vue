@@ -61,6 +61,7 @@
         :wrapperCol="wrapperCol"
       >
         <a-select
+          :disabled="appId ? true : false"
           :placeholder="$t('workflow.stepForm.step1.chooseAppPlaceholder')"
           v-model="projectData.appId">
           <a-select-option :value="item.id" v-for="item in installedApps" :key="item.id">

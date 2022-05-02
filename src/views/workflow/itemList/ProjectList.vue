@@ -15,6 +15,8 @@
           style="margin-left: 10px; width: 272px"
           :placeholder="$t('workflow.itemList.projectList.searchPlaceholder')"
           @change="onSelectApp"
+          :disabled="appId ? true : false"
+          :value="selectedApp"
           allowClear
         >
           <a-select-option :value="item.id" :key="item.name" v-for="item in installedApps">
@@ -177,10 +179,17 @@ export default {
     VueGoodTable,
     projectLogo
   },
+  props: {
+    appId: {
+      type: String,
+      default: null,
+      required: false
+    },
+  },
   data() {
     return {
       popoverVisible: false,
-      selectedApp: '',
+      selectedApp: this.appId ? this.appId : undefined,
       searchStr: '',
       data: [],
       pagination: {
@@ -227,6 +236,11 @@ export default {
   computed: {
     adminGroup() {
       return this.userInfo().groups.includes('admin')
+    }
+  },
+  watch: {
+    appId() {
+      this.onSelectApp(this.appId)
     }
   },
   methods: {
@@ -406,7 +420,7 @@ export default {
     }
   },
   created() {
-    this.searchProject(this.pagination.current, this.pagination.pageSize, {})
+    this.refresh()
     this.getInstalledApps()
   },
   mounted() {

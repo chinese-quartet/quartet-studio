@@ -172,7 +172,7 @@ export const asyncRouterMap = [{
             hidden: false,
             component: () => import('@/views/datasource/UploadData'),
             meta: {
-              title: 'Upload Your Data',
+              title: 'Upload Your Raw Data',
               icon: 'upload',
               keepAlive: false
             }
@@ -191,18 +191,127 @@ export const asyncRouterMap = [{
           {
             path: '/seq-flow/quality-assessment-management',
             name: 'project-management',
-            hidden: false,
+            hidden: true,
             component: () => import('@/views/workflow/ProjectManagement'),
             meta: {
-              title: 'QC Pipeline History',
+              title: 'DNA-Seq & RNA-Seq Pipelines',
               icon: 'solution',
               keepAlive: false
             }
           },
           {
+            path: '/seq-flow/dnaseq-quality-assessment-management',
+            name: 'dnaseq-project-management',
+            hidden: false,
+            component: RouteView,
+            meta: {
+              title: 'DNA-Seq Data',
+              icon: 'file-done',
+              keepAlive: false
+            },
+            children: [{
+                path: '/seq-flow/dnaseq-quality-assessment-pipeline',
+                name: 'dnaseq-pipeline',
+                hidden: false,
+                component: () => import('@/views/workflow/ProjectManagement'),
+                meta: {
+                  title: 'DNA-Seq Pipeline',
+                  icon: 'apartment',
+                  keepAlive: false
+                },
+                // Need to keep the appId stable for the same app
+                props: route => ({
+                  appId: 'ea989ffd08517f6c4dc1edf931ac946f',
+                })
+              },
+              {
+                path: '/seq-flow/dseqc-report-management',
+                name: 'dseqc-report-management',
+                hidden: false,
+                component: () => import('@/views/report/ReportList'),
+                meta: {
+                  title: 'DNA-Seq QC Report',
+                  icon: 'file-done',
+                  keepAlive: false
+                },
+                props: {
+                  pluginName: 'quartet-dseqc-report'
+                }
+              },
+            ]
+          },
+          {
+            path: '/seq-flow/rnaseq-quality-assessment-management',
+            name: 'rnaseq-project-management',
+            component: RouteView,
+            hidden: false,
+            meta: {
+              title: 'RNA-Seq Data',
+              icon: 'file-done',
+              keepAlive: false
+            },
+            children: [{
+                path: '/seq-flow/rnaseq-quality-assessment-pipeline',
+                name: 'rnaseq-pipeline',
+                hidden: false,
+                component: () => import('@/views/workflow/ProjectManagement'),
+                meta: {
+                  title: 'RNA-Seq Pipeline',
+                  icon: 'solution',
+                  keepAlive: false
+                },
+                props: route => ({
+                  appId: 'fd63809bc013bec3664b072d3465ba75',
+                })
+              },
+              {
+                path: '/seq-flow/rseqc-report-management',
+                name: 'rseqc-report-management',
+                hidden: false,
+                component: () => import('@/views/report/ReportList'),
+                meta: {
+                  title: 'RNA-Seq QC Report',
+                  icon: 'file-done',
+                  keepAlive: false
+                },
+                props: {
+                  pluginName: 'quartet-rseqc-report'
+                }
+              },
+            ]
+          },
+          {
+            path: '/seq-flow/protqc-report-management',
+            name: 'protqc-report-management',
+            hidden: false,
+            component: () => import('@/views/report/ReportList'),
+            meta: {
+              title: 'Proteomics Data',
+              icon: 'file-done',
+              keepAlive: false
+            },
+            props: {
+              pluginName: 'quartet-protqc-report'
+            }
+          },
+          {
+            path: '/seq-flow/metqc-report-management',
+            name: 'metqc-report-management',
+            hidden: false,
+            component: () => import('@/views/report/ReportList'),
+            meta: {
+              title: 'Metabolomics Data',
+              icon: 'file-done',
+              keepAlive: false
+            },
+            props: {
+              pluginName: 'quartet-metqc-report'
+            }
+          },
+          {
             path: '/seq-flow/qc-report-management',
             name: 'report-management',
-            hidden: false,
+            hidden: true,
             component: () => import('@/views/report/ReportList'),
             meta: {
               title: 'QC Report',

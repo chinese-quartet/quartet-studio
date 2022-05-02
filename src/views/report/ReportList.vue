@@ -1,5 +1,5 @@
 <template>
-  <page-view title="QC Report for Quartet" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
+  <page-view :title="getTitle()" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
     <template slot="action">
       <a-button type="primary" style="margin-right: 5px" @click="onCreateModels('single')">New QC Report</a-button>
     </template>
@@ -75,7 +75,7 @@
       :destroyOnClose="true"
       :visible="submitPanelVisible"
     >
-      <submitter @close="hideSubmitPanel"></submitter>
+      <submitter @close="hideSubmitPanel" :pluginName="pluginName"></submitter>
     </a-drawer>
   </page-view>
 </template>
@@ -84,6 +84,7 @@
 import { PageView } from '@/layouts'
 import Submitter from './Submitter'
 import filter from 'lodash.filter'
+import { formatTitle } from '@/views/utils'
 import { GetTaskList } from './util'
 import { makeDownloadUrl } from '@/api/manage'
 import axios from 'axios'
@@ -172,6 +173,13 @@ export default {
     PageView,
     Submitter
   },
+  props: {
+    pluginName: {
+      type: String,
+      default: null,
+      required: false
+    }
+  },
   data() {
     return {
       columns,
@@ -207,7 +215,15 @@ export default {
       })
     }
   },
+  watch: {
+    pluginName: function() {
+      this.getReports(this.pagination.current, this.pagination.pageSize)
+    }
+  },
   methods: {
+    getTitle() {
+      return formatTitle(this, this.$route.meta.title)
+    },
     downloadFile(record) {
       const key = record.response.report
       const filename = record.name + '.html'
@@ -279,11 +295,17 @@ export default {
     },
     getReports(page, pageSize) {
       this.reportLoading = true
-      GetTaskList({
+      let params = {
         page: page,
         page_size: pageSize,
-        plugin_type: 'ReportPlugin'
-      })
+        plugin_type: 'ReportPlugin',
+      }
+
+      if (this.pluginName) {
+        params.plugin_name = this.pluginName
+      }
+
+      GetTaskList(params)
         .then(response => {
           this.pagination.total = response.total
           this.pagination.current = response.page

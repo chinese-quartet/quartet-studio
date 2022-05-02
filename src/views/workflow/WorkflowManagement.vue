@@ -1,62 +1,70 @@
 <template>
-  <page-view
-    :title="getTitle($t)"
-    logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png"
-  >
+  <page-view :title="getTitle($t)" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
     <detail-list slot="headerContent" size="small" :col="3" class="detail-layout">
       <detail-list-item :term="$t('workflow.workflowManagement.name')">{{ project.title }}</detail-list-item>
       <detail-list-item :term="$t('workflow.workflowManagement.author')">{{ project.author }}</detail-list-item>
+      <!-- <detail-list-item term="Percentage"> -->
+      <!-- <a-progress :percent="project.percentage" :status="project.status" /> -->
+      <!-- </detail-list-item> -->
+      <detail-list-item :term="$t('workflow.workflowManagement.description')">
+        {{ project.description }}
+      </detail-list-item>
+      <detail-list-item :term="$t('workflow.workflowManagement.startedTime')">{{ project.startedAt }}</detail-list-item>
+      <detail-list-item :term="$t('workflow.workflowManagement.finishedTime')">
+        {{ project.finishedAt }}
+      </detail-list-item>
+      <detail-list-item :term="$t('workflow.workflowManagement.relatedApp')">
+        <a-tag color="#87d068" style="margin-right: 0px">{{ project.appName }}</a-tag>
+      </detail-list-item>
+      <detail-list-item :term="$t('workflow.workflowManagement.relatedReport')" v-show="false">
+        <a-button type="primary" size="small" icon="logout" @click.native="onShowReport(project)" />
+      </detail-list-item>
       <detail-list-item :term="$t('workflow.workflowManagement.status')">
-        <a-row class="badge-list">
+        <a-row class="badge-list" style="height: 18px;">
           <!-- Total -->
           <a-tooltip placement="top">
             <template slot="title">
               <span>{{ $t('workflow.workflowManagement.totalJobs') }}</span>
             </template>
-            <a-col
-              class="badge"
-              :style="{ backgroundColor: '#d9d9d9', color: '#fff' }"
-            >{{ project.statusDetails.total }}</a-col>
+            <a-col class="badge" :style="{ backgroundColor: '#d9d9d9', color: '#fff' }">{{
+              project.statusDetails.total
+            }}</a-col>
           </a-tooltip>
           <!-- Submitted -->
           <a-tooltip placement="top">
             <template slot="title">
               <span>{{ $t('workflow.workflowManagement.submittedJobs') }}</span>
             </template>
-            <a-col
-              class="badge"
-              :style="{ backgroundColor: '#838383', color: '#fff' }"
-            >{{ countSubmitted(project) }}</a-col>
+            <a-col class="badge" :style="{ backgroundColor: '#838383', color: '#fff' }">{{
+              countSubmitted(project)
+            }}</a-col>
           </a-tooltip>
           <!-- Running -->
           <a-tooltip placement="top">
             <template slot="title">
               <span>{{ $t('workflow.workflowManagement.runningJobs') }}</span>
             </template>
-            <a-col
-              class="badge"
-              :style="{ backgroundColor: '#108ee9', color: '#fff' }"
-            >{{ project.statusDetails.running }}</a-col>
+            <a-col class="badge" :style="{ backgroundColor: '#108ee9', color: '#fff' }">{{
+              project.statusDetails.running
+            }}</a-col>
           </a-tooltip>
           <!-- Failed -->
           <a-tooltip placement="top">
             <template slot="title">
               <span>{{ $t('workflow.workflowManagement.failedJobs') }}</span>
             </template>
-            <a-col
-              class="badge"
-              :style="{ backgroundColor: '#f5222d', color: '#fff' }"
-            >{{ project.statusDetails.error }}</a-col>
+            <a-col class="badge" :style="{ backgroundColor: '#f5222d', color: '#fff' }">{{
+              project.statusDetails.error
+            }}</a-col>
           </a-tooltip>
           <!-- Succeeded -->
           <a-tooltip placement="top">
             <template slot="title">
               <span>{{ $t('workflow.workflowManagement.succeededJobs') }}</span>
             </template>
-            <a-col
-              class="badge"
-              :style="{ backgroundColor: '#52c41a', color: '#fff' }"
-            >{{ project.statusDetails.success }}</a-col>
+            <a-col class="badge" :style="{ backgroundColor: '#52c41a', color: '#fff' }">{{
+              project.statusDetails.success
+            }}</a-col>
           </a-tooltip>
           <!-- Warning -->
           <a-tooltip placement="top">
@@ -67,41 +75,32 @@
           </a-tooltip>
         </a-row>
       </detail-list-item>
-      <!-- <detail-list-item term="Percentage"> -->
-      <!-- <a-progress :percent="project.percentage" :status="project.status" /> -->
-      <!-- </detail-list-item> -->
-      <detail-list-item :term="$t('workflow.workflowManagement.startedTime')">{{ project.startedAt }}</detail-list-item>
-      <detail-list-item :term="$t('workflow.workflowManagement.finishedTime')">{{ project.finishedAt }}</detail-list-item>
-      <detail-list-item :term="$t('workflow.workflowManagement.description')" style="width: 100%;">{{ project.description }}</detail-list-item>
     </detail-list>
-    <a-row slot="extra" class="status-list">
+    <!-- <a-row slot="extra" class="status-list" v-if="false">
       <a-col :xs="8" :sm="8">
         <div class="text">{{ $t('workflow.workflowManagement.relatedReport') }}</div>
         <div class="heading">
-          <a-button
-            type="primary"
-            size="small"
-            icon="logout"
-            @click.native="onShowReport(project)"
-          />
+          <a-button type="primary" size="small" icon="logout" @click.native="onShowReport(project)" />
         </div>
       </a-col>
       <a-col :xs="16" :sm="16">
         <div class="text">{{ $t('workflow.workflowManagement.relatedApp') }}</div>
         <div class="heading">
-          <a-tag color="#87d068" style="margin-right: 0px;">{{ project.appName }}</a-tag>
+          <a-tag color="#87d068" style="margin-right: 0px">{{ project.appName }}</a-tag>
         </div>
       </a-col>
-    </a-row>
+    </a-row> -->
     <!-- actions -->
-    <template slot="action">
-      <a-button-group style="margin-right: 4px;">
-        <a-button style="display: none;" @click="onShowReport(project)">{{ $t('workflow.workflowManagement.report') }}</a-button>
+    <!-- <template slot="action">
+      <a-button-group style="margin-right: 4px">
+        <a-button style="display: none" @click="onShowReport(project)">{{
+          $t('workflow.workflowManagement.report')
+        }}</a-button>
         <a-button disabled>{{ $t('workflow.workflowManagement.stop') }}</a-button>
         <a-button disabled>{{ $t('workflow.workflowManagement.restart') }}</a-button>
         <a-button type="primary" disabled>{{ $t('workflow.workflowManagement.archive') }}</a-button>
       </a-button-group>
-    </template>
+    </template> -->
 
     <workflow-list @refresh="searchProject(projectId)"></workflow-list>
   </page-view>
@@ -222,7 +221,7 @@ export default {
       console.log('Clear the refresh timer.')
       clearInterval(this.timer)
       this.timer = null
-    }    
+    }
   }
 }
 </script>

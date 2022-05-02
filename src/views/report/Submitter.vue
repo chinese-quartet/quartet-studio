@@ -13,7 +13,7 @@
             </span>
           </span>
         </a-alert>
-        <a-table :columns="columns" :data-source="data" :pagination="false" :row-selection="rowSelection">
+        <a-table :columns="columns" :data-source="filteredData" :pagination="false" :row-selection="rowSelection">
           <span slot="logo" slot-scope="text, record">
             <img width="30" height="30" v-if="text" :src="text" />
           </span>
@@ -264,6 +264,13 @@ export default {
   components: {
     ProjectModeSubmitter
   },
+  props: {
+    pluginName: {
+      type: String,
+      default: null,
+      required: false
+    }
+  },
   data() {
     return {
       columns,
@@ -349,6 +356,15 @@ export default {
         })
       } else {
         return []
+      }
+    },
+    filteredData() {
+      if (this.pluginName) {
+        return filter(this.data, item => {
+          return item.key === this.pluginName
+        })
+      } else {
+        return this.data
       }
     }
   },

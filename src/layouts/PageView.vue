@@ -15,7 +15,7 @@
           </template>
         </div>
       </div>
-      <slot slot="extra" name="extra" v-if="typeof extraImage !== 'undefined'">
+      <slot slot="extra" name="extra" v-if="this.$slots.extra && typeof extraImage !== 'undefined'">
         <div class="extra-img">
           <img :src="extraImage" />
         </div>

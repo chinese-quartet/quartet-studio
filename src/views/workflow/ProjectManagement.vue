@@ -1,7 +1,7 @@
 <template>
   <page-view :title="getTitle()" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
     <template slot="action">
-      <a-button icon="question-circle" style="margin-right: 10px;" @click="showHelp">
+      <a-button icon="question-circle" style="margin-right: 10px" @click="showHelp">
         {{ $t('workflow.projectManagement.showHelp') }}
       </a-button>
       <a-button type="primary" @click="onCreateProject">
@@ -9,8 +9,15 @@
       </a-button>
     </template>
 
-    <project-list :id="refreshToken"></project-list>
-    <a-modal title="Help for Piplines" width="60%" class="help-markdown" :visible="helpVisible" :footer="null" @cancel="closeHelp">
+    <project-list :id="refreshToken" :appId="appId"></project-list>
+    <a-modal
+      title="Help for Piplines"
+      width="60%"
+      class="help-markdown"
+      :visible="helpVisible"
+      :footer="null"
+      @cancel="closeHelp"
+    >
       <a-row style="display: flex; justify-content: flex-end; margin-top: -20px; margin-right: -20px">
         <a-checkbox :checked="helpChecked" @change="changeHelpCheckbox"> Don't show again </a-checkbox>
       </a-row>
@@ -29,21 +36,31 @@ import { formatTitle } from '@/views/utils'
 import VueMarkdown from 'vue-markdown'
 import Prism from 'prismjs'
 
+const appMap = {
+  ea989ffd08517f6c4dc1edf931ac946f: 'app_dna-seq',
+  fd63809bc013bec3664b072d3465ba75: 'app_rna-seq'
+}
+
 export default {
   name: 'ProjectManagement',
   components: {
     PageView,
     ProjectList,
-    VueMarkdown,
+    VueMarkdown
   },
   props: {
     refresh: {
       default: true,
       type: Boolean,
       required: false
+    },
+    appId: {
+      type: String,
+      required: false,
+      default: null
     }
   },
-  data () {
+  data() {
     return {
       helpMsg: '',
       helpChecked: false,
@@ -51,9 +68,11 @@ export default {
     }
   },
   computed: {
-    refreshToken () {
+    refreshToken() {
       if (this.refresh) {
-        return Math.random().toString(36).slice(-8)
+        return Math.random()
+          .toString(36)
+          .slice(-8)
       } else {
         return 'static'
       }
@@ -65,17 +84,24 @@ export default {
         Prism.highlightAll()
       })
     },
-    getTitle () {
+    getTitle() {
       return formatTitle(this, this.$route.meta.title)
     },
-    onCreateProject () {
+    onCreateProject() {
       this.$router.push({
-        name: 'create-project'
+        name: 'create-project',
+        query: {
+          appId: this.appId
+        }
       })
     },
     fetchHelp() {
+      let path = '/markdown/project-management.md'
+      if (this.appId) {
+        path = `/markdown/${appMap[this.appId]}.md`
+      }
       axios
-        .get('/markdown/project-management.md')
+        .get(path)
         .then(response => {
           console.log('Fetch Help: ', response)
           this.helpMsg = response.data
@@ -98,7 +124,7 @@ export default {
     },
     closeHelp() {
       this.helpVisible = false
-    },
+    }
   },
   created() {
     const notShownHelp = JSON.parse(localStorage.getItem('datains__data__notShownAssessmentHelp'))
