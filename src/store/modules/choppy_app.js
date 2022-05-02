@@ -108,6 +108,7 @@ const app = {
       return new Promise((resolve, reject) => {
         getManifest()
           .then(response => {
+            console.log('GetToolList: ', response)
             resolve(formatManifest(response.data))
           })
           .catch(error => {

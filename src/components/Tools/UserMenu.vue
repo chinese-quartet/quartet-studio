@@ -25,7 +25,7 @@
       <a-dropdown>
         <span class="action"><a-icon type="message" /></span>
         <a-menu slot="overlay">
-          <a-menu-item>
+          <a-menu-item v-if="false">
             <a :href="feedbackEntrypoint.zh_CN" target="_blank">
               <span class="action"> 🇨🇳 讨论区 </span>
             </a>
@@ -49,26 +49,26 @@
         </a>
       </a-tooltip>
       <notice-icon class="action" style="display: none" />
-      <lang-select />
+      <lang-select v-if="false" />
       <a-dropdown v-if="isAuthenticated">
         <span class="action ant-dropdown-link user-dropdown-menu">
           <a-avatar class="avatar" size="small" :src="avatar" />
           <span style="vertical-align: middle">{{ lastname }}</span>
         </span>
         <a-menu slot="overlay" class="user-dropdown-menu-wrapper">
-          <a-menu-item key="0">
+          <a-menu-item key="0" v-if="false">
             <router-link :to="{ name: 'center' }" disabled>
               <a-icon type="user" />
               <span>{{ $t('components.tools.userMenu.userCenter') }}</span>
             </router-link>
           </a-menu-item>
-          <a-menu-item key="1">
+          <a-menu-item key="1" v-if="false">
             <router-link :to="{ name: 'settings' }" disabled>
               <a-icon type="setting" />
               <span>{{ $t('components.tools.userMenu.settings') }}</span>
             </router-link>
           </a-menu-item>
-          <a-menu-divider />
+          <a-menu-divider v-if="false" />
           <a-menu-item key="2">
             <a href="javascript:;" @click="handleLogout">
               <a-icon type="logout" />
