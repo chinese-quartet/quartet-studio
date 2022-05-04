@@ -94,7 +94,8 @@
               {{ $t('datasource.uploadTaskList.viewFiles') }}
             </a-button> -->
             <a-popconfirm
-              title="Do you confirm to create a new token?"
+              title="Do you confirm to generate a new token?"
+              placement="topRight"
               ok-text="Yes"
               cancel-text="No"
               @confirm="onRefreshToken(item)"
@@ -104,11 +105,12 @@
                 {{ $t('datasource.uploadTaskList.refreshToken') }}
               </a-button>
             </a-popconfirm>
-            <a-popconfirm ok-text="Yes" cancel-text="No" @confirm="onCheckTask(item)" @cancel="() => {}">
+            <a-popconfirm ok-text="Yes" cancel-text="No" placement="topRight" @confirm="onCheckTask(item)" @cancel="() => {}">
               <span slot="title">
-                Do you confirm to mark the task as completed?<br /><br />
-                NOTE: The Quartet team will get an email notification, <br />
-                and then make your data online after reviewing your data.
+                Do you confirm to mark the dataset as completed?<br /><br />
+                NOTE: The Quartet Data Portal will automatically check your metadata <br/>
+                and data files. If everything is okay, you and Quartet Team will get an <br />
+                email notification, and then you can view or analyze your data.
               </span>
               <a-button :disabled="item.percentage === 100" type="primary" icon="check">
                 {{ $t('datasource.uploadTaskList.check') }}

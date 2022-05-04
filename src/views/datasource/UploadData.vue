@@ -225,7 +225,7 @@ export default {
         onValuesChange: this.updatePath
       }),
       formVisible: false,
-      notices: 'Additional description and informations about copywriting.',
+      notices: 'The uploading path will automatically generate after you submit the form. If you want to access the same path as before, please enter the same information.',
       uploadingPath: 'Uploading path...',
       name: '',
       dataType: '',

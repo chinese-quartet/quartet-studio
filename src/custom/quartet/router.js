@@ -271,7 +271,7 @@ export const asyncRouterMap = [{
           },
           {
             path: '/seq-flow/protqc-report-management',
-            name: 'quartetprotqc-report',
+            name: 'quartet-protqc-report',
             hidden: true,
             component: () => import('@/views/report/ReportList'),
             meta: {
@@ -314,7 +314,7 @@ export const asyncRouterMap = [{
             hidden: false,
             component: () => import('@/views/datasource/UploadData'),
             meta: {
-              title: 'Uploaded Raw Data',
+              title: 'Upload Your Data',
               icon: 'upload',
               keepAlive: false
             }
