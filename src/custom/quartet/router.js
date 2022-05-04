@@ -314,7 +314,7 @@ export const asyncRouterMap = [{
             hidden: false,
             component: () => import('@/views/datasource/UploadData'),
             meta: {
-              title: 'Upload Your Data',
+              title: 'All Your Data',
               icon: 'upload',
               keepAlive: false
             }

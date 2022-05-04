@@ -74,7 +74,7 @@ export default {
           home: '',
           hidden: 'false',
           author: 'Jingcheng Yang',
-          description: 'Upload your data to the data repo',
+          description: 'Upload your data to the data repo, and then you can use it in the pipeline.',
           icons: null,
           category: 'LocalTool',
           source: ''
