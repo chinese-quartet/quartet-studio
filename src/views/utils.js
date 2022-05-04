@@ -1,6 +1,6 @@
 import v from 'voca'
 
-export const formatTitle = function(self, title) {
+export const formatTitle = function (self, title) {
   const key = v.camelCase(title)
   const formatedTitle = self.$t('router.meta.' + key)
   if (formatedTitle === 'router.meta.' + key) {
@@ -10,7 +10,7 @@ export const formatTitle = function(self, title) {
   }
 }
 
-export const downloadAsJSON = function(data, elementId) {
+export const downloadAsJSON = function (data, elementId) {
   var dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data))
   var dlAnchorElem = document.getElementById(elementId)
   dlAnchorElem.setAttribute('href', dataStr)
@@ -18,19 +18,19 @@ export const downloadAsJSON = function(data, elementId) {
   dlAnchorElem.click()
 }
 
-export const removeFields = function(fields, exclude) {
+export const removeFields = function (fields, exclude) {
   return fields.filter(x => !exclude.includes(x));
 }
 
-export const json2csv = function(data, exclude) {
+export const json2csv = function (data, exclude) {
   var fields = removeFields(Object.keys(data[0]), exclude)
-  var replacer = function(key, value) {
+  var replacer = function (key, value) {
     return value === null ? '' : value
   }
 
-  var csv = data.map(function(row) {
+  var csv = data.map(function (row) {
     return fields
-      .map(function(fieldName) {
+      .map(function (fieldName) {
         return JSON.stringify(row[fieldName], replacer)
       })
       .join(',')
@@ -41,7 +41,7 @@ export const json2csv = function(data, exclude) {
   return csv
 }
 
-export const downloadAsCSV = function(data, elementId, exclude) {
+export const downloadAsCSV = function (data, elementId, exclude) {
   const csv = json2csv(data, exclude)
   var dataStr = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv)
   var dlAnchorElem = document.getElementById(elementId)
@@ -50,7 +50,7 @@ export const downloadAsCSV = function(data, elementId, exclude) {
   dlAnchorElem.click()
 }
 
-export const downloadFile = function(content, filename) {
+export const downloadFile = function (content, filename) {
   const eleLink = document.createElement('a')
   eleLink.download = filename
   eleLink.style.display = 'none'
@@ -62,4 +62,11 @@ export const downloadFile = function(content, filename) {
   eleLink.click()
   // 然后移除
   document.body.removeChild(eleLink)
+}
+
+export const logoMap = {
+  proteomics: require('@/assets/images/proteomics.png'),
+  transcriptomics: require('@/assets/images/transcriptomics.png'),
+  metabolomics: require('@/assets/images/metabolomics.png'),
+  genomics: require('@/assets/images/genomics.png')
 }

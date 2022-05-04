@@ -51,7 +51,7 @@
                     </a-descriptions-item>
                   </a-descriptions>
                 </template>
-                <img src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png" class="logo" />
+                <img :src="logoMap[item.dataType]" class="logo" />
               </a-popover>
               <span slot="title">{{ item.name }}</span>
             </a-list-item-meta>
@@ -135,6 +135,9 @@
       </a-button>
       <a id="tokenTag" v-show="false"></a>
     </a-modal>
+    <a-modal width="50%" v-model="logVisible" title="Log Container" :footer="null">
+      <a-row v-html="log" class="modal-log-container"></a-row>
+    </a-modal>
     <div class="box" v-if="fileManagerActive" @click.stop="hideFileBrowser">
       <a-row class="file-manager-container">
         <file-browser
@@ -154,7 +157,7 @@
 import moment from 'moment'
 import { mapGetters } from 'vuex'
 import { initTServiceHost } from '@/config/defaultSettings'
-import { downloadAsJSON } from '@/views/utils'
+import { downloadAsJSON, logoMap } from '@/views/utils'
 import VueJsonPretty from 'vue-json-pretty'
 
 const tserviceHost = initTServiceHost()
@@ -176,6 +179,7 @@ export default {
   },
   data() {
     return {
+      logoMap,
       data: [],
       pagination: {
         pageSizeOptions: ['30', '50', '100'],
@@ -212,7 +216,9 @@ export default {
         expiration: moment('2021-09-14T02:18:33Z').toLocaleString()
       },
       defaultPath: '',
-      fileManagerActive: false
+      fileManagerActive: false,
+      logVisible: false,
+      log: 'Not Found'
     }
   },
   computed: {
@@ -305,8 +311,15 @@ export default {
           status: 'Finished'
         })
         .then(response => {
-          this.$message.success(`Dataset ${record.name} was finished!`)
-          this.onSearchTask(this.pagination.current, this.pagination.pageSize)
+          if (response.status === 'Success') {
+            this.$message.success(`Dataset ${record.name}: check finished!`, 5)
+            this.onSearchTask(this.pagination.current, this.pagination.pageSize)
+          } else {
+            this.$message.error(`Dataset ${record.name}: check failed!`, 5)
+          }
+
+          this.log = response.msg ? response.msg.replaceAll('\n', '<br/>') : 'Not Found'
+          this.logVisible = true
         })
         .catch(error => {
           this.$message.warn('Something wrong, please retry later.')
@@ -555,5 +568,11 @@ export default {
       }
     }
   }
+}
+
+.modal-log-container {
+  max-width: 100%;
+  max-height: 300px;
+  overflow: scroll;
 }
 </style>

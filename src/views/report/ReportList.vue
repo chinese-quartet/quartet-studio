@@ -64,7 +64,7 @@
         />
       </span>
     </a-table>
-    <a-modal v-model="logVisible" title="Log Container" :footer="null">
+    <a-modal width="50%" v-model="logVisible" title="Log Container" :footer="null">
       <a-row v-html="log" class="modal-log-container"></a-row>
     </a-modal>
     <a-drawer

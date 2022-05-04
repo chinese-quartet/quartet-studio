@@ -1,16 +1,43 @@
 <template>
-  <page-view :title="getTitle()" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
+  <page-view
+    class="upload-container"
+    :title="getTitle()"
+    logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png"
+  >
     <template slot="action">
-      <a-button icon="question-circle" style="margin-right: 10px" @click="showHelp">Help</a-button>
-      <a-button icon="eye" style="margin-right: 10px" @click="viewData">View Your Data</a-button>
+      <a-button icon="question-circle" @click="showHelp">Help</a-button>
+      <a-button icon="eye" @click="viewData">View Your Data</a-button>
+      <a-dropdown>
+        <template #overlay>
+          <a-menu @click="downloadTemplate" class="upload-container-dropdown">
+            <a-menu-item key="genomics">
+              <img :src="logoMap.genomics" />
+              Genomics
+            </a-menu-item>
+            <a-menu-item key="transcriptomics" disabled>
+              <img :src="logoMap.transcriptomics" />
+              Transcriptomics (Comming Soon)
+            </a-menu-item>
+            <a-menu-item key="proteomics" disabled>
+              <img :src="logoMap.proteomics" />
+              Proteomics (Comming Soon)
+            </a-menu-item>
+            <a-menu-item key="metabolomics" disabled>
+              <img :src="logoMap.metabolomics" />
+              Metabolomics (Comming Soon)
+            </a-menu-item>
+          </a-menu>
+        </template>
+        <a-button>
+          <a-icon type="download"></a-icon>
+          Metadata Template
+          <a-icon type="down"></a-icon>
+        </a-button>
+      </a-dropdown>
       <a-button type="primary" @click="onCreateDataSet">Register & Upload Your Data</a-button>
     </template>
 
-    <upload-task-list
-      ref="uploadTaskList"
-      :id="refreshToken"
-      :key="forceUpdateKey"
-    ></upload-task-list>
+    <upload-task-list ref="uploadTaskList" :id="refreshToken" :key="forceUpdateKey"></upload-task-list>
     <a-modal
       title="Help for Uploading Omics Data"
       width="60%"
@@ -154,7 +181,7 @@ import v from 'voca'
 import axios from 'axios'
 import { PageView } from '@/layouts'
 import UploadTaskList from '@/views/datasource/UploadTaskList'
-import { formatTitle } from '@/views/utils'
+import { formatTitle, downloadFile, logoMap } from '@/views/utils'
 import VueMarkdown from 'vue-markdown'
 import Prism from 'prismjs'
 import { mapGetters } from 'vuex'
@@ -164,6 +191,13 @@ import { initTServiceHost } from '@/config/defaultSettings'
 const tserviceHost = initTServiceHost()
 const uploadingTaskEndpoints = {
   taskApi: `${tserviceHost}/api/tool/omics-dataset`
+}
+
+const templates = {
+  proteomics: '/metadata-templates/proteomics-metadata-template.xlsx',
+  transcriptomics: '/metadata-templates/transcriptomics-metadata-template.xlsx',
+  metabolomics: '/metadata-templates/metabolomics-metadata-template.xlsx',
+  genomics: '/metadata-templates/genomics-metadata-template.xlsx'
 }
 
 export default {
@@ -182,6 +216,8 @@ export default {
   },
   data() {
     return {
+      logoMap,
+      templates,
       helpMsg: '',
       helpChecked: false,
       helpVisible: true,
@@ -213,6 +249,19 @@ export default {
     }
   },
   methods: {
+    downloadTemplate(e) {
+      this.$message.info('Downloading template...')
+      let key = this.templates[e.key]
+      let filename = key.split('/').pop()
+      fetch(key)
+        .then(res => res.blob())
+        .then(blob => {
+          downloadFile(blob, filename)
+        })
+        .catch(err => {
+          this.$message.error('Failed to download template.')
+        })
+    },
     viewData() {
       this.$refs.uploadTaskList && this.$refs.uploadTaskList.viewDataFiles()
     },
@@ -334,6 +383,22 @@ export default {
     background: '#fff';
     text-align: 'right';
     z-index: 1;
+  }
+}
+
+.upload-container {
+  .action {
+    .ant-btn {
+      margin: 0px 5px 5px 0px;
+    }
+  }
+}
+
+.upload-container-dropdown {
+  img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
   }
 }
 </style>

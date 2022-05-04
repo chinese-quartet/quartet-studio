@@ -342,6 +342,8 @@ export default {
     }
 
     .button-group {
+      // TODO: Why button-group tag covers the youtube button when remove display attribute?
+      display: inline-block;
       margin-left: 20px;
     }
 
