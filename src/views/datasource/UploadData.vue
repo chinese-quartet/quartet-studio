@@ -14,9 +14,9 @@
               <img :src="logoMap.genomics" />
               Genomics
             </a-menu-item>
-            <a-menu-item key="transcriptomics" disabled>
+            <a-menu-item key="transcriptomics">
               <img :src="logoMap.transcriptomics" />
-              Transcriptomics (Comming Soon)
+              Transcriptomics
             </a-menu-item>
             <a-menu-item key="proteomics" disabled>
               <img :src="logoMap.proteomics" />
