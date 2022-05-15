@@ -11,7 +11,7 @@
       :loading="reportLoading"
       :data-source="data"
       :pagination="pagination"
-      :scroll="{ y: 430, x: 1000 }"
+      :scroll="{ y: 'calc(100vh - 290px)', x: 1000 }"
       rowKey="id"
     >
       <span slot="logo" slot-scope="text, record">
@@ -64,8 +64,8 @@
         />
       </span>
     </a-table>
-    <a-modal width="50%" v-model="logVisible" title="Log Container" :footer="null">
-      <a-row v-html="log" class="modal-log-container"></a-row>
+    <a-modal width="50%" class="log-container" v-model="logVisible" title="Log Container" :footer="null">
+      <log-viewer :log="log" :loading="isLogLoading" />
     </a-modal>
     <a-drawer
       class="report-uploader"
@@ -90,6 +90,7 @@ import { formatTitle } from '@/views/utils'
 import { GetTaskList } from './util'
 import { makeDownloadUrl } from '@/api/manage'
 import axios from 'axios'
+import LogViewer from '@femessage/log-viewer'
 
 const columns = [
   {
@@ -98,7 +99,7 @@ const columns = [
     key: 'name',
     align: 'center',
     width: 300,
-    visible: true
+    visible: true,
   },
   {
     title: 'Description',
@@ -106,7 +107,7 @@ const columns = [
     key: 'description',
     align: 'center',
     width: 150,
-    visible: false
+    visible: false,
   },
   {
     title: 'Category',
@@ -115,7 +116,7 @@ const columns = [
     align: 'center',
     width: 95,
     scopedSlots: { customRender: 'logo' },
-    visible: true
+    visible: true,
   },
   {
     title: 'Report Tool',
@@ -124,7 +125,7 @@ const columns = [
     align: 'center',
     width: 180,
     scopedSlots: { customRender: 'text' },
-    visible: true
+    visible: true,
   },
   {
     title: 'Version',
@@ -132,7 +133,7 @@ const columns = [
     key: 'version',
     align: 'center',
     width: 90,
-    visible: true
+    visible: true,
   },
   {
     title: 'Created At',
@@ -140,7 +141,7 @@ const columns = [
     key: 'startedAt',
     align: 'center',
     width: 160,
-    visible: true
+    visible: true,
   },
   {
     title: 'Finished At',
@@ -148,7 +149,7 @@ const columns = [
     key: 'finishedAt',
     align: 'center',
     width: 160,
-    visible: true
+    visible: true,
   },
   {
     title: 'Status',
@@ -157,7 +158,7 @@ const columns = [
     align: 'center',
     width: 80,
     scopedSlots: { customRender: 'status' },
-    visible: true
+    visible: true,
   },
   {
     title: 'Action',
@@ -166,21 +167,22 @@ const columns = [
     align: 'center',
     width: 260,
     fixed: 'right',
-    visible: true
-  }
+    visible: true,
+  },
 ]
 
 export default {
   components: {
     PageView,
-    Submitter
+    Submitter,
+    LogViewer,
   },
   props: {
     pluginName: {
       type: String,
       default: null,
-      required: false
-    }
+      required: false,
+    },
   },
   data() {
     return {
@@ -206,21 +208,21 @@ export default {
           this.pagination.current = current
           this.pagination.pageSize = pageSize
           this.getReports(this.pagination.current, this.pagination.pageSize)
-        }
-      }
+        },
+      },
     }
   },
   computed: {
-    filteredColumns: function() {
-      return filter(this.columns, item => {
+    filteredColumns: function () {
+      return filter(this.columns, (item) => {
         return item.visible
       })
-    }
+    },
   },
   watch: {
-    pluginName: function() {
+    pluginName: function () {
       this.getReports(this.pagination.current, this.pagination.pageSize)
-    }
+    },
   },
   methods: {
     getTitle() {
@@ -230,11 +232,11 @@ export default {
       const key = record.response.report
       const filename = record.name + '.html'
       makeDownloadUrl('minio', 'tservice', {
-        key: key
+        key: key,
       })
-        .then(response => {
+        .then((response) => {
           this.$message.info('Please hold on, downloading...')
-          axios.get(response.download_url).then(response => {
+          axios.get(response.download_url).then((response) => {
             var element = document.createElement('a')
             element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(response.data))
             element.setAttribute('target', '_blank')
@@ -248,7 +250,7 @@ export default {
             document.body.removeChild(element)
           })
         })
-        .catch(error => {
+        .catch((error) => {
           console.log('Make Download Url Error: ', error)
           this.$message.error('Not found the report.')
         })
@@ -257,27 +259,27 @@ export default {
       const key = record.response.log
 
       makeDownloadUrl('minio', 'tservice', {
-        key: key
+        key: key,
       })
-        .then(response => {
+        .then((response) => {
           console.log('Make Download Url: ', key, response)
 
           axios
             .get(response.download_url)
-            .then(response => {
+            .then((response) => {
               console.log('Report Log: ', response)
               if (response.data.msg && response.data.msg.length > 0) {
-                this.log = response.data.msg.replaceAll('\n', '<br/>')
+                this.log = response.data.msg
               } else {
                 this.log = 'No logs have been generated yet, please check back later.'
               }
               this.logVisible = true
             })
-            .catch(error => {
+            .catch((error) => {
               this.log = 'Not Found'
             })
         })
-        .catch(error => {
+        .catch((error) => {
           console.log('Make Download Url Error: ', error)
           this.log = 'Not Found'
         })
@@ -285,7 +287,7 @@ export default {
     loadResult(record) {
       this.$router.push({
         name: 'report-details',
-        params: { reportId: record.id }
+        params: { reportId: record.id },
       })
     },
     onCreateModels(mode) {
@@ -300,7 +302,7 @@ export default {
       let params = {
         page: page,
         page_size: pageSize,
-        plugin_type: 'ReportPlugin'
+        plugin_type: 'ReportPlugin',
       }
 
       if (this.pluginName) {
@@ -308,7 +310,7 @@ export default {
       }
 
       GetTaskList(params)
-        .then(response => {
+        .then((response) => {
           this.pagination.total = response.total
           this.pagination.current = response.page
           this.pagination.pageSize = response.pageSize
@@ -316,13 +318,13 @@ export default {
           // this.$message.success('Refresh successfully!', 3)
           this.reportLoading = false
         })
-        .catch(error => {
+        .catch((error) => {
           this.reportLoading = false
           console.log('Get report Collection: ', error)
           this.$message.error('Something wrong, please retry later!')
           this.data = []
         })
-    }
+    },
   },
   mounted() {
     this.timer = setInterval(() => {
@@ -346,7 +348,7 @@ export default {
       clearInterval(this.timer)
       this.timer = null
     }
-  }
+  },
 }
 </script>
 
@@ -430,9 +432,11 @@ export default {
   }
 }
 
-.modal-log-container {
-  max-width: 100%;
-  max-height: 300px;
-  overflow: scroll;
+.log-container {
+  .ant-modal-content {
+    .ant-modal-body {
+      padding: 0px;
+    }
+  }
 }
 </style>

@@ -10,7 +10,7 @@
       </detail-list-item>
     </detail-list>
     <a-row slot="extra" class="status-list">
-      <a-col :xs="8" :sm="8">
+      <a-col :xs="8" :sm="8" v-if="false">
         <div class="text">Related Project</div>
         <div class="heading">
           <a-button
@@ -22,7 +22,7 @@
           />
         </div>
       </a-col>
-      <a-col :xs="8" :sm="8">
+      <a-col :xs="8" :sm="8" v-if="false">
         <div class="text">Download</div>
         <div class="heading">
           <a-button
@@ -33,12 +33,13 @@
           />
         </div>
       </a-col>
-      <a-col :xs="8" :sm="8">
+      <a-col :xs="8" :sm="8" v-if="false">
         <div class="text">Show Log</div>
         <div class="heading">
           <a-popover placement="leftTop" trigger="click">
             <template slot="content">
-              <a-row v-html="log" class="log-container"></a-row>
+              <log-viewer :log="log" :loading="isLogLoading" />
+              <!-- <a-row v-html="log" class="log-container"></a-row> -->
             </template>
             <a-button type="primary" size="small" @click="loadLog(report)" icon="eye" />
           </a-popover>
@@ -47,13 +48,7 @@
     </a-row>
 
     <a-row class="header-btn-group">
-      <a-popover v-model="logVisible" placement="leftTop" trigger="click">
-        <template slot="content">
-          <a-icon type="close-circle" style="float: right" theme="filled" slot="content" @click="hideLog" />
-          <a-row v-html="log" class="log-container"></a-row>
-        </template>
-        <a-button type="primary" @click="loadLog(report)" icon="eye">Show Log</a-button>
-      </a-popover>
+      <a-button type="primary" @click="loadLog(report)" icon="eye">Show Log</a-button>
       <a-button
         type="primary"
         icon="download"
@@ -64,6 +59,16 @@
       </a-button>
     </a-row>
     <embeded-frame :src="reportUrl" class="embeded-frame"></embeded-frame>
+    <a-modal
+      width="50%"
+      :visible="logVisible"
+      class="log-container"
+      title="Log Container"
+      :footer="null"
+      @cancel="hideLog"
+    >
+      <log-viewer :log="log" :loading="isLogLoading" />
+    </a-modal>
   </page-view>
 </template>
 
@@ -74,6 +79,7 @@ import DetailList from '@/components/Tools/DetailList'
 import { GetTask } from './util'
 import { makeDownloadUrl } from '@/api/manage'
 import axios from 'axios'
+import LogViewer from '@femessage/log-viewer'
 
 const DetailListItem = DetailList.Item
 
@@ -83,26 +89,28 @@ export default {
     PageView,
     DetailList,
     DetailListItem,
-    EmbededFrame
+    EmbededFrame,
+    LogViewer,
   },
   props: {
     readonly: {
       type: [Boolean, String],
-      default: true
-    }
+      default: true,
+    },
   },
   data() {
     return {
       report: {},
       log: '',
       reportUrl: '',
-      logVisible: false
+      logVisible: false,
+      isLogLoading: false,
     }
   },
   computed: {
     reportId() {
       return this.$route.params.reportId
-    }
+    },
   },
   methods: {
     hideLog() {
@@ -110,7 +118,7 @@ export default {
     },
     downloadFile(filename, link) {
       this.$message.info('Please hold on, downloading...')
-      axios.get(link).then(response => {
+      axios.get(link).then((response) => {
         var element = document.createElement('a')
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(response.data))
         element.setAttribute('target', '_blank')
@@ -125,32 +133,36 @@ export default {
       })
     },
     loadLog(report) {
+      this.isLogLoading = true
       const key = report.response.log
 
       makeDownloadUrl('minio', 'tservice', {
-        key: key
+        key: key,
       })
-        .then(response => {
+        .then((response) => {
           console.log('Make Download Url: ', key, response)
 
           axios
             .get(response.download_url)
-            .then(response => {
-              console.log('Report Log: ', response)
+            .then((response) => {
+              // console.log('Report Log: ', response)
               if (response.data.msg && response.data.msg.length > 0) {
-                this.log = response.data.msg.replaceAll('\n', '<br/>')
+                this.log = response.data.msg
               } else {
                 this.log = 'No logs have been generated yet, please check back later.'
               }
               this.logVisible = true
+              this.isLogLoading = false
             })
-            .catch(error => {
+            .catch((error) => {
               this.log = 'Not Found'
+              this.isLogLoading = false
             })
         })
-        .catch(error => {
+        .catch((error) => {
           console.log('Make Download Url Error: ', error)
           this.log = 'Not Found'
+          this.isLogLoading = false
         })
     },
     backToProjectList(projectId) {
@@ -160,7 +172,7 @@ export default {
       return this.$route.meta.title
     },
     searchReport(reportId) {
-      GetTask(reportId).then(data => {
+      GetTask(reportId).then((data) => {
         this.report = data
         console.log('Report Record: ', data)
 
@@ -168,28 +180,28 @@ export default {
           const key = this.report.response.report
 
           makeDownloadUrl('minio', 'tservice', {
-            key: key
+            key: key,
           })
-            .then(response => {
+            .then((response) => {
               console.log('Make Download Url: ', key, response)
 
               this.reportUrl = response.download_url
             })
-            .catch(error => {
+            .catch((error) => {
               console.log('Make Download Url Error: ', error)
               this.$message.warn('Not found the report.')
               this.$router.go(-1)
             })
         }
       })
-    }
+    },
   },
   mounted() {},
   created() {
-    this.$message.info("The report file size is large, please wait a moment.", 5)
+    this.$message.info('The report file size is large, please wait a moment.', 5)
     console.log('Request Report: ', this.reportId)
     this.searchReport(this.reportId)
-  }
+  },
 }
 </script>
 
@@ -240,9 +252,11 @@ export default {
 
 <style lang="less">
 .log-container {
-  max-width: 300px;
-  max-height: 200px;
-  overflow: scroll;
+  .ant-modal-content {
+    .ant-modal-body {
+      padding: 0px;
+    }
+  }
 }
 
 .log-container::-webkit-scrollbar {

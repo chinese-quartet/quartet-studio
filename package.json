@@ -17,6 +17,7 @@
     "@antv/data-set": "^0.10.2",
     "@antv/g2plot": "^1.1.23",
     "@codekraft-studio/vue-animated": "^0.1.5",
+    "@femessage/log-viewer": "^1.5.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@handsontable/vue": "^4.1.1",
     "@sentry/tracing": "^6.15.0",
@@ -91,7 +92,8 @@
     "vue-shortkey": "^3.1.7",
     "vue-svg-component-runtime": "^1.0.1",
     "vue-youtube": "^1.4.0",
-    "vuex": "^3.1.1"
+    "vuex": "^3.1.1",
+    "yarn": "^1.22.18"
   },
   "devDependencies": {
     "@ant-design/colors": "^3.1.0",
