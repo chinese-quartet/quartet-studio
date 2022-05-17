@@ -1,19 +1,17 @@
 <template>
   <a-row class="frame-container">
-    <a-button
-      class="button"
-      shape="circle"
-      v-if="toPath"
-      icon="left"
-      size="large"
-      @click="onClickBack"/>
+    <a-button class="button" shape="circle" v-if="toPath" icon="left" size="large" @click="onClickBack" />
+    <a-spin class="vue-iframe" :spinning="spinning" v-show="spinning" size="large" />
     <vue-friendly-iframe
+      :id="id"
       :src="src"
       class="vue-iframe"
+      v-show="!spinning"
       @document-load="onLoad"
       frameborder="0"
       allowfullscreen="true"
-      scrolling="auto">
+      scrolling="auto"
+    >
     </vue-friendly-iframe>
   </a-row>
 </template>
@@ -25,43 +23,65 @@ import VueFriendlyIframe from 'vue-friendly-iframe'
 export default {
   name: 'EmbededFrame',
   components: {
-    VueFriendlyIframe
+    VueFriendlyIframe,
   },
-  data () {
+  data() {
     return {
-
+      id: 'vue-iframe',
+      spinning: false
     }
   },
   props: {
     src: {
       type: String,
-      required: true
+      required: true,
     },
     toPath: {
       type: String,
       required: false,
-      default: null
-    }
+      default: null,
+    },
   },
   methods: {
-    onLoad () {
+    onLoad() {
       NProgress.done()
     },
-    onClickBack () {
+    reset() {
+      this.spinning = true
+    },
+    onClickBack() {
       if (this.toPath) {
         this.$router.push({ name: this.toPath })
       }
 
       this.$emit('return')
-    }
+    },
   },
-  created () {
+  watch: {
+    $route: 'reset'
+  },
+  mounted() {
+    const self = this
+    this.$nextTick(() => {
+      const iframe = document.getElementById(self.id)
+      if (iframe.attachEvent) {
+        iframe.attachEvent('onload', () => {
+          self.spinning = false
+        })
+      } else {
+        iframe.onload = () => {
+          self.spinning = false
+        }
+      }
+    })
+  },
+  created() {
     NProgress.start()
     // this.$notification['info']({
     //   message: 'Notice',
     //   description: 'Please be patient, loading...'
     // })
-  }
+  },
 }
 </script>
 
