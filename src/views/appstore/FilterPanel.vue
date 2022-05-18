@@ -1,20 +1,20 @@
 <template>
   <!--eslint-disable-->
   <a-row class="filter-panel">
-    <a-tabs class="content" defaultActiveKey="dnaseq">
-      <a-tab-pane tab="DNA-Seq" key="dnaseq">
-        <app-list :appList="dnaSeqApp"></app-list>
+    <a-tabs class="content" :activeKey="activeKey" @change="redirectTo">
+      <a-tab-pane tab="Genomics" key="dnaseq">
+        <app-list :appList="dnaSeqApp" appCategory="dnaseq"></app-list>
       </a-tab-pane>
-      <a-tab-pane tab="RNA-Seq" key="rnaseq">
-        <app-list :appList="rnaSeqApp"></app-list>
+      <a-tab-pane tab="Transcriptomics" key="rnaseq">
+        <app-list :appList="rnaSeqApp" appCategory="rnaseq"></app-list>
       </a-tab-pane>
       <a-tab-pane tab="Proteomics" key="proteomics">
-        <app-list :appList="proteomicsApp"></app-list>
+        <app-list :appList="proteomicsApp" appCategory="proteomics"></app-list>
       </a-tab-pane>
       <a-tab-pane tab="Metabolomics" key="metabolomics">
-        <app-list :appList="metabolomicsApp"></app-list>
+        <app-list :appList="metabolomicsApp" appCategory="metabolomics"></app-list>
       </a-tab-pane>
-      <a-button icon="question-circle" slot="tabBarExtraContent" @click="fetchHelp" style="margin-right: 5px">
+      <a-button icon="question-circle" slot="tabBarExtraContent" @click="openHelpLink" style="margin-right: 5px">
         Help
       </a-button>
     </a-tabs>
@@ -46,6 +46,9 @@ import filter from 'lodash.filter'
 import axios from 'axios'
 import VueMarkdown from 'vue-markdown'
 import Prism from 'prismjs'
+import { projectSettings } from '@/config/defaultSettings'
+
+const helps = projectSettings.helps
 
 const apps = {
   dnaseq: ['upload-data', 'quartet_dna_quality_control_wgs_big_pipeline', 'quartet-dseqc-report'],
@@ -60,6 +63,13 @@ export default {
     FilterList,
     AppList,
     VueMarkdown
+  },
+  props: {
+    appCategory: {
+      type: String,
+      required: false,
+      default: null
+    }
   },
   data() {
     return {
@@ -82,11 +92,18 @@ export default {
       ],
       helpChecked: false,
       helpVisible: false,
-      helpMsg: ''
+      helpMsg: '',
+      defaultKey: 'dnaseq'
     }
   },
-  props: {},
   computed: {
+    activeKey() {
+      if (this.appCategory) {
+        return this.appCategory
+      } else {
+        return this.defaultKey
+      }
+    },
     dnaSeqApp() {
       return filter(this.appList, app => apps.dnaseq.includes(app.shortName))
     },
@@ -108,6 +125,16 @@ export default {
       getAppManifest: 'GetAppManifest',
       getToolManifest: 'GetToolManifest'
     }),
+    redirectTo(key) {
+      if (key) {
+        this.$router.push({
+          name: 'appstore',
+          query: {
+            appCategory: key
+          }
+        })
+      }
+    },
     changeHelpCheckbox(e) {
       console.log('Change Help Checkbox: ', e)
       this.helpChecked = e.target.checked
@@ -115,6 +142,14 @@ export default {
     },
     closeHelp() {
       this.helpVisible = false
+    },
+    openHelpLink() {
+      let helpLink = helps['data_pipelines']
+      if (helpLink) {
+        window.open(helpLink, '_blank')
+      } else {
+        this.fetchHelp()
+      }
     },
     fetchHelp() {
       axios

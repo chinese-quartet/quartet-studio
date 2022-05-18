@@ -175,7 +175,10 @@ export const asyncRouterMap = [{
               title: 'QC Apps',
               icon: 'appstore',
               keepAlive: false
-            }
+            },
+            props: route => ({
+              appCategory: route.query.appCategory
+            }),
           },
           {
             path: '/seq-flow/quality-assessment-management',

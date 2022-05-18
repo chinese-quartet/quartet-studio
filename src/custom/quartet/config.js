@@ -162,7 +162,32 @@ export const projectSettings = {
       icon: 'github',
       link: 'https://github.com/chinese-quartet'
     }
-  ]
+  ],
+  helps: {
+    'home': 'https://docs.chinese-quartet.org/',
+    'upload-data': {
+      intro: 'https://docs.chinese-quartet.org/getting_started/submit_data/',
+      dnaseq: 'https://docs.chinese-quartet.org/data_pipelines/genomics/intro/#upload-your-data-and-metadata',
+      rnaseq: 'https://docs.chinese-quartet.org/data_pipelines/transcriptomics/intro/#upload-your-data-and-metadata',
+      proteomics: 'https://docs.chinese-quartet.org/data_pipelines/proteomics/intro/#upload-your-data-and-metadata',
+      metabolomics: 'https://docs.chinese-quartet.org/data_pipelines/metabolomics/intro/#upload-your-data-and-metadata',
+    },
+    'data_pipelines': 'https://docs.chinese-quartet.org/data_pipelines/intro/',
+    'quartet-dseqc-report': 'https://docs.chinese-quartet.org/data_pipelines/genomics/qc_report/',
+    quartet_dna_quality_control_wgs_big_pipeline:
+      'https://docs.chinese-quartet.org/data_pipelines/genomics/analysis_pipeline/',
+    'quartet-rnaseq-qc': 'https://docs.chinese-quartet.org/data_pipelines/transcriptomics/analysis_pipeline/',
+    'quartet-rseqc-report': 'https://docs.chinese-quartet.org/data_pipelines/transcriptomics/qc_report/',
+    'quartet-protqc-report': 'https://docs.chinese-quartet.org/data_pipelines/proteomics/qc_report/',
+    'quartet-metqc-report': 'https://docs.chinese-quartet.org/data_pipelines/metabolomics/qc_report/',
+  },
+  templates: {
+    proteomics: '/metadata-templates/proteomics-metadata-template.xlsx',
+    transcriptomics: 'https://docs.chinese-quartet.org/data_pipelines/transcriptomics/metadata_template/',
+    metabolomics: '/metadata-templates/metabolomics-metadata-template.xlsx',
+    genomics: '/metadata-templates/genomics-metadata-template.xlsx'
+    // genomics: 'https://docs.chinese-quartet.org/data_pipelines/genomics/metadata_template/',
+  }
 }
 
 export function initBaseURL () {
