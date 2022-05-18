@@ -210,6 +210,7 @@ export default {
           this.getReports(this.pagination.current, this.pagination.pageSize)
         },
       },
+      isLogLoading: false
     }
   },
   computed: {
@@ -256,6 +257,7 @@ export default {
         })
     },
     loadLog(record) {
+      this.isLogLoading = true
       const key = record.response.log
 
       makeDownloadUrl('minio', 'tservice', {
@@ -274,14 +276,17 @@ export default {
                 this.log = 'No logs have been generated yet, please check back later.'
               }
               this.logVisible = true
+              this.isLogLoading = false
             })
             .catch((error) => {
               this.log = 'Not Found'
+              this.isLogLoading = false
             })
         })
         .catch((error) => {
           console.log('Make Download Url Error: ', error)
           this.log = 'Not Found'
+          this.isLogLoading = false
         })
     },
     loadResult(record) {

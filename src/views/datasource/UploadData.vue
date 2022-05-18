@@ -185,34 +185,38 @@ import { formatTitle, downloadFile, logoMap } from '@/views/utils'
 import VueMarkdown from 'vue-markdown'
 import Prism from 'prismjs'
 import { mapGetters } from 'vuex'
-
 import { initTServiceHost } from '@/config/defaultSettings'
+import { projectSettings } from '@/config/defaultSettings'
+
+const templates = projectSettings.templates
+const helps = projectSettings.helps
 
 const tserviceHost = initTServiceHost()
 const uploadingTaskEndpoints = {
-  taskApi: `${tserviceHost}/api/tool/omics-dataset`
+  taskApi: `${tserviceHost}/api/tool/omics-dataset`,
 }
 
-const templates = {
-  proteomics: '/metadata-templates/proteomics-metadata-template.xlsx',
-  transcriptomics: '/metadata-templates/transcriptomics-metadata-template.xlsx',
-  metabolomics: '/metadata-templates/metabolomics-metadata-template.xlsx',
-  genomics: '/metadata-templates/genomics-metadata-template.xlsx'
-}
+// TODO: Remove the definition, it was replace by projectSettings.templates
+// const templates = {
+//   proteomics: '/metadata-templates/proteomics-metadata-template.xlsx',
+//   transcriptomics: '/metadata-templates/transcriptomics-metadata-template.xlsx',
+//   metabolomics: '/metadata-templates/metabolomics-metadata-template.xlsx',
+//   genomics: '/metadata-templates/genomics-metadata-template.xlsx'
+// }
 
 export default {
   name: 'ProjectManagement',
   components: {
     PageView,
     UploadTaskList,
-    VueMarkdown
+    VueMarkdown,
   },
   props: {
     refresh: {
       default: true,
       type: Boolean,
-      required: false
-    }
+      required: false,
+    },
   },
   data() {
     return {
@@ -222,15 +226,16 @@ export default {
       helpChecked: false,
       helpVisible: true,
       form: this.$form.createForm(this, {
-        onValuesChange: this.updatePath
+        onValuesChange: this.updatePath,
       }),
       formVisible: false,
-      notices: 'The uploading path will automatically generate after you submit the form. If you want to access the same path as before, please enter the same information.',
+      notices:
+        'The uploading path will automatically generate after you submit the form. If you want to access the same path as before, please enter the same information.',
       uploadingPath: 'Uploading path...',
       name: '',
       dataType: '',
       btnLoading: false,
-      forceUpdateKey: ''
+      forceUpdateKey: '',
     }
   },
   computed: {
@@ -240,27 +245,30 @@ export default {
     },
     refreshToken() {
       if (this.refresh) {
-        return Math.random()
-          .toString(36)
-          .slice(-8)
+        return Math.random().toString(36).slice(-8)
       } else {
         return 'static'
       }
-    }
+    },
   },
   methods: {
     downloadTemplate(e) {
       this.$message.info('Downloading template...')
       let key = this.templates[e.key]
       let filename = key.split('/').pop()
-      fetch(key)
-        .then(res => res.blob())
-        .then(blob => {
-          downloadFile(blob, filename)
-        })
-        .catch(err => {
-          this.$message.error('Failed to download template.')
-        })
+      console.log("downloadTemplate", key, filename, filename.search(/.*.xlsx?/i))
+      if (filename.search(/.*.xlsx?/i) >= 0) {
+        fetch(key)
+          .then((res) => res.blob())
+          .then((blob) => {
+            downloadFile(blob, filename)
+          })
+          .catch((err) => {
+            this.$message.error('Failed to download template.')
+          })
+      } else {
+        window.open(key, '_blank')
+      }
     },
     viewData() {
       this.$refs.uploadTaskList && this.$refs.uploadTaskList.viewDataFiles()
@@ -312,20 +320,18 @@ export default {
           email: record.email,
           manager: this.manager,
           data_type: record.data_type,
-          description: record.description
+          description: record.description,
         })
-        .then(response => {
+        .then((response) => {
           this.$message.success(`The Dataset ${record.name} created.`)
-          this.forceUpdateKey = Math.random()
-            .toString(36)
-            .slice(-8)
+          this.forceUpdateKey = Math.random().toString(36).slice(-8)
           console.log('Create Dataset: ', response)
           this.formVisible = false
           this.btnLoading = false
           this.form.resetFields()
           this.uploadingPath = 'Uploading path...'
         })
-        .catch(error => {
+        .catch((error) => {
           this.$message.error('Failed, Please retry later.')
           console.log('Create Dataset: ', error)
           this.formVisible = false
@@ -335,11 +341,11 @@ export default {
     fetchHelp() {
       axios
         .get('/markdown/upload-data.md')
-        .then(response => {
+        .then((response) => {
           console.log('Fetch Help: ', response)
           this.helpMsg = response.data
         })
-        .catch(error => {
+        .catch((error) => {
           console.log('Fetch Help Error: ', error)
           this.helpMsg = 'No Content.'
         })
@@ -353,11 +359,16 @@ export default {
       localStorage.setItem('datains__data__notShownUploadHelp', e.target.checked)
     },
     showHelp() {
-      this.fetchHelp()
+      let helpLink = helps['upload-data'] ? helps['upload-data'].intro : null
+      if (helpLink) {
+        window.open(helpLink, '_blank')
+      } else {
+        this.fetchHelp()
+      }
     },
     closeHelp() {
       this.helpVisible = false
-    }
+    },
   },
   created() {
     const notShownHelp = JSON.parse(localStorage.getItem('datains__data__notShownUploadHelp'))
@@ -367,7 +378,7 @@ export default {
     } else {
       this.fetchHelp()
     }
-  }
+  },
 }
 </script>
 

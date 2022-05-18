@@ -24,14 +24,22 @@
 </template>
 
 <script>
+import { projectSettings } from '@/config/defaultSettings'
+
+const helps = projectSettings.helps
+
 /* eslint-disable */
 export default {
   name: 'AppList',
   props: {
     appList: {
       required: true,
-      type: Array
-    }
+      type: Array,
+    },
+    appCategory: {
+      required: true,
+      type: String,
+    },
   },
   methods: {
     formatAppVersion(app) {
@@ -42,21 +50,35 @@ export default {
       }
     },
     openLink(app) {
-      // TODO: Redirect to the specified help page
-      window.open('https://docs.chinese-quartet.org/getting_started/introduction/', '_blank')
+      if (app.shortName == 'upload-data') {
+        let help = helps['upload-data']
+        let helpLink = help[this.appCategory]
+        console.log('Upload Data: ', helps, helpLink)
+        if (helpLink) {
+          window.open(helpLink, '_blank')
+        }
+      } else {
+        let helpLink = helps[app.shortName]
+        if (helpLink) {
+          // TODO: Redirect to the specified help page
+          window.open(helpLink, '_blank')
+        } else {
+          window.open(helps['home'], '_blank')
+        }
+      }
     },
     onView(app) {
       if (app.category === 'LocalTool') {
         this.$router.push({
-          name: app.shortName
+          name: app.shortName,
         })
       } else if (app.category === 'Report') {
         this.$router.push({
-          name: app.shortName
+          name: app.shortName,
         })
       } else if (app.category === 'Pipeline') {
         this.$router.push({
-          name: app.shortName
+          name: app.shortName,
         })
         // this.$router.push({
         //   name: 'create-project',
@@ -65,8 +87,8 @@ export default {
         //   }
         // })
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
