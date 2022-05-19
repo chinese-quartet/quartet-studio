@@ -78,6 +78,11 @@ export default {
       this.activeHeader = !this.activeHeader
     }
   },
+  mounted() {
+    setTimeout(() => {
+      this.tooltipVisible = false
+    }, 6000)
+  },
   data () {
     return {
       activeHeader: !this.drawerMode,

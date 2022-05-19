@@ -7,7 +7,6 @@
       :src="src"
       class="vue-iframe"
       v-show="!spinning"
-      @document-load="onLoad"
       frameborder="0"
       allowfullscreen="true"
       scrolling="auto"
@@ -28,7 +27,7 @@ export default {
   data() {
     return {
       id: 'vue-iframe',
-      spinning: false
+      spinning: false,
     }
   },
   props: {
@@ -43,9 +42,6 @@ export default {
     },
   },
   methods: {
-    onLoad() {
-      NProgress.done()
-    },
     reset() {
       this.spinning = true
     },
@@ -58,7 +54,7 @@ export default {
     },
   },
   watch: {
-    $route: 'reset'
+    $route: 'reset',
   },
   mounted() {
     const self = this
@@ -75,13 +71,7 @@ export default {
       }
     })
   },
-  created() {
-    NProgress.start()
-    // this.$notification['info']({
-    //   message: 'Notice',
-    //   description: 'Please be patient, loading...'
-    // })
-  },
+  created() {},
 }
 </script>
 

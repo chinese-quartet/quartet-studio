@@ -106,41 +106,48 @@ const user = {
     },
     // 获取用户信息
     GetInfo({
-      commit
+      commit,
+      state
     }, isAnonymous) {
       return new Promise((resolve, reject) => {
-        getInfo(isAnonymous)
-          .then(response => {
-            userInfo.name = response.name ? response.name : response.preferred_username
-            userInfo.username = v.titleCase(userInfo.name)
-            userInfo.email = response.email
-            // Keycloak may be not return groups in response, so we need to check it
-            userInfo.groups = response.groups ? response.groups : []
+        // console.log("Current State: ", state)
+        if (state.email.length > 0) {
+          console.log("The user information exists, so skip to get it.")
+          resolve(state.info)
+        } else {
+          getInfo(isAnonymous)
+            .then(response => {
+              userInfo.name = response.name ? response.name : response.preferred_username
+              userInfo.username = v.titleCase(userInfo.name)
+              userInfo.email = response.email
+              // Keycloak may be not return groups in response, so we need to check it
+              userInfo.groups = response.groups ? response.groups : []
 
-            let kebab_name = response.preferred_username ? response.preferred_username : ""
-            if (!validateEmail(kebab_name)) {
-              kebab_name = v.kebabCase(kebab_name)
-            }
+              let kebab_name = response.preferred_username ? response.preferred_username : ""
+              if (!validateEmail(kebab_name)) {
+                kebab_name = v.kebabCase(kebab_name)
+              }
 
-            console.log('GetInfo: ', isAnonymous, response, userInfo, userInfo.name)
-            commit('SET_INFO', userInfo)
+              console.log('GetInfo: ', isAnonymous, response, userInfo, userInfo.name)
+              commit('SET_INFO', userInfo)
 
-            commit('SET_NAME', {
-              name: userInfo.name,
-              welcome: welcome(),
-              kebab_name: kebab_name
+              commit('SET_NAME', {
+                name: userInfo.name,
+                welcome: welcome(),
+                kebab_name: kebab_name
+              })
+              commit('SET_EMAIL', {
+                email: userInfo.email
+              })
+              commit('SET_LAST_NAME', userInfo.name.split(' ').pop())
+              commit('SET_AVATAR', userInfo.avatar)
+
+              resolve(userInfo)
             })
-            commit('SET_EMAIL', {
-              email: userInfo.email
+            .catch(error => {
+              reject(error)
             })
-            commit('SET_LAST_NAME', userInfo.name.split(' ').pop())
-            commit('SET_AVATAR', userInfo.avatar)
-
-            resolve(userInfo)
-          })
-          .catch(error => {
-            reject(error)
-          })
+        }
       })
     },
     Login({
