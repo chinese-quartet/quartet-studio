@@ -2,7 +2,7 @@
   <a-row class="frame-container">
     <a-button class="button" shape="circle" v-if="toPath" icon="left" size="large" @click="onClickBack" />
     <a-spin class="vue-iframe" :spinning="spinning" v-show="spinning" size="large" />
-    <vue-friendly-iframe
+    <iframe
       :id="id"
       :src="src"
       class="vue-iframe"
@@ -11,19 +11,16 @@
       allowfullscreen="true"
       scrolling="auto"
     >
-    </vue-friendly-iframe>
+    </iframe>
   </a-row>
 </template>
 
 <script>
 import NProgress from 'nprogress' // progress bar
-import VueFriendlyIframe from 'vue-friendly-iframe'
 
 export default {
   name: 'EmbededFrame',
-  components: {
-    VueFriendlyIframe,
-  },
+  components: {},
   data() {
     return {
       id: 'vue-iframe',
@@ -88,15 +85,13 @@ export default {
   }
 
   .vue-iframe {
-    iframe {
-      border: 0;
-      height: 100%;
-      // max-height: 650px;
-      left: 0;
-      position: absolute;
-      top: 0;
-      width: 100%;
-    }
+    border: 0;
+    height: 100%;
+    // max-height: 650px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
   }
 }
 </style>
