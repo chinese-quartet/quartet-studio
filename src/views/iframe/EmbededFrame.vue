@@ -1,7 +1,7 @@
 <template>
   <a-row class="frame-container">
     <a-button class="button" shape="circle" v-if="toPath" icon="left" size="large" @click="onClickBack" />
-    <a-spin class="vue-iframe" :spinning="spinning" v-show="spinning" size="large" />
+    <a-spin class="vue-iframe-spinning" :spinning="spinning" v-show="spinning" size="large" />
     <iframe
       :id="id"
       :src="src"
@@ -54,6 +54,7 @@ export default {
     $route: 'reset',
   },
   mounted() {
+    this.reset()
     const self = this
     this.$nextTick(() => {
       const iframe = document.getElementById(self.id)
@@ -84,7 +85,7 @@ export default {
     z-index: 1000;
   }
 
-  .vue-iframe {
+  .vue-iframe, .vue-iframe-spinning {
     border: 0;
     height: 100%;
     // max-height: 650px;
@@ -92,6 +93,14 @@ export default {
     position: absolute;
     top: 0;
     width: 100%;
+  }
+
+  .vue-iframe-spinning {
+    height: calc(100vh - 85px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
   }
 }
 </style>
